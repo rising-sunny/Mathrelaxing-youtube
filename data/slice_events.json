@@ -1,0 +1,33 @@
+{
+  "fps": 24,
+  "frames": 72,
+  "duration_s": 3.0,
+  "resolution": [
+    640,
+    360
+  ],
+  "engine": "cycles",
+  "events": [
+    {
+      "frame": 25,
+      "t_seconds": 1.0417,
+      "type": "amplitude_crossing",
+      "level": 0.4,
+      "amplitude": 0.427
+    },
+    {
+      "frame": 38,
+      "t_seconds": 1.5833,
+      "type": "amplitude_crossing",
+      "level": 0.8,
+      "amplitude": 0.8291
+    },
+    {
+      "frame": 51,
+      "t_seconds": 2.125,
+      "type": "amplitude_crossing",
+      "level": 1.2,
+      "amplitude": 1.21
+    }
+  ]
+}

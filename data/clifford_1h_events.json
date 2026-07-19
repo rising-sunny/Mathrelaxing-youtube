@@ -1,0 +1,167 @@
+{
+  "fps": 60,
+  "frames": 900,
+  "duration_s": 15.0,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "engine": "numpy",
+  "system": "clifford_torus",
+  "events": [
+    {
+      "frame": 40,
+      "t_seconds": 0.6667,
+      "type": "torus_pulse",
+      "intensity": 0.7119677056932819,
+      "note": "C3"
+    },
+    {
+      "frame": 80,
+      "t_seconds": 1.3333,
+      "type": "torus_pulse",
+      "intensity": 0.8595176185196669,
+      "note": "D4"
+    },
+    {
+      "frame": 120,
+      "t_seconds": 2.0,
+      "type": "torus_pulse",
+      "intensity": 0.8978087581473093,
+      "note": "B3"
+    },
+    {
+      "frame": 160,
+      "t_seconds": 2.6667,
+      "type": "torus_pulse",
+      "intensity": 0.8152043014426889,
+      "note": "G3"
+    },
+    {
+      "frame": 200,
+      "t_seconds": 3.3333,
+      "type": "torus_pulse",
+      "intensity": 0.6368080573302676,
+      "note": "G3"
+    },
+    {
+      "frame": 240,
+      "t_seconds": 4.0,
+      "type": "torus_pulse",
+      "intensity": 0.5831646763271037,
+      "note": "A3"
+    },
+    {
+      "frame": 280,
+      "t_seconds": 4.6667,
+      "type": "torus_pulse",
+      "intensity": 0.7778633481835988,
+      "note": "C3"
+    },
+    {
+      "frame": 320,
+      "t_seconds": 5.3333,
+      "type": "torus_pulse",
+      "intensity": 0.8881182905103986,
+      "note": "D4"
+    },
+    {
+      "frame": 360,
+      "t_seconds": 6.0,
+      "type": "torus_pulse",
+      "intensity": 0.8804226065180615,
+      "note": "E3"
+    },
+    {
+      "frame": 400,
+      "t_seconds": 6.6667,
+      "type": "torus_pulse",
+      "intensity": 0.7571150438746159,
+      "note": "C3"
+    },
+    {
+      "frame": 440,
+      "t_seconds": 7.3333,
+      "type": "torus_pulse",
+      "intensity": 0.555669240384026,
+      "note": "B3"
+    },
+    {
+      "frame": 480,
+      "t_seconds": 8.0,
+      "type": "torus_pulse",
+      "intensity": 0.6626946572303198,
+      "note": "A3"
+    },
+    {
+      "frame": 520,
+      "t_seconds": 8.6667,
+      "type": "torus_pulse",
+      "intensity": 0.8316150290220166,
+      "note": "D4"
+    },
+    {
+      "frame": 560,
+      "t_seconds": 9.3333,
+      "type": "torus_pulse",
+      "intensity": 0.8997563308076383,
+      "note": "D4"
+    },
+    {
+      "frame": 600,
+      "t_seconds": 10.0,
+      "type": "torus_pulse",
+      "intensity": 0.8464101615137757,
+      "note": "D4"
+    },
+    {
+      "frame": 640,
+      "t_seconds": 10.6667,
+      "type": "torus_pulse",
+      "intensity": 0.6877886251143563,
+      "note": "D4"
+    },
+    {
+      "frame": 680,
+      "t_seconds": 11.3333,
+      "type": "torus_pulse",
+      "intensity": 0.5279025894976503,
+      "note": "B3"
+    },
+    {
+      "frame": 720,
+      "t_seconds": 12.0,
+      "type": "torus_pulse",
+      "intensity": 0.7351141009169891,
+      "note": "C3"
+    },
+    {
+      "frame": 760,
+      "t_seconds": 12.6667,
+      "type": "torus_pulse",
+      "intensity": 0.8708735418267151,
+      "note": "A3"
+    },
+    {
+      "frame": 800,
+      "t_seconds": 13.3333,
+      "type": "torus_pulse",
+      "intensity": 0.8939231012048833,
+      "note": "G3"
+    },
+    {
+      "frame": 840,
+      "t_seconds": 14.0,
+      "type": "torus_pulse",
+      "intensity": 0.7972579301909577,
+      "note": "B3"
+    },
+    {
+      "frame": 880,
+      "t_seconds": 14.6667,
+      "type": "torus_pulse",
+      "intensity": 0.6102549423267993,
+      "note": "G3"
+    }
+  ]
+}

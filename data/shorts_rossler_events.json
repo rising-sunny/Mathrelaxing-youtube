@@ -1,0 +1,26 @@
+{
+  "fps": 24,
+  "frames": 360,
+  "duration_s": 15.0,
+  "resolution": [
+    576,
+    1024
+  ],
+  "engine": "eevee",
+  "events": [
+    {
+      "frame": 228,
+      "t_seconds": 9.5,
+      "type": "z_spike",
+      "note": "C3",
+      "intensity": 0.9
+    },
+    {
+      "frame": 355,
+      "t_seconds": 14.7917,
+      "type": "z_spike",
+      "note": "C3",
+      "intensity": 0.9
+    }
+  ]
+}

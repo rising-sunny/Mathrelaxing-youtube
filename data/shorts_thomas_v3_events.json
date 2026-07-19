@@ -1,0 +1,11 @@
+{
+  "fps": 60,
+  "frames": 900,
+  "duration_s": 15.0,
+  "resolution": [
+    576,
+    1024
+  ],
+  "engine": "eevee",
+  "events": []
+}

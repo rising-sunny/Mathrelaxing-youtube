@@ -1,0 +1,20 @@
+{
+  "fps": 60,
+  "frames": 60,
+  "duration_s": 1.0,
+  "resolution": [
+    640,
+    360
+  ],
+  "engine": "numpy",
+  "system": "hopf_fibration",
+  "events": [
+    {
+      "frame": 45,
+      "t_seconds": 0.75,
+      "type": "fiber_pulse",
+      "intensity": 0.5500000000000002,
+      "note": "C3"
+    }
+  ]
+}

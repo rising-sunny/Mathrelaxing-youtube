@@ -1,0 +1,168 @@
+{
+  "fps": 60,
+  "frames": 900,
+  "duration_s": 15.0,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "engine": "numpy",
+  "system": "three_body_figure8",
+  "period": 6.32591398,
+  "events": [
+    {
+      "frame": 30,
+      "t_seconds": 0.5,
+      "type": "orbit_pulse",
+      "intensity": 0.7351141009169893,
+      "note": "G3"
+    },
+    {
+      "frame": 70,
+      "t_seconds": 1.1667,
+      "type": "orbit_pulse",
+      "intensity": 0.8978087581473093,
+      "note": "G3"
+    },
+    {
+      "frame": 110,
+      "t_seconds": 1.8333,
+      "type": "orbit_pulse",
+      "intensity": 0.7972579301909577,
+      "note": "C3"
+    },
+    {
+      "frame": 150,
+      "t_seconds": 2.5,
+      "type": "orbit_pulse",
+      "intensity": 0.5,
+      "note": "D4"
+    },
+    {
+      "frame": 190,
+      "t_seconds": 3.1667,
+      "type": "orbit_pulse",
+      "intensity": 0.7972579301909577,
+      "note": "G3"
+    },
+    {
+      "frame": 230,
+      "t_seconds": 3.8333,
+      "type": "orbit_pulse",
+      "intensity": 0.8978087581473093,
+      "note": "E3"
+    },
+    {
+      "frame": 270,
+      "t_seconds": 4.5,
+      "type": "orbit_pulse",
+      "intensity": 0.7351141009169894,
+      "note": "A3"
+    },
+    {
+      "frame": 310,
+      "t_seconds": 5.1667,
+      "type": "orbit_pulse",
+      "intensity": 0.5831646763271034,
+      "note": "B3"
+    },
+    {
+      "frame": 350,
+      "t_seconds": 5.8333,
+      "type": "orbit_pulse",
+      "intensity": 0.8464101615137753,
+      "note": "C3"
+    },
+    {
+      "frame": 390,
+      "t_seconds": 6.5,
+      "type": "orbit_pulse",
+      "intensity": 0.8804226065180615,
+      "note": "G3"
+    },
+    {
+      "frame": 430,
+      "t_seconds": 7.1667,
+      "type": "orbit_pulse",
+      "intensity": 0.6626946572303204,
+      "note": "G3"
+    },
+    {
+      "frame": 470,
+      "t_seconds": 7.8333,
+      "type": "orbit_pulse",
+      "intensity": 0.6626946572303202,
+      "note": "D4"
+    },
+    {
+      "frame": 510,
+      "t_seconds": 8.5,
+      "type": "orbit_pulse",
+      "intensity": 0.8804226065180614,
+      "note": "B3"
+    },
+    {
+      "frame": 550,
+      "t_seconds": 9.1667,
+      "type": "orbit_pulse",
+      "intensity": 0.8464101615137753,
+      "note": "E3"
+    },
+    {
+      "frame": 590,
+      "t_seconds": 9.8333,
+      "type": "orbit_pulse",
+      "intensity": 0.583164676327103,
+      "note": "G3"
+    },
+    {
+      "frame": 630,
+      "t_seconds": 10.5,
+      "type": "orbit_pulse",
+      "intensity": 0.735114100916989,
+      "note": "B3"
+    },
+    {
+      "frame": 670,
+      "t_seconds": 11.1667,
+      "type": "orbit_pulse",
+      "intensity": 0.8978087581473093,
+      "note": "B3"
+    },
+    {
+      "frame": 710,
+      "t_seconds": 11.8333,
+      "type": "orbit_pulse",
+      "intensity": 0.7972579301909581,
+      "note": "G3"
+    },
+    {
+      "frame": 750,
+      "t_seconds": 12.5,
+      "type": "orbit_pulse",
+      "intensity": 0.5000000000000002,
+      "note": "G3"
+    },
+    {
+      "frame": 790,
+      "t_seconds": 13.1667,
+      "type": "orbit_pulse",
+      "intensity": 0.7972579301909579,
+      "note": "G3"
+    },
+    {
+      "frame": 830,
+      "t_seconds": 13.8333,
+      "type": "orbit_pulse",
+      "intensity": 0.8978087581473094,
+      "note": "G3"
+    },
+    {
+      "frame": 870,
+      "t_seconds": 14.5,
+      "type": "orbit_pulse",
+      "intensity": 0.7351141009169895,
+      "note": "E3"
+    }
+  ]
+}

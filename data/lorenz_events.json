@@ -1,0 +1,108 @@
+{
+  "fps": 24,
+  "frames": 360,
+  "duration_s": 15.0,
+  "resolution": [
+    640,
+    360
+  ],
+  "engine": "eevee",
+  "events": [
+    {
+      "frame": 47,
+      "t_seconds": 1.9583,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 122,
+      "t_seconds": 5.0833,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 143,
+      "t_seconds": 5.9583,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 158,
+      "t_seconds": 6.5833,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 174,
+      "t_seconds": 7.25,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 195,
+      "t_seconds": 8.125,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 227,
+      "t_seconds": 9.4583,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 239,
+      "t_seconds": 9.9583,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 322,
+      "t_seconds": 13.4167,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 329,
+      "t_seconds": 13.7083,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 342,
+      "t_seconds": 14.25,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 356,
+      "t_seconds": 14.8333,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    }
+  ]
+}

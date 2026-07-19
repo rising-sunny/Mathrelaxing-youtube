@@ -1,0 +1,31 @@
+# Render output
+output/
+
+# Blender portable + temp
+tools/blender*/
+tools/*.zip
+*.blend1
+*.blend2
+*.blend@
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Credenciales / tokens (nunca deben ir al repo)
+token*.json
+token*.pickle
+client_secret*.json
+*.env
+*CREDENCIALES*
+
+# Caches de simulacion (regenerables, ~160 MB) — no versionar
+*.npz

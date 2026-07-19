@@ -1,0 +1,172 @@
+{
+  "fps": 60,
+  "frames": 900,
+  "duration_s": 15.0,
+  "resolution": [
+    576,
+    1024
+  ],
+  "engine": "numpy",
+  "events": [
+    {
+      "frame": 14,
+      "t_seconds": 0.2333,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 16,
+      "t_seconds": 0.2667,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 55,
+      "t_seconds": 0.9167,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 79,
+      "t_seconds": 1.3167,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 142,
+      "t_seconds": 2.3667,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 175,
+      "t_seconds": 2.9167,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 321,
+      "t_seconds": 5.35,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 372,
+      "t_seconds": 6.2,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 390,
+      "t_seconds": 6.5,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 422,
+      "t_seconds": 7.0333,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 462,
+      "t_seconds": 7.7,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 489,
+      "t_seconds": 8.15,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 596,
+      "t_seconds": 9.9333,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 602,
+      "t_seconds": 10.0333,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 660,
+      "t_seconds": 11.0,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 677,
+      "t_seconds": 11.2833,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 736,
+      "t_seconds": 12.2667,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 756,
+      "t_seconds": 12.6,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 816,
+      "t_seconds": 13.6,
+      "type": "wing_cross",
+      "wing": "right",
+      "note": "G3",
+      "intensity": 0.8
+    },
+    {
+      "frame": 861,
+      "t_seconds": 14.35,
+      "type": "wing_cross",
+      "wing": "left",
+      "note": "C3",
+      "intensity": 0.8
+    }
+  ]
+}

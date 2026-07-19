@@ -1,0 +1,20 @@
+{
+  "fps": 60,
+  "frames": 48,
+  "duration_s": 0.8,
+  "resolution": [
+    640,
+    360
+  ],
+  "engine": "numpy",
+  "system": "clifford_torus",
+  "events": [
+    {
+      "frame": 40,
+      "t_seconds": 0.6667,
+      "type": "torus_pulse",
+      "intensity": 0.8464101615137756,
+      "note": "C3"
+    }
+  ]
+}

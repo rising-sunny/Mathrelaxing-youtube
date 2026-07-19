@@ -1,0 +1,11 @@
+{
+  "fps": 60,
+  "frames": 900,
+  "duration_s": 15.0,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "engine": "numpy",
+  "events": []
+}

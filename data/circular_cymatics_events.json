@@ -1,0 +1,47 @@
+{
+  "fps": 60,
+  "frames": 900,
+  "duration_s": 15.0,
+  "resolution": [
+    576,
+    1024
+  ],
+  "engine": "numpy",
+  "events": [
+    {
+      "frame": 0,
+      "t_seconds": 0.0,
+      "type": "mode_change",
+      "freq": 220,
+      "n": 0
+    },
+    {
+      "frame": 225,
+      "t_seconds": 3.75,
+      "type": "mode_change",
+      "freq": 330,
+      "n": 3
+    },
+    {
+      "frame": 450,
+      "t_seconds": 7.5,
+      "type": "mode_change",
+      "freq": 440,
+      "n": 5
+    },
+    {
+      "frame": 675,
+      "t_seconds": 11.25,
+      "type": "mode_change",
+      "freq": 550,
+      "n": 2
+    },
+    {
+      "frame": 899,
+      "t_seconds": 14.9833,
+      "type": "mode_change",
+      "freq": 660,
+      "n": 7
+    }
+  ]
+}

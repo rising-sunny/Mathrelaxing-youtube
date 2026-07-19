@@ -1,0 +1,26 @@
+{
+  "fps": 60,
+  "frames": 900,
+  "duration_s": 15.0,
+  "resolution": [
+    576,
+    1024
+  ],
+  "engine": "eevee",
+  "events": [
+    {
+      "frame": 8,
+      "t_seconds": 0.1333,
+      "type": "slingshot",
+      "intensity": 1.048196756391968,
+      "note": "Eb1"
+    },
+    {
+      "frame": 115,
+      "t_seconds": 1.9167,
+      "type": "slingshot",
+      "intensity": 1.0047817643960177,
+      "note": "Eb1"
+    }
+  ]
+}

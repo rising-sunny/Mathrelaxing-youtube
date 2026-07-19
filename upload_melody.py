@@ -1,0 +1,61 @@
+import os
+import sys
+
+# Agregar la ruta tools al sys.path para importar youtube_uploader
+REPO = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(REPO, "tools"))
+
+try:
+    from youtube_uploader import upload_video_to_youtube
+except ImportError as e:
+    print("Error: Asegúrate de haber copiado youtube_uploader.py en tools/ y tener las dependencias de Google API instaladas.")
+    print(e)
+    sys.exit(1)
+
+def main():
+    video_path = os.path.join(REPO, "output", "shorts_melody", "shorts_melody.mp4")
+    
+    if not os.path.exists(video_path):
+        print(f"Error: No se encontró el video {video_path}")
+        sys.exit(1)
+        
+    title = "Chladni Patterns: 300,000 Particles Dancing to Math & Music ✨🌊 #math #physics #shorts"
+    description = (
+        "What does sound look like? 🔊✨\n\n"
+        "Watch 300,000 sand-like particles arrange themselves into intricate geometric patterns known as Chladni Figures. By modifying the parameters 'm' and 'n' of the acoustic wave equation, the particles get trapped in the resonant nodes—creating mesmerizing symmetry.\n\n"
+        "Listen to the generative sonification! 🎧 As the frequency shifts to create a new pattern, a sharp chime strikes while cinematic bass drones underneath, and you can hear the sweeping sound of sand rushing into place.\n\n"
+        "Support the project and discover more mathematics inspired designs at our official store: https://mathrelaxing.store ✨\n\n"
+        "#MathRelaxing #Chladni #ChladniFigures #Acoustics #PhysicsSimulation #Mathematics #ScienceArt #STEM #GenerativeArt"
+    )
+    tags = [
+        "math", "physics", "chladni", "acoustics", "cymatics",
+        "python", "blender", "generative art", "mathrelaxing", "sonification", 
+        "science", "education", "visuals"
+    ]
+    
+    print(f"Subiendo: {video_path}...")
+    print("Por favor espera, esto puede tardar un poco dependiendo de tu velocidad de subida.")
+    
+    def on_progress(p):
+        sys.stdout.write(f"\rSubiendo... {p}%")
+        sys.stdout.flush()
+
+    try:
+        video_id, channel_name = upload_video_to_youtube(
+            video_path=video_path,
+            title=title,
+            description=description,
+            tags=tags,
+            privacy_status="public",
+            publish_at=None,
+            desired_channel="MathRelaxing",
+            progress_callback=on_progress
+        )
+        print(f"\n\n¡Subida completada con éxito en el canal '{channel_name}'!")
+        print(f"El video ya es PÚBLICO.")
+        print(f"Revisa tu video aquí: https://youtu.be/{video_id}")
+    except Exception as e:
+        print(f"\n\nError al subir el video a YouTube: {e}")
+
+if __name__ == "__main__":
+    main()

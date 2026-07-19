@@ -1,0 +1,21 @@
+{
+  "fps": 60,
+  "frames": 48,
+  "duration_s": 0.8,
+  "resolution": [
+    640,
+    360
+  ],
+  "engine": "numpy",
+  "system": "three_body_figure8",
+  "period": 6.32591398,
+  "events": [
+    {
+      "frame": 30,
+      "t_seconds": 0.5,
+      "type": "orbit_pulse",
+      "intensity": 0.7828427124746193,
+      "note": "G3"
+    }
+  ]
+}

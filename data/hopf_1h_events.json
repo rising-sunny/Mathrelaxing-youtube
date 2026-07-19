@@ -1,0 +1,146 @@
+{
+  "fps": 60,
+  "frames": 900,
+  "duration_s": 15.0,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "engine": "numpy",
+  "system": "hopf_fibration",
+  "events": [
+    {
+      "frame": 45,
+      "t_seconds": 0.75,
+      "type": "fiber_pulse",
+      "intensity": 0.7557248383023656,
+      "note": "C3"
+    },
+    {
+      "frame": 90,
+      "t_seconds": 1.5,
+      "type": "fiber_pulse",
+      "intensity": 0.8828697807033037,
+      "note": "D4"
+    },
+    {
+      "frame": 135,
+      "t_seconds": 2.25,
+      "type": "fiber_pulse",
+      "intensity": 0.8828697807033038,
+      "note": "B3"
+    },
+    {
+      "frame": 180,
+      "t_seconds": 3.0,
+      "type": "fiber_pulse",
+      "intensity": 0.7557248383023657,
+      "note": "A3"
+    },
+    {
+      "frame": 225,
+      "t_seconds": 3.75,
+      "type": "fiber_pulse",
+      "intensity": 0.55,
+      "note": "B3"
+    },
+    {
+      "frame": 270,
+      "t_seconds": 4.5,
+      "type": "fiber_pulse",
+      "intensity": 0.7557248383023656,
+      "note": "D4"
+    },
+    {
+      "frame": 315,
+      "t_seconds": 5.25,
+      "type": "fiber_pulse",
+      "intensity": 0.8828697807033037,
+      "note": "G3"
+    },
+    {
+      "frame": 360,
+      "t_seconds": 6.0,
+      "type": "fiber_pulse",
+      "intensity": 0.8828697807033038,
+      "note": "G3"
+    },
+    {
+      "frame": 405,
+      "t_seconds": 6.75,
+      "type": "fiber_pulse",
+      "intensity": 0.7557248383023659,
+      "note": "G3"
+    },
+    {
+      "frame": 450,
+      "t_seconds": 7.5,
+      "type": "fiber_pulse",
+      "intensity": 0.5500000000000002,
+      "note": "A3"
+    },
+    {
+      "frame": 495,
+      "t_seconds": 8.25,
+      "type": "fiber_pulse",
+      "intensity": 0.7557248383023656,
+      "note": "G3"
+    },
+    {
+      "frame": 540,
+      "t_seconds": 9.0,
+      "type": "fiber_pulse",
+      "intensity": 0.8828697807033037,
+      "note": "A3"
+    },
+    {
+      "frame": 585,
+      "t_seconds": 9.75,
+      "type": "fiber_pulse",
+      "intensity": 0.8828697807033038,
+      "note": "E3"
+    },
+    {
+      "frame": 630,
+      "t_seconds": 10.5,
+      "type": "fiber_pulse",
+      "intensity": 0.7557248383023657,
+      "note": "D4"
+    },
+    {
+      "frame": 675,
+      "t_seconds": 11.25,
+      "type": "fiber_pulse",
+      "intensity": 0.5500000000000002,
+      "note": "E3"
+    },
+    {
+      "frame": 720,
+      "t_seconds": 12.0,
+      "type": "fiber_pulse",
+      "intensity": 0.7557248383023655,
+      "note": "G3"
+    },
+    {
+      "frame": 765,
+      "t_seconds": 12.75,
+      "type": "fiber_pulse",
+      "intensity": 0.8828697807033037,
+      "note": "A3"
+    },
+    {
+      "frame": 810,
+      "t_seconds": 13.5,
+      "type": "fiber_pulse",
+      "intensity": 0.882869780703304,
+      "note": "D4"
+    },
+    {
+      "frame": 855,
+      "t_seconds": 14.25,
+      "type": "fiber_pulse",
+      "intensity": 0.7557248383023658,
+      "note": "G3"
+    }
+  ]
+}

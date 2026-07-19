@@ -1,0 +1,19 @@
+{
+  "fps": 60,
+  "frames": 900,
+  "duration_s": 15.0,
+  "resolution": [
+    576,
+    1024
+  ],
+  "engine": "eevee",
+  "events": [
+    {
+      "frame": 153,
+      "t_seconds": 2.55,
+      "type": "explosion",
+      "intensity": 2.5,
+      "note": "C1"
+    }
+  ]
+}

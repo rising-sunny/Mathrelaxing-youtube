@@ -1,0 +1,36 @@
+{
+  "fps": 24,
+  "frames": 360,
+  "duration_s": 15.0,
+  "resolution": [
+    640,
+    360
+  ],
+  "engine": "eevee",
+  "events": [
+    {
+      "frame": 0,
+      "t_seconds": 0.0,
+      "type": "vortex_peak",
+      "vortex": 0,
+      "note": "C2",
+      "intensity": 0.9696
+    },
+    {
+      "frame": 1,
+      "t_seconds": 0.0417,
+      "type": "vortex_peak",
+      "vortex": 1,
+      "note": "Eb2",
+      "intensity": 0.9136
+    },
+    {
+      "frame": 2,
+      "t_seconds": 0.0833,
+      "type": "vortex_peak",
+      "vortex": 2,
+      "note": "G2",
+      "intensity": 1.0
+    }
+  ]
+}

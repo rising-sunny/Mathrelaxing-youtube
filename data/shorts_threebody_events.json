@@ -1,0 +1,408 @@
+{
+  "fps": 60,
+  "frames": 900,
+  "duration_s": 15.0,
+  "resolution": [
+    1080,
+    1920
+  ],
+  "engine": "numpy",
+  "system": "three_body_figure8",
+  "period": 6.32591398,
+  "orbit_loops": 5,
+  "short_mode": true,
+  "events": [
+    {
+      "frame": 18,
+      "t_seconds": 0.3,
+      "type": "orbit_pulse",
+      "intensity": 0.4950167655944824,
+      "note": "B3",
+      "dmin": 0.705
+    },
+    {
+      "frame": 36,
+      "t_seconds": 0.6,
+      "type": "orbit_pulse",
+      "intensity": 0.38761098384857173,
+      "note": "F4",
+      "dmin": 0.8124
+    },
+    {
+      "frame": 54,
+      "t_seconds": 0.9,
+      "type": "orbit_pulse",
+      "intensity": 0.38761098384857173,
+      "note": "B3",
+      "dmin": 0.8124
+    },
+    {
+      "frame": 72,
+      "t_seconds": 1.2,
+      "type": "orbit_pulse",
+      "intensity": 0.4950167655944824,
+      "note": "A3",
+      "dmin": 0.705
+    },
+    {
+      "frame": 90,
+      "t_seconds": 1.5,
+      "type": "orbit_pulse",
+      "intensity": 0.2,
+      "note": "F4",
+      "dmin": 1.0
+    },
+    {
+      "frame": 108,
+      "t_seconds": 1.8,
+      "type": "orbit_pulse",
+      "intensity": 0.4950167655944824,
+      "note": "D4",
+      "dmin": 0.705
+    },
+    {
+      "frame": 126,
+      "t_seconds": 2.1,
+      "type": "orbit_pulse",
+      "intensity": 0.3876110434532165,
+      "note": "G3",
+      "dmin": 0.8124
+    },
+    {
+      "frame": 144,
+      "t_seconds": 2.4,
+      "type": "orbit_pulse",
+      "intensity": 0.38761098384857173,
+      "note": "C3",
+      "dmin": 0.8124
+    },
+    {
+      "frame": 162,
+      "t_seconds": 2.7,
+      "type": "orbit_pulse",
+      "intensity": 0.49437351226806636,
+      "note": "D4",
+      "dmin": 0.7056
+    },
+    {
+      "frame": 180,
+      "t_seconds": 3.0,
+      "type": "orbit_pulse",
+      "intensity": 0.2,
+      "note": "F4",
+      "dmin": 1.0
+    },
+    {
+      "frame": 198,
+      "t_seconds": 3.3,
+      "type": "orbit_pulse",
+      "intensity": 0.4950167655944824,
+      "note": "F4",
+      "dmin": 0.705
+    },
+    {
+      "frame": 216,
+      "t_seconds": 3.6,
+      "type": "orbit_pulse",
+      "intensity": 0.38591523170471187,
+      "note": "D4",
+      "dmin": 0.8141
+    },
+    {
+      "frame": 234,
+      "t_seconds": 3.9,
+      "type": "orbit_pulse",
+      "intensity": 0.38761098384857173,
+      "note": "G3",
+      "dmin": 0.8124
+    },
+    {
+      "frame": 252,
+      "t_seconds": 4.2,
+      "type": "orbit_pulse",
+      "intensity": 0.4950167655944824,
+      "note": "C3",
+      "dmin": 0.705
+    },
+    {
+      "frame": 270,
+      "t_seconds": 4.5,
+      "type": "orbit_pulse",
+      "intensity": 0.2,
+      "note": "D4",
+      "dmin": 1.0
+    },
+    {
+      "frame": 288,
+      "t_seconds": 4.8,
+      "type": "orbit_pulse",
+      "intensity": 0.4950167655944824,
+      "note": "G3",
+      "dmin": 0.705
+    },
+    {
+      "frame": 306,
+      "t_seconds": 5.1,
+      "type": "orbit_pulse",
+      "intensity": 0.3876110434532165,
+      "note": "G3",
+      "dmin": 0.8124
+    },
+    {
+      "frame": 324,
+      "t_seconds": 5.4,
+      "type": "orbit_pulse",
+      "intensity": 0.3892970204353332,
+      "note": "E3",
+      "dmin": 0.8107
+    },
+    {
+      "frame": 342,
+      "t_seconds": 5.7,
+      "type": "orbit_pulse",
+      "intensity": 0.49437351226806636,
+      "note": "C3",
+      "dmin": 0.7056
+    },
+    {
+      "frame": 360,
+      "t_seconds": 6.0,
+      "type": "orbit_pulse",
+      "intensity": 0.2,
+      "note": "A3",
+      "dmin": 1.0
+    },
+    {
+      "frame": 378,
+      "t_seconds": 6.3,
+      "type": "orbit_pulse",
+      "intensity": 0.4950167655944824,
+      "note": "G3",
+      "dmin": 0.705
+    },
+    {
+      "frame": 396,
+      "t_seconds": 6.6,
+      "type": "orbit_pulse",
+      "intensity": 0.38761098384857173,
+      "note": "G3",
+      "dmin": 0.8124
+    },
+    {
+      "frame": 414,
+      "t_seconds": 6.9,
+      "type": "orbit_pulse",
+      "intensity": 0.38761098384857173,
+      "note": "C3",
+      "dmin": 0.8124
+    },
+    {
+      "frame": 432,
+      "t_seconds": 7.2,
+      "type": "orbit_pulse",
+      "intensity": 0.49437351226806636,
+      "note": "B3",
+      "dmin": 0.7056
+    },
+    {
+      "frame": 450,
+      "t_seconds": 7.5,
+      "type": "orbit_pulse",
+      "intensity": 0.2,
+      "note": "D4",
+      "dmin": 1.0
+    },
+    {
+      "frame": 468,
+      "t_seconds": 7.8,
+      "type": "orbit_pulse",
+      "intensity": 0.4950167655944824,
+      "note": "A3",
+      "dmin": 0.705
+    },
+    {
+      "frame": 486,
+      "t_seconds": 8.1,
+      "type": "orbit_pulse",
+      "intensity": 0.3876110434532165,
+      "note": "C3",
+      "dmin": 0.8124
+    },
+    {
+      "frame": 504,
+      "t_seconds": 8.4,
+      "type": "orbit_pulse",
+      "intensity": 0.38761098384857173,
+      "note": "A3",
+      "dmin": 0.8124
+    },
+    {
+      "frame": 522,
+      "t_seconds": 8.7,
+      "type": "orbit_pulse",
+      "intensity": 0.49437351226806636,
+      "note": "G3",
+      "dmin": 0.7056
+    },
+    {
+      "frame": 540,
+      "t_seconds": 9.0,
+      "type": "orbit_pulse",
+      "intensity": 0.2,
+      "note": "E3",
+      "dmin": 1.0
+    },
+    {
+      "frame": 558,
+      "t_seconds": 9.3,
+      "type": "orbit_pulse",
+      "intensity": 0.4950167655944824,
+      "note": "F4",
+      "dmin": 0.705
+    },
+    {
+      "frame": 576,
+      "t_seconds": 9.6,
+      "type": "orbit_pulse",
+      "intensity": 0.38761098384857173,
+      "note": "F4",
+      "dmin": 0.8124
+    },
+    {
+      "frame": 594,
+      "t_seconds": 9.9,
+      "type": "orbit_pulse",
+      "intensity": 0.38761098384857173,
+      "note": "F4",
+      "dmin": 0.8124
+    },
+    {
+      "frame": 612,
+      "t_seconds": 10.2,
+      "type": "orbit_pulse",
+      "intensity": 0.4950167655944824,
+      "note": "G3",
+      "dmin": 0.705
+    },
+    {
+      "frame": 630,
+      "t_seconds": 10.5,
+      "type": "orbit_pulse",
+      "intensity": 0.2,
+      "note": "E3",
+      "dmin": 1.0
+    },
+    {
+      "frame": 648,
+      "t_seconds": 10.8,
+      "type": "orbit_pulse",
+      "intensity": 0.49564630985260005,
+      "note": "C3",
+      "dmin": 0.7044
+    },
+    {
+      "frame": 666,
+      "t_seconds": 11.1,
+      "type": "orbit_pulse",
+      "intensity": 0.3876110434532165,
+      "note": "A3",
+      "dmin": 0.8124
+    },
+    {
+      "frame": 684,
+      "t_seconds": 11.4,
+      "type": "orbit_pulse",
+      "intensity": 0.3892970204353332,
+      "note": "G3",
+      "dmin": 0.8107
+    },
+    {
+      "frame": 702,
+      "t_seconds": 11.7,
+      "type": "orbit_pulse",
+      "intensity": 0.4950167059898376,
+      "note": "F4",
+      "dmin": 0.705
+    },
+    {
+      "frame": 720,
+      "t_seconds": 12.0,
+      "type": "orbit_pulse",
+      "intensity": 0.2,
+      "note": "E3",
+      "dmin": 1.0
+    },
+    {
+      "frame": 738,
+      "t_seconds": 12.3,
+      "type": "orbit_pulse",
+      "intensity": 0.4956462502479553,
+      "note": "F4",
+      "dmin": 0.7044
+    },
+    {
+      "frame": 756,
+      "t_seconds": 12.6,
+      "type": "orbit_pulse",
+      "intensity": 0.38761098384857173,
+      "note": "G3",
+      "dmin": 0.8124
+    },
+    {
+      "frame": 774,
+      "t_seconds": 12.9,
+      "type": "orbit_pulse",
+      "intensity": 0.38929696083068843,
+      "note": "F4",
+      "dmin": 0.8107
+    },
+    {
+      "frame": 792,
+      "t_seconds": 13.2,
+      "type": "orbit_pulse",
+      "intensity": 0.4950167655944824,
+      "note": "B3",
+      "dmin": 0.705
+    },
+    {
+      "frame": 810,
+      "t_seconds": 13.5,
+      "type": "orbit_pulse",
+      "intensity": 0.2,
+      "note": "D4",
+      "dmin": 1.0
+    },
+    {
+      "frame": 828,
+      "t_seconds": 13.8,
+      "type": "orbit_pulse",
+      "intensity": 0.4950167655944824,
+      "note": "G3",
+      "dmin": 0.705
+    },
+    {
+      "frame": 846,
+      "t_seconds": 14.1,
+      "type": "orbit_pulse",
+      "intensity": 0.38591523170471187,
+      "note": "B3",
+      "dmin": 0.8141
+    },
+    {
+      "frame": 864,
+      "t_seconds": 14.4,
+      "type": "orbit_pulse",
+      "intensity": 0.3892970204353332,
+      "note": "A3",
+      "dmin": 0.8107
+    },
+    {
+      "frame": 882,
+      "t_seconds": 14.7,
+      "type": "orbit_pulse",
+      "intensity": 0.4950167059898376,
+      "note": "F4",
+      "dmin": 0.705
+    }
+  ]
+}
