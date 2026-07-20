@@ -29,11 +29,12 @@ BODY = (
     "In 1834 the engineer John Scott Russell watched a single wave break away "
     "from a boat in a canal, keep its exact shape, and roll on for almost two "
     "miles. He chased it on horseback. Nobody could explain it for 60 years.\n\n"
-    "It was a soliton. The Korteweg-de Vries equation finally described it: a "
-    "wave so perfectly balanced between spreading and steepening that it never "
-    "breaks. What you see here is a space-time view of three solitons — taller "
-    "means faster — passing straight through each other and re-emerging with the "
-    "same shape and speed. That pass-through is what makes a wave a soliton."
+    "It was a soliton. This is a live numerical simulation of the Korteweg-de "
+    "Vries equation that finally explained it: five solitons race across the "
+    "bottom — taller means faster — overtake each other, pass straight through, "
+    "and re-emerge with the same shape. The waterfall above is their history, "
+    "weaving every crossing into light. That pass-through is what makes a wave "
+    "a soliton."
 )
 
 TAGS_EXTRA = [

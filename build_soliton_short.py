@@ -31,7 +31,10 @@ def main():
     r = subprocess.run([
         sys.executable, os.path.join(REPO, "render", "build_clip.py"),
         "--name", NAME,
-        "--scene", "scenes/soliton_field.py",
+        # v2: simulacion KdV en vivo (soliton_kdv.py), reemplaza al diagrama
+        # espacio-tiempo estatico de soliton_field.py que quedo corto de
+        # dinamismo (feedback del 2026-07-19).
+        "--scene", "scenes/soliton_kdv.py",
         # --attractor solo elige el PERFIL DE AUDIO. No existe uno "soliton";
         # usamos "clifford" (suave), que ya se probo con la escena de Julia.
         "--attractor", "clifford",
