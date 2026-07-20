@@ -52,7 +52,7 @@ def apply_glow(img, radius=3, intensity=0.4):
     return Image.blend(img, blurred, intensity)
 
 def run_simulation(grid_w=256, frames=900, fps=60,
-                   out_w=576, out_h=1024, outdir=None):
+                   out_w=576, out_h=1024, outdir=None, seed=42):
     # Use rectangular grid matching 9:16 aspect ratio
     grid_h = int(grid_w * 16 / 9)  # e.g. 256 -> 455
     
@@ -71,8 +71,11 @@ def run_simulation(grid_w=256, frames=900, fps=60,
     A = np.ones((grid_h, grid_w), dtype=np.float64)
     B = np.zeros((grid_h, grid_w), dtype=np.float64)
 
-    # Scatter seeds across the entire grid
-    np.random.seed(42)
+    # Scatter seeds across the entire grid.
+    # La semilla es parametrizable: la simulacion es determinista, asi que
+    # cambiarla es lo que produce un patron nuevo en vez de repetir el video ya
+    # publicado.
+    np.random.seed(seed)
     n_seeds = 25
     for _ in range(n_seeds):
         cx = np.random.randint(10, grid_h - 10)
@@ -200,7 +203,10 @@ if __name__ == "__main__":
     parser.add_argument("--grid", type=int, default=256)
     parser.add_argument("--width", type=int, default=576)
     parser.add_argument("--height", type=int, default=1024)
+    parser.add_argument("--seed", type=int, default=42,
+                        help="Semilla del patron inicial. Cambiala para obtener "
+                             "un patron distinto (la simulacion es determinista).")
     args = parser.parse_args()
-    
+
     run_simulation(grid_w=args.grid, frames=args.frames,
-                   out_w=args.width, out_h=args.height)
+                   out_w=args.width, out_h=args.height, seed=args.seed)
