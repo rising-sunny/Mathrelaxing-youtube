@@ -40,6 +40,33 @@ completa de punta a punta antes de gastar en la nube:
 4. Render local headless en baja resolución (Eevee).
 5. Drone *placeholder* en Do menor + *mux* con FFmpeg (con *sidechain*).
 
+## Conversión a suscriptor (CTA) — leer antes de publicar
+
+**Contexto (2026-07):** el canal tenía ~29.8k vistas orgánicas y solo **45
+suscriptores**. Auditoría: **0 de 16** `upload_*.py` pedían la suscripción y el
+overlay tampoco, mientras **16 de 16** linkeaban la tienda. Había CTA de tienda
+en todos lados y CTA de suscripción en ninguno.
+
+El CTA vive en tres capas:
+
+| Capa | Archivo | Cobertura |
+|---|---|---|
+| Descripción | `tools/metadata.py` + `tools/youtube_uploader.py` | **Automática en toda subida** — `upload_video_to_youtube` antepone el CTA si falta (idempotente) |
+| En pantalla (overlay PNG) | `tools/short_text_overlay.py` | Solo la ruta de `build_clifford_short.py` (sin re-encode) |
+| En pantalla (post-proceso) | `tools/brand_cta.py` | **Cualquier MP4 terminado** — usar en los builds que no pasan por `short_text_overlay` |
+
+```bat
+:: agregar CTA + marca a un video ya construido (re-encodea)
+python tools/brand_cta.py -i output/shorts_x/shorts_x.mp4
+```
+
+No apliques `brand_cta.py` a la salida de `build_clifford_short.py`: esa ruta ya
+trae el CTA quemado en el overlay y quedaría duplicado.
+
+**Backfill del catálogo:** `tools/backfill_subscribe_cta.py` agrega el CTA a las
+descripciones ya publicadas (idempotente, preserva título/tags/categoría).
+Ejecutado el 2026-07-19 → **78/78 videos** piden la suscripción.
+
 ## Decisiones abiertas
 
 - **Motor de render para finales (Eevee vs Cycles vs híbrido):** se decide con un
