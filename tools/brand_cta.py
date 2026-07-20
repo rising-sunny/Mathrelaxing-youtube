@@ -48,7 +48,8 @@ def _esc_text(t: str) -> str:
 
 
 def build_filters(duration: float, *, cta: str, handle: str,
-                  cta_start: float, cta_end: float, font: str) -> str:
+                  cta_start: float, cta_end: float, font: str,
+                  cta_y: float = 0.72, handle_y: float = 0.045) -> str:
     f = _esc_path(font)
     parts = []
 
@@ -56,7 +57,7 @@ def build_filters(duration: float, *, cta: str, handle: str,
         parts.append(
             f"drawtext=fontfile='{f}':text='{_esc_text(handle)}'"
             ":fontcolor=white@0.62:fontsize=h/64"
-            ":x=(w-text_w)/2:y=h*0.045"
+            f":x=(w-text_w)/2:y=h*{handle_y:.3f}"
             ":shadowcolor=black@0.6:shadowx=2:shadowy=2"
         )
 
@@ -66,7 +67,7 @@ def build_filters(duration: float, *, cta: str, handle: str,
         parts.append(
             f"drawtext=fontfile='{f}':text='{_esc_text(cta)}'"
             ":fontcolor=0xFFE24D:fontsize=h/38"
-            ":x=(w-text_w)/2:y=h*0.72"
+            f":x=(w-text_w)/2:y=h*{cta_y:.3f}"
             ":box=1:boxcolor=black@0.55:boxborderw=22"
             ":shadowcolor=black@0.8:shadowx=2:shadowy=2"
             f":enable='between(t,{cta_start:.2f},{cta_end:.2f})'"
@@ -88,6 +89,11 @@ def main() -> int:
                     help="Segundos (default: 45%% de la duracion)")
     ap.add_argument("--cta-end", type=float, default=None,
                     help="Segundos (default: 85%% de la duracion)")
+    ap.add_argument("--cta-y", type=float, default=0.72,
+                    help="Posicion vertical del CTA como fraccion de la altura (default 0.72). "
+                         "Subir/bajar si choca con overlays propios de la escena.")
+    ap.add_argument("--handle-y", type=float, default=0.045,
+                    help="Posicion vertical del bug de marca (default 0.045)")
     ap.add_argument("--font", default=None)
     a = ap.parse_args()
 
@@ -109,6 +115,7 @@ def main() -> int:
         cta="" if a.no_cta else a.cta,
         handle="" if a.no_handle else a.handle,
         cta_start=cta_start, cta_end=cta_end, font=font,
+        cta_y=a.cta_y, handle_y=a.handle_y,
     )
     if not vf:
         sys.exit("Nada que dibujar (--no-cta y --no-handle a la vez)")
