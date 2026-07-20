@@ -67,6 +67,21 @@ trae el CTA quemado en el overlay y quedaría duplicado.
 descripciones ya publicadas (idempotente, preserva título/tags/categoría).
 Ejecutado el 2026-07-19 → **78/78 videos** piden la suscripción.
 
+## Formato de 1 hora — deprecado
+
+Los `build_*_1h.py` están **deprecados** y piden `--force` para correr
+(`_deprecated_1h.py`). Datos del canal (jul 2026):
+
+| Formato | Vistas promedio | % sobre 100 vistas |
+|---|---|---|
+| 1 hora "Deep Focus" | ~9 | 0% |
+| Shorts 13-20s | ~444 | 70% |
+
+Es el render más caro del pipeline (GPU en Vast.ai) sobre el formato con menos
+tracción. El código queda intacto; el guard solo evita quemar presupuesto por
+accidente. **Perfil de short ideal:** 13-20s, familias cimática / ondas /
+fractales / atractores, título con número grande explícito.
+
 ## Decisiones abiertas
 
 - **Motor de render para finales (Eevee vs Cycles vs híbrido):** se decide con un

@@ -132,6 +132,9 @@ def build_1h_video(audio_path):
 
 
 if __name__ == "__main__":
+    from _deprecated_1h import guard_1h_format
+    guard_1h_format(__file__)
+
     os.makedirs(OUTDIR, exist_ok=True)
     render_base_clip()
     audio_path = build_1h_audio()

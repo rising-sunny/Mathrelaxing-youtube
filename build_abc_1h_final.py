@@ -97,5 +97,8 @@ def build_video(audio_path):
     print("DONE! ->", out_video)
 
 if __name__ == "__main__":
+    from _deprecated_1h import guard_1h_format
+    guard_1h_format(__file__)
+
     audio = build_audio()
     build_video(audio)
