@@ -3,6 +3,9 @@ from PIL import Image, ImageEnhance, ImageDraw, ImageFont
 import sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from paths import font_path, thumbnail_path  # noqa: E402
+
 frames_dir = os.path.join(REPO, "output", "thomas_1h", "frames")
 frame_path = os.path.join(frames_dir, "0300.png")
 
@@ -24,10 +27,10 @@ img = enhancer2.enhance(1.2)
 draw = ImageDraw.Draw(img)
 W, H = img.size
 
-# Fuentes limpias de Windows
+# Tipografias resueltas segun el sistema (ver tools/paths.py)
 try:
-    font_large = ImageFont.truetype(r"C:\Windows\Fonts\segoeuib.ttf", 140)
-    font_small = ImageFont.truetype(r"C:\Windows\Fonts\segoeui.ttf", 60)
+    font_large = ImageFont.truetype(font_path("bold"), 140)
+    font_small = ImageFont.truetype(font_path("regular"), 60)
 except:
     font_large = ImageFont.load_default()
     font_small = ImageFont.load_default()
@@ -53,6 +56,6 @@ draw_text_with_shadow(draw, text1, (margin_x, start_y), font_large, (255, 255, 2
 draw_text_with_shadow(draw, text2, (margin_x, start_y + 160), font_large, (0, 230, 255)) # Cyan eléctrico que combina con el atractor
 draw_text_with_shadow(draw, text3, (margin_x + 10, start_y + 330), font_small, (200, 200, 200))
 
-out_path = r"C:\Users\sunse\.gemini\antigravity\brain\3e24b39e-9a8d-491e-a653-8cd9f3d3adc2\thomas_thumbnail_text.jpg"
+out_path = thumbnail_path("thomas_thumbnail_text.jpg")
 img.save(out_path, quality=95)
 print(f"Thumbnail guardado en {out_path}")

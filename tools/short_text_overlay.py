@@ -20,6 +20,8 @@ import json
 import os
 from PIL import Image, ImageDraw, ImageFont
 
+from paths import font_path
+
 DEFAULT_HANDLE = "@MathRelaxing"
 DEFAULT_CTA = "SUBSCRIBE FOR DAILY MATH"
 
@@ -126,12 +128,12 @@ def main():
     dur = a.frames / a.fps
 
     fonts = {
-        "big": font(r"C:\Windows\Fonts\segoeuib.ttf", 64),
-        "mid": font(r"C:\Windows\Fonts\segoeuib.ttf", 48),
-        "math": font(r"C:\Windows\Fonts\cambria.ttc", 40, r"C:\Windows\Fonts\constan.ttf"),
-        "small": font(r"C:\Windows\Fonts\segoeui.ttf", 28),
-        "cta": font(r"C:\Windows\Fonts\segoeuib.ttf", 44),
-        "handle": font(r"C:\Windows\Fonts\segoeui.ttf", 30),
+        "big": font(font_path("bold"), 64),
+        "mid": font(font_path("bold"), 48),
+        "math": font(font_path("math"), 40),
+        "small": font(font_path("regular"), 28),
+        "cta": font(font_path("bold"), 44),
+        "handle": font(font_path("regular"), 30),
     }
 
     captions = load_captions(a.captions_json, fonts) if a.captions_json else default_captions(fonts)

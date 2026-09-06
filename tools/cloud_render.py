@@ -4,13 +4,31 @@ import time
 import subprocess
 import json
 
-ENV_PATH = r"G:\Mi unidad\Scripts Python\Video-Optimizer-multiplatform\.env"
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def env_candidates():
+    """Donde buscar el .env con las credenciales de Vast.ai."""
+    out = []
+    explicit = os.environ.get("MATHRELAXING_ENV_FILE")
+    if explicit:
+        out.append(os.path.expanduser(explicit))
+    out.append(os.path.join(REPO, ".env"))
+    out.append(os.path.expanduser("~/.mathrelaxing.env"))
+    return out
+
 
 def load_env():
     env = {}
-    if not os.path.exists(ENV_PATH):
-        sys.exit(f"No se encuentra {ENV_PATH}")
-    with open(ENV_PATH, "r") as f:
+    path = next((p for p in env_candidates() if os.path.isfile(p)), None)
+    if not path:
+        listed = "\n".join(f"    - {p}" for p in env_candidates())
+        sys.exit(
+            "No se encontro el .env con las credenciales de Vast.ai.\n"
+            f"  Buscado en:\n{listed}\n"
+            "  Crealo o exporta MATHRELAXING_ENV_FILE con su ruta."
+        )
+    with open(path, "r") as f:
         for line in f:
             line = line.strip()
             if line and not line.startswith("#") and "=" in line:

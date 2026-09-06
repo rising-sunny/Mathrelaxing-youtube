@@ -9,16 +9,10 @@ import subprocess
 import sys
 
 REPO = os.path.dirname(os.path.abspath(__file__))
-OUTDIR = os.path.join(REPO, "output", "hopf_1h")
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from music_library import playlist as music_playlist  # noqa: E402
 
-# Mismas pistas que build_thomas_1h.py
-TRACKS = [
-    r"C:\Users\sunse\Downloads\ES_Betawaves for Concentration (Short Version) - Joseph Beg.wav",
-    r"C:\Users\sunse\Downloads\ES_Enlightened Drift - Amber Glow.wav",
-    r"C:\Users\sunse\Downloads\ES_A New Beginning (Theta Drone L216Hz R220Hz) - Bruce Brus.wav",
-    r"C:\Users\sunse\Downloads\ES_How Did We Get Here - Hanna Lindgren.wav",
-    r"C:\Users\sunse\Downloads\ES_Pillow Magic - Valante.wav",
-]
+OUTDIR = os.path.join(REPO, "output", "hopf_1h")
 
 
 def render_base_clip():
@@ -40,12 +34,8 @@ def render_base_clip():
 
 def build_1h_audio():
     print("\n[hopf_1h] === PASO 2: Generando Audio de 1 Hora ===")
-    for t in TRACKS:
-        if not os.path.isfile(t):
-            sys.exit(f"No se encontró la pista: {t}")
-
     # ~25 min de playlist × 3 ≈ 75 min → cortamos a 3600s
-    playlist = TRACKS * 3
+    playlist = music_playlist() * 3
 
     cmd = ["ffmpeg", "-y"]
     for t in playlist:

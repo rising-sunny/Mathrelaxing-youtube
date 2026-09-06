@@ -2,7 +2,7 @@
 build_music_short.py — Short 9:16 sin Blender, visual reactivo + pista externa.
 
     python build_music_short.py \
-        --audio "C:/path/to/track.wav" \
+        --audio how_did_we_get_here \
         --duration 30 --start 0
 
 Produce: output/shorts_spectral/shorts_spectral.mp4
@@ -16,6 +16,8 @@ import subprocess
 import sys
 
 REPO = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from music_library import find_track  # noqa: E402
 
 
 def run(cmd):
@@ -27,7 +29,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument(
         "--audio",
-        default=r"C:\Users\sunse\Downloads\ES_How Did We Get Here - Hanna Lindgren.wav",
+        default="how_did_we_get_here",
+        help="Clave del catalogo (tools/music_library.py) o ruta a un archivo",
     )
     ap.add_argument("--name", default="shorts_spectral")
     ap.add_argument("--start", type=float, default=0.0, help="Segundo de inicio del recorte")
@@ -45,8 +48,7 @@ def main():
     a = ap.parse_args()
     use_math = a.math_overlay and not a.no_math_overlay
 
-    if not os.path.isfile(a.audio):
-        sys.exit(f"No se encontró el audio: {a.audio}")
+    a.audio = find_track(a.audio)
 
     outdir = os.path.join(REPO, "output", a.name)
     frames_dir = os.path.join(outdir, "frames")

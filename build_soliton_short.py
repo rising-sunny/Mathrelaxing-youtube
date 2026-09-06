@@ -11,18 +11,20 @@ import subprocess
 import sys
 
 REPO = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from music_library import find_track  # noqa: E402
+
 NAME = "shorts_soliton"
 OUTDIR = os.path.join(REPO, "output", NAME)
 
-MUSIC = r"C:\Users\sunse\Downloads\ES_Enlightened Drift - Amber Glow.wav"
+MUSIC_TRACK = "enlightened_drift"
 FRAMES = "900"
 RES = "1920"
 FPS = "60"
 
 
 def main():
-    if not os.path.isfile(MUSIC):
-        sys.exit(f"No se encontro la pista: {MUSIC}")
+    music = find_track(MUSIC_TRACK)
 
     os.makedirs(OUTDIR, exist_ok=True)
     print(f"\n[{NAME}] === Short 9:16 Solitones KdV ===")
@@ -43,7 +45,7 @@ def main():
         "--res", RES,
         "--fps", FPS,
         "--format", "9:16",
-        "--music", MUSIC,
+        "--music", music,
     ])
     if r.returncode != 0:
         sys.exit("Error en build_clip.")

@@ -10,19 +10,13 @@ Produce output/<name>/<name>.mp4
 """
 
 import argparse
-import glob
 import os
 import subprocess
 import sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-def find_blender():
-    hits = glob.glob(os.path.join(REPO, "tools", "blender", "**", "blender.exe"), recursive=True)
-    if not hits:
-        sys.exit("No se encontró blender.exe en tools/blender/.")
-    return hits[0]
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from paths import find_blender  # noqa: E402
 
 
 def run(cmd):

@@ -8,10 +8,13 @@ import subprocess
 import sys
 
 REPO = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from music_library import find_track  # noqa: E402
+
 NAME = "shorts_clifford"
 OUTDIR = os.path.join(REPO, "output", NAME)
 
-MUSIC = r"C:\Users\sunse\Downloads\ES_Betawaves for Concentration (Short Version) - Joseph Beg.wav"
+MUSIC_TRACK = "betawaves"
 FRAMES = 600   # 10 s @ 60 fps
 FPS = 60
 RES = 1920     # altura → 1080×1920
@@ -23,8 +26,7 @@ def run(cmd):
 
 
 def main():
-    if not os.path.isfile(MUSIC):
-        sys.exit(f"No se encontró la pista: {MUSIC}")
+    music = find_track(MUSIC_TRACK)
 
     os.makedirs(OUTDIR, exist_ok=True)
     frames_dir = os.path.join(OUTDIR, "frames")
@@ -77,7 +79,7 @@ def main():
     dur = FRAMES / FPS
     run([
         "ffmpeg", "-y",
-        "-i", MUSIC,
+        "-i", music,
         "-t", str(dur),
         "-af", f"loudnorm=I=-14:TP=-1.5:LRA=11,afade=t=in:st=0:d=0.4,afade=t=out:st={max(0, dur-0.8)}:d=0.8",
         "-ar", "48000", "-ac", "2",
@@ -97,7 +99,7 @@ def main():
     ])
 
     print(f"\n[{NAME}] LISTO -> {final}")
-    print(f"[{NAME}] {dur:.0f}s | 9:16 | texto timed | {os.path.basename(MUSIC)}")
+    print(f"[{NAME}] {dur:.0f}s | 9:16 | texto timed | {os.path.basename(music)}")
 
 
 if __name__ == "__main__":

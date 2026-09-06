@@ -5,6 +5,7 @@ REPO = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(REPO, "tools"))
 
 try:
+    from paths import thumbnail_path
     from youtube_uploader import _build_youtube_service
     from googleapiclient.http import MediaFileUpload
 except ImportError as e:
@@ -19,8 +20,11 @@ def main():
         sys.exit(1)
         
     video_id = "Evt6KIxr7DA"
-    thumb_path = r"C:\Users\sunse\.gemini\antigravity\brain\3e24b39e-9a8d-491e-a653-8cd9f3d3adc2\thomas_thumbnail_text.jpg"
+    thumb_path = thumbnail_path("thomas_thumbnail_text.jpg", create=False)
     
+    if not os.path.isfile(thumb_path):
+        sys.exit(f"No se encontro la miniatura: {thumb_path}")
+
     print(f"Setting thumbnail for {video_id}...")
     try:
         youtube.thumbnails().set(

@@ -1,15 +1,12 @@
 import os
 import subprocess
+import sys
 
-outdir = r"C:\dev\MathRelaxing-videos-music\output\abc_loop_preview"
+REPO = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from music_library import playlist as music_playlist  # noqa: E402
 
-tracks = [
-    r"C:\Users\sunse\Downloads\ES_Betawaves for Concentration (Short Version) - Joseph Beg.wav",
-    r"C:\Users\sunse\Downloads\ES_Enlightened Drift - Amber Glow.wav",
-    r"C:\Users\sunse\Downloads\ES_A New Beginning (Theta Drone L216Hz R220Hz) - Bruce Brus.wav",
-    r"C:\Users\sunse\Downloads\ES_How Did We Get Here - Hanna Lindgren.wav",
-    r"C:\Users\sunse\Downloads\ES_Pillow Magic - Valante.wav"
-]
+outdir = os.path.join(REPO, "output", "abc_loop_preview")
 
 drone_path = os.path.join(outdir, "drone.wav")
 
@@ -18,7 +15,7 @@ def build_audio():
     
     # We need about 3600 seconds. The 5 tracks total ~1555s. 
     # So we loop the playlist 3 times to get ~4665s, then we'll -t 3600.
-    playlist = tracks * 3
+    playlist = music_playlist() * 3
     
     # Inputs list for ffmpeg
     cmd = ["ffmpeg", "-y"]

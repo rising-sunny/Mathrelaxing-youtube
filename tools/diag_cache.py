@@ -1,5 +1,5 @@
 import numpy as np, os
-repo = r"C:\dev\MathRelaxing-videos-music"
+repo = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 d = np.load(os.path.join(repo, "data", "shorts_curl_simcache.npz"), allow_pickle=True)
 pos = d["positions"]  # (FRAMES, N, 3)
 print("shape", pos.shape, "dtype", pos.dtype)

@@ -8,6 +8,8 @@ import numpy as np
 from PIL import Image, ImageEnhance, ImageDraw, ImageFont, ImageFilter
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from paths import font_path, thumbnail_path  # noqa: E402
 FRAMES_DIR = os.path.join(REPO, "output", "clifford_1h", "frames")
 OUTDIR = os.path.join(REPO, "output", "clifford_1h")
 FRAME = "0400.png"
@@ -74,20 +76,13 @@ def main():
     draw = ImageDraw.Draw(img)
 
     try:
-        font_hour = ImageFont.truetype(r"C:\Windows\Fonts\segoeuib.ttf", 72)
-        font_focus = ImageFont.truetype(r"C:\Windows\Fonts\segoeuib.ttf", 42)
-        font_title = ImageFont.truetype(r"C:\Windows\Fonts\segoeui.ttf", 26)
-        font_math = ImageFont.truetype(r"C:\Windows\Fonts\cambria.ttc", 28, index=0)
-        font_def = ImageFont.truetype(r"C:\Windows\Fonts\segoeui.ttf", 20)
+        font_hour = ImageFont.truetype(font_path("bold"), 72)
+        font_focus = ImageFont.truetype(font_path("bold"), 42)
+        font_title = ImageFont.truetype(font_path("regular"), 26)
+        font_math = ImageFont.truetype(font_path("math"), 28, index=0)
+        font_def = ImageFont.truetype(font_path("regular"), 20)
     except OSError:
-        try:
-            font_hour = ImageFont.truetype(r"C:\Windows\Fonts\segoeuib.ttf", 72)
-            font_focus = ImageFont.truetype(r"C:\Windows\Fonts\segoeuib.ttf", 42)
-            font_title = ImageFont.truetype(r"C:\Windows\Fonts\segoeui.ttf", 26)
-            font_math = ImageFont.truetype(r"C:\Windows\Fonts\constan.ttf", 28)
-            font_def = ImageFont.truetype(r"C:\Windows\Fonts\segoeui.ttf", 20)
-        except OSError:
-            font_hour = font_focus = font_title = font_math = font_def = ImageFont.load_default()
+        font_hour = font_focus = font_title = font_math = font_def = ImageFont.load_default()
 
     mx, my = 48, 42
 

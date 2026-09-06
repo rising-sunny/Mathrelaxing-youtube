@@ -11,22 +11,24 @@ import subprocess
 import sys
 
 REPO = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from music_library import find_track  # noqa: E402
+
 NAME = "shorts_julia"
 OUTDIR = os.path.join(REPO, "output", NAME)
 
-MUSIC = r"C:\Users\sunse\Downloads\ES_A New Beginning (Theta Drone L216Hz R220Hz) - Bruce Brus.wav"
+MUSIC_TRACK = "new_beginning"
 FRAMES = "900"   # 15 s @ 60 fps
 RES = "1920"     # altura → 1080×1920 en 9:16
 FPS = "60"
 
 
 def main():
-    if not os.path.isfile(MUSIC):
-        sys.exit(f"No se encontró la pista: {MUSIC}")
+    music = find_track(MUSIC_TRACK)
 
     os.makedirs(OUTDIR, exist_ok=True)
     print(f"\n[{NAME}] === Short 9:16 Julia morph ===")
-    print(f"[{NAME}] {FRAMES} frames | {FPS} fps | 1080×1920 | music={os.path.basename(MUSIC)}")
+    print(f"[{NAME}] {FRAMES} frames | {FPS} fps | 1080×1920 | music={os.path.basename(music)}")
 
     r = subprocess.run([
         sys.executable, os.path.join(REPO, "render", "build_clip.py"),
@@ -42,7 +44,7 @@ def main():
         "--res", RES,
         "--fps", FPS,
         "--format", "9:16",
-        "--music", MUSIC,
+        "--music", music,
     ])
     if r.returncode != 0:
         sys.exit("Error en build_clip.")

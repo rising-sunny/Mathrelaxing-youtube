@@ -8,10 +8,11 @@ matematico + mux con ducking (render/build_clip.py). Termina en minutos.
     python build_mandala.py --music data/mandala_music.mp3   # pista externa (ej. Epidemic Sound) en vez del drone
 """
 import argparse
+import os
 import subprocess
 import sys
 
-REPO = "C:/dev/MathRelaxing-videos-music"
+REPO = os.path.dirname(os.path.abspath(__file__))
 NAME = "shorts_mandala"
 FRAMES = 900
 

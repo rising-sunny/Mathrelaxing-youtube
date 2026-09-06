@@ -21,9 +21,7 @@ import os
 import subprocess
 import sys
 
-REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEFAULT_FONT = os.path.join(REPO, "font.ttf")
-FALLBACK_FONT = r"C:\Windows\Fonts\segoeuib.ttf"
+from paths import font_path
 
 DEFAULT_CTA = "SUBSCRIBE FOR DAILY MATH"
 DEFAULT_HANDLE = "@MathRelaxing"
@@ -100,7 +98,7 @@ def main() -> int:
     if not os.path.isfile(a.input):
         sys.exit(f"No existe el input: {a.input}")
 
-    font = a.font or (DEFAULT_FONT if os.path.isfile(DEFAULT_FONT) else FALLBACK_FONT)
+    font = a.font or font_path("bold")
     if not os.path.isfile(font):
         sys.exit(f"No se encontro una fuente utilizable: {font}")
 

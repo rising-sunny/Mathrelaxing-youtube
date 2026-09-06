@@ -2,8 +2,10 @@ import os
 import subprocess
 import sys
 
+REPO = os.path.dirname(os.path.abspath(__file__))
+
 def main():
-    repo = "C:/dev/MathRelaxing-videos-music"
+    repo = REPO
     frames_dir = os.path.join(repo, "output/shorts_reaction/frames")
     
     # Step 1: Generate frames (no Blender needed now)

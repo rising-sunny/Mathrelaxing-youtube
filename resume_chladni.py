@@ -3,11 +3,16 @@ import subprocess
 import time
 import sys
 
+REPO = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from paths import find_blender  # noqa: E402
+
+
 def main():
-    repo = "C:/dev/MathRelaxing-videos-music"
+    repo = REPO
     frames_dir = os.path.join(repo, "output/shorts_chladni/frames")
     
-    blender_exe = os.path.join(repo, "tools/blender/blender-4.4.3-windows-x64/blender.exe")
+    blender_exe = find_blender()
     scene = os.path.join(repo, "scenes/chladni_plate.py")
     
     while True:

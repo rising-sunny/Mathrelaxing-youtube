@@ -6,6 +6,10 @@ import time
 REPO = os.path.dirname(os.path.abspath(__file__))
 OUTDIR = os.path.join(REPO, "output", "thomas_1h")
 
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from music_library import playlist as music_playlist  # noqa: E402
+
+
 def render_base_clip():
     print("\n[thomas_1h] === PASO 1: Renderizando Clip Base 15s ===")
     r = subprocess.run([
@@ -24,13 +28,7 @@ def render_base_clip():
         
 def build_1h_audio():
     print("\n[thomas_1h] === PASO 2: Generando Audio de 1 Hora ===")
-    tracks = [
-        r"C:\Users\sunse\Downloads\ES_Betawaves for Concentration (Short Version) - Joseph Beg.wav",
-        r"C:\Users\sunse\Downloads\ES_Enlightened Drift - Amber Glow.wav",
-        r"C:\Users\sunse\Downloads\ES_A New Beginning (Theta Drone L216Hz R220Hz) - Bruce Brus.wav",
-        r"C:\Users\sunse\Downloads\ES_How Did We Get Here - Hanna Lindgren.wav",
-        r"C:\Users\sunse\Downloads\ES_Pillow Magic - Valante.wav"
-    ]
+    tracks = music_playlist()
     
     # 5 tracks is about ~25 mins. We loop them 3 times.
     playlist = tracks * 3

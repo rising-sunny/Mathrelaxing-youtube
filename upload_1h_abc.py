@@ -6,6 +6,7 @@ REPO = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(REPO, "tools"))
 
 try:
+    from paths import thumbnail_path as thumb_file
     from youtube_uploader import upload_video_to_youtube
 except ImportError as e:
     print("Error: Asegúrate de haber copiado youtube_uploader.py en tools/ y tener las dependencias instaladas.")
@@ -14,7 +15,7 @@ except ImportError as e:
 
 def main():
     video_path = os.path.join(REPO, "output", "abc_loop_preview", "abc_flow_1h_final.mp4")
-    thumbnail_path = r"C:\Users\sunse\.gemini\antigravity\brain\3e24b39e-9a8d-491e-a653-8cd9f3d3adc2\abc_thumbnail_v5_compressed.jpg"
+    thumbnail_path = thumb_file("abc_thumbnail_v5_compressed.jpg", create=False)
     
     if not os.path.exists(video_path):
         print(f"Error: No se encontró el video {video_path}")

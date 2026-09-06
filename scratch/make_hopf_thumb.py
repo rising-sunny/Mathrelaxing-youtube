@@ -8,6 +8,8 @@ import numpy as np
 from PIL import Image, ImageEnhance, ImageDraw, ImageFont, ImageFilter
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from paths import font_path, thumbnail_path  # noqa: E402
 FRAMES_DIR = os.path.join(REPO, "output", "hopf_1h", "frames")
 OUTDIR = os.path.join(REPO, "output", "hopf_1h")
 FRAME = "0400.png"
@@ -75,19 +77,13 @@ def main():
 
     # Fuentes: bold para impacto, regular/light para jerarquía
     try:
-        font_hour = ImageFont.truetype(r"C:\Windows\Fonts\segoeuib.ttf", 72)
-        font_focus = ImageFont.truetype(r"C:\Windows\Fonts\segoeuib.ttf", 42)
-        font_title = ImageFont.truetype(r"C:\Windows\Fonts\segoeui.ttf", 28)
-        font_math = ImageFont.truetype(r"C:\Windows\Fonts\cambria.ttc", 30, index=0)
+        font_hour = ImageFont.truetype(font_path("bold"), 72)
+        font_focus = ImageFont.truetype(font_path("bold"), 42)
+        font_title = ImageFont.truetype(font_path("regular"), 28)
+        font_math = ImageFont.truetype(font_path("math"), 30, index=0)
         # fallback si cambria no carga con index
     except OSError:
-        try:
-            font_hour = ImageFont.truetype(r"C:\Windows\Fonts\segoeuib.ttf", 72)
-            font_focus = ImageFont.truetype(r"C:\Windows\Fonts\segoeuib.ttf", 42)
-            font_title = ImageFont.truetype(r"C:\Windows\Fonts\segoeui.ttf", 28)
-            font_math = ImageFont.truetype(r"C:\Windows\Fonts\constan.ttf", 30)
-        except OSError:
-            font_hour = font_focus = font_title = font_math = ImageFont.load_default()
+        font_hour = font_focus = font_title = font_math = ImageFont.load_default()
 
     # Bloque superior-izquierdo (zona negra tras el shift)
     mx, my = 48, 42
@@ -119,7 +115,7 @@ def main():
 
     # 6) Definición breve (compacta, tipografía un poco menor)
     try:
-        font_def = ImageFont.truetype(r"C:\Windows\Fonts\segoeui.ttf", 20)
+        font_def = ImageFont.truetype(font_path("regular"), 20)
     except OSError:
         font_def = font_title
     y = y + 42

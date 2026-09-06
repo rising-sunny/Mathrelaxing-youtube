@@ -7,6 +7,10 @@ from scipy.io import wavfile
 
 REPO = os.path.dirname(os.path.abspath(__file__))
 NAME = "circular_cymatics"
+
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from music_library import find_track  # noqa: E402
+
 OUTDIR = os.path.join(REPO, "output", NAME)
 
 def render_video():
@@ -85,7 +89,7 @@ def mux_video(audio_path):
     print(f"\n[{NAME}] === PASO 3: Ensamblando Video 9:16 Final ===")
     frames_dir = os.path.join(OUTDIR, "frames")
     out_video = os.path.join(OUTDIR, f"{NAME}_final.mp4")
-    ambient_track = r"C:\Users\sunse\Downloads\ES_Enlightened Drift - Amber Glow.wav"
+    ambient_track = find_track("enlightened_drift")
     formula_img = os.path.join(OUTDIR, "bessel_formula.png")
     
     cmd = [

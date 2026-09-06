@@ -3,6 +3,8 @@ from PIL import Image, ImageEnhance
 import sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from paths import font_path, thumbnail_path  # noqa: E402
 frames_dir = os.path.join(REPO, "output", "thomas_1h", "frames")
 
 # Elegir un frame donde el atractor de thomas se ve increíble (ej. 300)
@@ -21,6 +23,6 @@ img = enhancer.enhance(1.1)
 enhancer2 = ImageEnhance.Color(img)
 img = enhancer2.enhance(1.2)
 
-out_path = r"C:\Users\sunse\.gemini\antigravity\brain\3e24b39e-9a8d-491e-a653-8cd9f3d3adc2\thomas_thumbnail.jpg"
+out_path = thumbnail_path("thomas_thumbnail.jpg")
 img.save(out_path, quality=95)
 print(f"Thumbnail guardado en {out_path}")

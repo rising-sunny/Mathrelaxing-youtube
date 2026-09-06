@@ -5,6 +5,10 @@ import sys
 REPO = os.path.dirname(os.path.abspath(__file__))
 OUTDIR = os.path.join(REPO, "output", "aizawa_1h")
 
+sys.path.insert(0, os.path.join(REPO, "tools"))
+from music_library import find_track  # noqa: E402
+
+
 def render_base_clip():
     print("\n[aizawa_1h] === PASO 1: Renderizando Clip Base 15s ===")
     r = subprocess.run([
@@ -23,9 +27,7 @@ def render_base_clip():
         
 def build_1h_audio():
     print("\n[aizawa_1h] === PASO 2: Generando Audio de 1 Hora ===")
-    tracks = [
-        r"C:\Users\sunse\Downloads\ES_Betawaves for Concentration (Short Version) - Joseph Beg.wav"
-    ]
+    tracks = [find_track("betawaves")]
     
     # Track is ~3 mins, loop 25 times
     playlist = tracks * 25
