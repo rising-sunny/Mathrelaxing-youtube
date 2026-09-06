@@ -57,9 +57,43 @@ def main():
     if r.returncode != 0:
         sys.exit("Error en build_clip.")
 
-    print(f"\n[{NAME}] LISTO -> {os.path.join(OUTDIR, f'{NAME}.mp4')}")
-    print(f"[{NAME}] Falta el CTA en pantalla:")
-    print(f"[{NAME}]   python tools/brand_cta.py -i output/{NAME}/{NAME}.mp4")
+    # 3) Overlay matematico en Computer Modern sobre la banda oscura de arriba.
+    # No se usa el --math-overlay de build_clip: ese re-simula un atractor por
+    # frame y aca la escena no es una EDO.
+    overlay_dir = os.path.join(OUTDIR, "overlay")
+    r = subprocess.run([
+        sys.executable, os.path.join(REPO, "tools", "sandpile_math_overlay.py"),
+        "--frames", FRAMES, "--outdir", overlay_dir,
+        "--res-w", "1080", "--res-h", "1920",
+        "--grains", GRAINS, "--hold", "45",
+    ])
+    if r.returncode != 0:
+        sys.exit("Error generando el overlay matematico.")
+
+    clip = os.path.join(OUTDIR, f"{NAME}.mp4")
+    with_math = os.path.join(OUTDIR, f"{NAME}_math.mp4")
+    r = subprocess.run([
+        "ffmpeg", "-y", "-i", clip, "-framerate", FPS,
+        "-i", os.path.join(overlay_dir, "%04d.png"),
+        "-filter_complex", "[0:v][1:v]overlay=0:0[v]", "-map", "[v]", "-map", "0:a",
+        "-c:v", "libx264", "-crf", "18", "-preset", "medium",
+        "-pix_fmt", "yuv420p", "-c:a", "copy", with_math,
+    ])
+    if r.returncode != 0:
+        sys.exit("Error componiendo el overlay.")
+
+    # 4) CTA de suscripcion: abajo, en la banda que deja libre el disco.
+    branded = os.path.join(OUTDIR, f"{NAME}_branded.mp4")
+    r = subprocess.run([
+        sys.executable, os.path.join(REPO, "tools", "brand_cta.py"),
+        "-i", with_math, "-o", branded,
+        "--cta-y", "0.795", "--handle-y", "0.028",
+    ])
+    if r.returncode != 0:
+        sys.exit("Error quemando el CTA.")
+
+    print(f"\n[{NAME}] LISTO -> {branded}")
+    print(f"[{NAME}] Subir con: python upload_sandpile_short.py")
 
 
 if __name__ == "__main__":
