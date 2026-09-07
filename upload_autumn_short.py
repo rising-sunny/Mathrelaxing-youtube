@@ -15,7 +15,7 @@ sys.path.append(os.path.join(REPO, "tools"))
 from metadata import build_description, build_tags  # noqa: E402
 from youtube_uploader import upload_video_to_youtube  # noqa: E402
 
-VIDEO = os.path.join(REPO, "output", "shorts_autumn", "shorts_autumn_branded.mp4")
+VIDEO = os.path.join(REPO, "output", "shorts_autumn", "shorts_autumn.mp4")
 
 CHILE_UTC_OFFSET = -4
 PUBLISH_HOUR = 8
@@ -34,13 +34,18 @@ BODY = (
     "trunk, which is why the trunk barely moves and the tips swing. Every leaf "
     "falls on its own offset. It all repeats exactly, so the loop is seamless — "
     "this autumn never ends.\n\n"
-    "Made entirely in Python. No 3D, no footage, no assets."
+    "The music is generated too: an A\u266d major ninth chord with bells "
+    "moving through a pentatonic scale, written so every frequency completes "
+    "a whole number of cycles in fifteen seconds. That is why it loops without "
+    "a seam.\n\n"
+    "Made entirely in Python. No 3D, no footage, no assets, no samples."
 )
 
 TAGS_EXTRA = [
     "generative art", "procedural art", "recursion", "fractal tree",
     "l-system", "autumn", "sunset", "relaxing", "ambient", "cozy",
     "creative coding", "python art", "lofi", "aesthetic",
+    "generative music", "ambient music", "procedural audio",
 ]
 
 
