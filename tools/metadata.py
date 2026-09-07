@@ -12,20 +12,60 @@ en los scripts viejos que arman la descripción a mano.
 
 from __future__ import annotations
 
-CHANNEL_HANDLE = "@MathRelaxing"
+# Dos canales con marcas distintas. Sin esto, una pieza de ambiente publicada
+# en el canal chico se lleva el CTA, la tienda y los tags de matemática del
+# canal grande, que ahí no describen el contenido y ensucian las señales.
 # sub_confirmation=1 abre el diálogo de suscripción al hacer click.
-SUBSCRIBE_URL = "https://www.youtube.com/@MathRelaxing?sub_confirmation=1"
-STORE_URL = "https://mathrelaxing.store"
+CHANNELS = {
+    "mathrelaxing": {
+        "name": "MathRelaxing",
+        "handle": "@MathRelaxing",
+        "subscribe_url": "https://www.youtube.com/@MathRelaxing?sub_confirmation=1",
+        "store_url": "https://mathrelaxing.store",
+        "subscribe_cta": "🔔 New math visualization every day — subscribe: "
+                         "https://www.youtube.com/@MathRelaxing?sub_confirmation=1",
+        "store_cta": "✨ Math-inspired designs at our store: https://mathrelaxing.store",
+        "base_tags": [
+            "math", "physics", "mathrelaxing", "satisfying", "oddly satisfying",
+            "generative art", "simulation", "science", "visuals", "python",
+        ],
+        "base_hashtags": ["#MathRelaxing", "#math", "#satisfying"],
+    },
+    "nostalgicmood": {
+        "name": "Nostalgic Mood",
+        "handle": "@TheNostalgicMood",
+        "subscribe_url": "https://www.youtube.com/@TheNostalgicMood?sub_confirmation=1",
+        "store_url": None,
+        "subscribe_cta": "🔔 More generated worlds like this — subscribe: "
+                         "https://www.youtube.com/@TheNostalgicMood?sub_confirmation=1",
+        "store_cta": None,
+        "base_tags": [
+            "generative art", "procedural art", "creative coding", "relaxing",
+            "ambient", "cozy", "aesthetic", "satisfying", "visuals", "python",
+        ],
+        "base_hashtags": ["#NostalgicMood", "#generativeart", "#cozy"],
+    },
+}
 
-SUBSCRIBE_CTA = f"🔔 New math visualization every day — subscribe: {SUBSCRIBE_URL}"
-STORE_CTA = f"✨ Math-inspired designs at our store: {STORE_URL}"
+DEFAULT_CHANNEL = "mathrelaxing"
 
-BASE_TAGS = [
-    "math", "physics", "mathrelaxing", "satisfying", "oddly satisfying",
-    "generative art", "simulation", "science", "visuals", "python",
-]
 
-BASE_HASHTAGS = ["#MathRelaxing", "#math", "#satisfying"]
+def channel(name: str | None = None) -> dict:
+    key = (name or DEFAULT_CHANNEL).strip().lower().replace(" ", "").replace("@", "")
+    if key not in CHANNELS:
+        raise KeyError(f"Canal desconocido: {name!r}. Conocidos: {sorted(CHANNELS)}")
+    return CHANNELS[key]
+
+
+# Alias del canal por defecto, para no romper los scripts que ya los importan.
+_D = CHANNELS[DEFAULT_CHANNEL]
+CHANNEL_HANDLE = _D["handle"]
+SUBSCRIBE_URL = _D["subscribe_url"]
+STORE_URL = _D["store_url"]
+SUBSCRIBE_CTA = _D["subscribe_cta"]
+STORE_CTA = _D["store_cta"]
+BASE_TAGS = _D["base_tags"]
+BASE_HASHTAGS = _D["base_hashtags"]
 
 # Señales de que la descripción ya pide la suscripción (evita duplicar).
 _SUBSCRIBE_MARKERS = ("subscribe", "suscrib", "sub_confirmation")
@@ -36,7 +76,7 @@ def has_subscribe_cta(description: str) -> bool:
     return any(m in low for m in _SUBSCRIBE_MARKERS)
 
 
-def ensure_subscribe_cta(description: str) -> str:
+def ensure_subscribe_cta(description: str, channel_name: str | None = None) -> str:
     """Devuelve la descripción garantizando un CTA de suscripción al inicio.
 
     Idempotente: si ya pide la suscripción, la deja intacta.
@@ -44,7 +84,8 @@ def ensure_subscribe_cta(description: str) -> str:
     desc = (description or "").strip()
     if has_subscribe_cta(desc):
         return desc
-    return f"{SUBSCRIBE_CTA}\n\n{desc}" if desc else SUBSCRIBE_CTA
+    cta = channel(channel_name)["subscribe_cta"]
+    return f"{cta}\n\n{desc}" if desc else cta
 
 
 def build_description(
@@ -53,17 +94,19 @@ def build_description(
     hashtags: list[str] | None = None,
     subscribe: bool = True,
     store: bool = True,
+    channel_name: str | None = None,
 ) -> str:
     """Arma una descripción completa: CTA de suscripción → cuerpo → tienda → hashtags."""
+    ch = channel(channel_name)
     parts: list[str] = []
     if subscribe:
-        parts.append(SUBSCRIBE_CTA)
+        parts.append(ch["subscribe_cta"])
     body = (body or "").strip()
     if body:
         parts.append(body)
-    if store:
-        parts.append(STORE_CTA)
-    tags = list(BASE_HASHTAGS)
+    if store and ch["store_cta"]:
+        parts.append(ch["store_cta"])
+    tags = list(ch["base_hashtags"])
     for h in hashtags or []:
         h = h if h.startswith("#") else f"#{h}"
         if h.lower() not in {t.lower() for t in tags}:
@@ -72,11 +115,12 @@ def build_description(
     return "\n\n".join(parts)
 
 
-def build_tags(extra: list[str] | None = None, limit: int = 30) -> list[str]:
+def build_tags(extra: list[str] | None = None, limit: int = 30,
+               channel_name: str | None = None) -> list[str]:
     """Tags base del canal + específicas del video, sin duplicados."""
     out: list[str] = []
     seen: set[str] = set()
-    for t in list(BASE_TAGS) + list(extra or []):
+    for t in list(channel(channel_name)["base_tags"]) + list(extra or []):
         t = str(t).strip().lstrip("#")
         k = t.lower()
         if t and k not in seen:
