@@ -48,7 +48,7 @@ Dos motores conviven en `scenes/`:
 
 | Motor | Cómo se invoca | Escenas |
 |---|---|---|
-| `numpy` | rasterizado puro en Python/PIL, sin Blender | Mandelbrot, Julia, solitones, cimática espectral, Clifford, Thomas, Hopf, three-body, reacción-difusión, Aizawa, Lorenz, pila de arena abeliana, 600-cell 4D, espiral de primos, teselado hiperbólico |
+| `numpy` | rasterizado puro en Python/PIL, sin Blender | Mandelbrot, Julia, solitones, cimática espectral, Clifford, Thomas, Hopf, three-body, reacción-difusión, Aizawa, Lorenz, pila de arena abeliana, 600-cell 4D, espiral de primos, teselado hiperbólico, árbol de otoño |
 | `eevee` | Blender headless (`--background`) | ABC flow, curl, péndulo doble, gravedad, Chladni, Rössler, tokamak, slice |
 
 `render/build_clip.py` es el orquestador genérico; cada `build_*.py` de la raíz
