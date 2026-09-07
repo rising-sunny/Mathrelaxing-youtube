@@ -1,12 +1,8 @@
-"""Pieza ambiental para el short del arbol de otono. Loop exacto por construccion.
+"""Piezas ambientales generativas. Loop exacto por construccion.
 
 El drone generico del repo son cinco senoidales fijas sobre un Do menor: sirve
 de colchon debajo de los golpes de una simulacion, pero no es una composicion.
-Aca la musica es el contenido, asi que se escribe entera.
-
-Armonia: La bemol mayor con novena (A|b maj9), calida y sin tension, y las
-campanas se mueven por la pentatonica A|b - B|b - C - E|b - F, que no tiene
-semitonos y por eso no puede sonar mal contra el pad.
+Cuando la musica es contenido y no acompanamiento, se escribe entera.
 
 Todo es PERIODICO EN T por construccion, asi que el loop no necesita crossfade:
 
@@ -19,7 +15,12 @@ Todo es PERIODICO EN T por construccion, asi que el loop no necesita crossfade:
     magnitudes moldeadas), que es periodico por definicion;
   - la reverb es convolucion CIRCULAR via FFT, que conserva la periodicidad.
 
-    python audio/autumn_score.py --outdir output/shorts_autumn --duration 15
+Cada pieza es un preset: acorde del pad, bajo, escala de las campanas y mezcla.
+Las escalas son pentatonicas, que al no tener semitonos no pueden chocar contra
+el pad por mas que las campanas caigan en cualquier orden.
+
+    python audio/ambient_score.py --preset autumn --outdir output/shorts_autumn --duration 15
+    python audio/ambient_score.py --preset aurora --outdir output/shorts_aurora --duration 15
 """
 
 from __future__ import annotations
@@ -32,17 +33,39 @@ import numpy as np
 
 SR = 48000
 
-# La bemol mayor con novena. Cifras en Hz (temperamento igual, A4 = 440).
-PAD_VOICES = [
-    (103.83, 0.85),   # A|b2  fundamental
-    (155.56, 0.55),   # E|b3  quinta
-    (261.63, 0.42),   # C4    tercera
-    (392.00, 0.26),   # G4    septima mayor
-    (466.16, 0.20),   # B|b4  novena
-]
-BASS = 51.91          # A|b1
-PENTATONIC = [415.30, 466.16, 523.25, 622.25, 698.46,      # A|b4 B|b4 C5 E|b5 F5
-              830.61, 932.33, 1046.50]                      # A|b5 B|b5 C6
+PRESETS = {
+    # Calido y cercano: La bemol mayor con novena, campanas en registro medio.
+    "autumn": {
+        "pad": [(103.83, 0.85),    # A|b2  fundamental
+                (155.56, 0.55),    # E|b3  quinta
+                (261.63, 0.42),    # C4    tercera
+                (392.00, 0.26),    # G4    septima mayor
+                (466.16, 0.20)],   # B|b4  novena
+        "bass": 51.91,             # A|b1
+        "bells": [415.30, 466.16, 523.25, 622.25, 698.46,
+                  830.61, 932.33, 1046.50],          # pentatonica A|b
+        "n_bells": 11, "decay": 2.4, "wet": 0.42,
+        "mix": (0.46, 0.13, 1.00, 0.05),             # pad, sub, campanas, viento
+        "wind": (260.0, 2100.0),
+    },
+    # Frio y espacioso: Re menor con novena, campanas una octava mas arriba y
+    # cola de reverb mas larga, que es lo que da la sensacion de intemperie.
+    "aurora": {
+        "pad": [(146.83, 0.80),    # D3    fundamental
+                (220.00, 0.52),    # A3    quinta
+                (349.23, 0.40),    # F4    tercera menor
+                (523.25, 0.24),    # C5    septima
+                (659.26, 0.19)],   # E5    novena
+        "bass": 73.42,             # D2
+        "bells": [587.33, 698.46, 783.99, 880.00, 1046.50,
+                  1174.66, 1396.91, 1567.98],        # pentatonica de Re menor
+        # wet 0.44 y no mas: la reverb es lo unico decorrelado entre canales,
+        # asi que subirla gana espacio en auriculares y pierde nivel en mono.
+        "n_bells": 8, "decay": 3.6, "wet": 0.44,
+        "mix": (0.44, 0.11, 0.92, 0.07),
+        "wind": (320.0, 3200.0),
+    },
+}
 
 
 def snap(f: float, T: float) -> float:
@@ -50,10 +73,10 @@ def snap(f: float, T: float) -> float:
     return max(1.0, round(f * T)) / T
 
 
-def pad(t, T, rng):
+def pad(t, T, rng, voices):
     """Colchon armonico: cada voz con armonicos y tres copias desafinadas."""
     sig = np.zeros_like(t)
-    for f0, amp in PAD_VOICES:
+    for f0, amp in voices:
         for h, hamp in ((1, 1.0), (2, 0.34), (3, 0.15), (4, 0.07), (5, 0.035)):
             for cents in (-4.0, 0.0, 4.0):
                 f = snap(f0 * h * (2.0 ** (cents / 1200.0)), T)
@@ -65,13 +88,13 @@ def pad(t, T, rng):
     return sig
 
 
-def sub(t, T):
-    f = snap(BASS, T)
+def sub(t, T, bass):
+    f = snap(bass, T)
     swell = 0.75 + 0.25 * np.sin(2 * np.pi * 1.0 * t / T - 1.2)
     return swell * (np.sin(2 * np.pi * f * t) + 0.28 * np.sin(2 * np.pi * snap(f * 2, T) * t))
 
 
-def bells(n, T, rng, n_events=11):
+def bells(n, T, rng, scale, n_events):
     """Campanas de la pentatonica, sumadas con envolvente circular."""
     out = np.zeros(n)
     tail = int(2.8 * SR)
@@ -80,7 +103,7 @@ def bells(n, T, rng, n_events=11):
     starts = (np.linspace(0.0, T, n_events, endpoint=False)
               + rng.uniform(-0.35, 0.35, n_events)) % T
     for k, st in enumerate(sorted(starts)):
-        f = PENTATONIC[int(rng.integers(len(PENTATONIC)))]
+        f = scale[int(rng.integers(len(scale)))]
         env = np.exp(-tt * (2.1 + 0.6 * rng.random()))
         # parciales ligeramente inarmonicos: lo que hace que suene a metal
         v = np.zeros(tail)
@@ -151,24 +174,28 @@ def write_wav(path, left, right):
         w.writeframes(data.tobytes())
 
 
-def compose(duration, seed=7):
+def compose(duration, preset="autumn", seed=7):
     """Contenido tonal identico en ambos canales; el ancho sale de la reverb.
 
     Decorrelar tambien las notas suena mas ancho en auriculares pero se cancela
     al sumar a mono, que es como se escucha la mayoria de los Shorts.
     """
+    cfg = PRESETS[preset]
     T = float(duration)
     n = int(round(T * SR))
     t = np.arange(n) / SR
+    g_pad, g_sub, g_bell, g_wind = cfg["mix"]
 
     rng = np.random.default_rng(seed)
-    tonal = 0.46 * pad(t, T, rng) + 0.13 * sub(t, T) + 1.00 * bells(n, T, rng)
+    tonal = (g_pad * pad(t, T, rng, cfg["pad"])
+             + g_sub * sub(t, T, cfg["bass"])
+             + g_bell * bells(n, T, rng, cfg["bells"], cfg["n_bells"]))
 
     chans = []
     for ch in range(2):
         rw = np.random.default_rng(seed + 101 + ch)    # solo reverb y viento
-        s = tonal + 0.05 * wind(n, T, rw)
-        chans.append(eq_tilt(reverb(s, T, rw), T))
+        s = tonal + g_wind * wind(n, T, rw, *cfg["wind"])
+        chans.append(eq_tilt(reverb(s, T, rw, cfg["decay"], cfg["wet"]), T))
     l, r = chans
     m = max(np.max(np.abs(l)), np.max(np.abs(r))) or 1.0
     return l / m, r / m
@@ -176,16 +203,17 @@ def compose(duration, seed=7):
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--preset", default="autumn", choices=sorted(PRESETS))
     ap.add_argument("--outdir", required=True)
     ap.add_argument("--duration", type=float, default=15.0)
     ap.add_argument("--seed", type=int, default=7)
     ap.add_argument("--name", default="music.wav")
     a = ap.parse_args()
     os.makedirs(a.outdir, exist_ok=True)
-    l, r = compose(a.duration, a.seed)
+    l, r = compose(a.duration, a.preset, a.seed)
     path = os.path.join(a.outdir, a.name)
     write_wav(path, l, r)
-    print(f"[score] {a.duration:.2f}s | A|b maj9 + pentatonica | loop exacto -> {path}")
+    print(f"[score] {a.duration:.2f}s | preset {a.preset} | loop exacto -> {path}")
 
 
 if __name__ == "__main__":

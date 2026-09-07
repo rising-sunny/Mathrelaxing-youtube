@@ -7,7 +7,7 @@ tools/latex_overlay.py ni por brand_cta: no lleva NINGUN texto quemado.
 
 Todo el movimiento es periodico, asi que el loop cierra exacto.
 
-Musica: composicion generativa propia (audio/autumn_score.py), no una
+Musica: composicion generativa propia (audio/ambient_score.py), no una
 pista licenciada: A|b maj9 con campanas pentatonicas, periodica de 15s.
 """
 import os
@@ -37,12 +37,12 @@ def main():
     if r.returncode != 0:
         sys.exit("Error renderizando la escena.")
 
-    # 2) Musica: composicion propia y periodica (audio/autumn_score.py). No se
+    # 2) Musica: composicion propia y periodica (audio/ambient_score.py). No se
     # usa el drone generico de build_audio: son cinco senoidales pensadas como
     # colchon debajo de golpes de simulacion, no como pieza.
     r = subprocess.run([
-        sys.executable, os.path.join(REPO, "audio", "autumn_score.py"),
-        "--outdir", OUTDIR, "--duration", str(int(FRAMES) / int(FPS)),
+        sys.executable, os.path.join(REPO, "audio", "ambient_score.py"),
+        "--preset", "autumn", "--outdir", OUTDIR, "--duration", str(int(FRAMES) / int(FPS)),
     ])
     if r.returncode != 0:
         sys.exit("Error componiendo la musica.")
