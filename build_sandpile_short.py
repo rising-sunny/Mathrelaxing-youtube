@@ -8,6 +8,7 @@ queda fijo y lo que se ve es la estructura refinandose a toda escala.
 
 Musica: drone calmo, la misma familia ambiente del canal.
 """
+import json
 import os
 import subprocess
 import sys
@@ -24,6 +25,34 @@ GRAINS = "500000"
 FRAMES = "900"
 RES = "1920"
 FPS = "60"
+
+
+# Regla de colapso, identidad que da nombre al modelo (con glosa: sola es
+# criptica) y contador de granos. Todo por encima de 0.80: el disco ocupa el
+# cuadrado central del 9:16 y la banda de abajo queda para el CTA.
+RULE = r"$z_v \geq 4 \ \Longrightarrow\ z_v \mapsto z_v - 4$"
+RULE_2 = r"$z_u \mapsto z_u + 1 \quad \forall\, u \sim v$"
+ABELIAN = r"$a_i\,a_j = a_j\,a_i \quad \mathrm{(the\ order\ never\ matters)}$"
+
+
+def overlay_spec():
+    """Lineas del overlay. El contador replica la curva N(f) de la escena."""
+    frames, grains, hold = int(FRAMES), int(GRAINS), 45
+    texts = []
+    for f in range(frames):
+        p = min(1.0, (f + 1) / max(1, frames - hold))
+        n = max(1, int(grains * p * p))
+        digits = f"{n:,}".replace(",", r"\,")     # separador fino, estilo ISO
+        texts.append(rf"$N = {digits}\ \mathrm{{grains}}$")
+    return {
+        "static": [
+            {"text": RULE,    "y": 0.925, "rgba": [1.0, 1.0, 1.0, 0.96], "size": 30},
+            {"text": RULE_2,  "y": 0.884, "rgba": [1.0, 0.90, 0.55, 0.88], "size": 26},
+            {"text": ABELIAN, "y": 0.846, "rgba": [0.66, 0.76, 1.0, 0.85], "size": 22},
+        ],
+        "dynamic": {"y": 0.806, "rgba": [1.0, 0.86, 0.42, 0.95], "size": 25,
+                    "texts": texts},
+    }
 
 
 def main():
@@ -61,11 +90,13 @@ def main():
     # No se usa el --math-overlay de build_clip: ese re-simula un atractor por
     # frame y aca la escena no es una EDO.
     overlay_dir = os.path.join(OUTDIR, "overlay")
+    spec_path = os.path.join(OUTDIR, "overlay_spec.json")
+    with open(spec_path, "w", encoding="utf-8") as fh:
+        json.dump(overlay_spec(), fh)
     r = subprocess.run([
-        sys.executable, os.path.join(REPO, "tools", "sandpile_math_overlay.py"),
-        "--frames", FRAMES, "--outdir", overlay_dir,
+        sys.executable, os.path.join(REPO, "tools", "latex_overlay.py"),
+        "--spec", spec_path, "--outdir", overlay_dir,
         "--res-w", "1080", "--res-h", "1920",
-        "--grains", GRAINS, "--hold", "45",
     ])
     if r.returncode != 0:
         sys.exit("Error generando el overlay matematico.")
