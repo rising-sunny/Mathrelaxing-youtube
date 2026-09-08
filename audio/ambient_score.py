@@ -65,6 +65,21 @@ PRESETS = {
         "mix": (0.44, 0.11, 0.92, 0.07),
         "wind": (320.0, 3200.0),
     },
+    # Melancolico y cercano: Sol menor con novena. Mas campanas y mas juntas
+    # que en las otras dos, para que dialoguen con las gotas de la imagen.
+    "rain": {
+        "pad": [(98.00, 0.82),     # G2    fundamental
+                (146.83, 0.54),    # D3    quinta
+                (233.08, 0.42),    # B|b3  tercera menor
+                (349.23, 0.26),    # F4    septima
+                (440.00, 0.20)],   # A4    novena
+        "bass": 49.00,             # G1
+        "bells": [392.00, 466.16, 523.25, 587.33, 698.46,
+                  783.99, 932.33, 1046.50],          # pentatonica de Sol menor
+        "n_bells": 14, "decay": 2.8, "wet": 0.46,
+        "mix": (0.45, 0.12, 0.88, 0.06),
+        "wind": (280.0, 2600.0),
+    },
 }
 
 

@@ -17,6 +17,10 @@ from youtube_uploader import upload_video_to_youtube  # noqa: E402
 
 VIDEO = os.path.join(REPO, "output", "shorts_autumn", "shorts_autumn.mp4")
 
+# Estas piezas de ambiente van al canal chico, no a MathRelaxing.
+CHANNEL = "nostalgicmood"
+CHANNEL_TITLE = "Nostalgic Mood"
+
 CHILE_UTC_OFFSET = -4
 PUBLISH_HOUR = 8
 
@@ -66,9 +70,9 @@ def main() -> int:
         sys.exit(f"No existe el video: {VIDEO}\n  python build_autumn_short.py")
 
     description = build_description(
-        BODY, hashtags=["#autumn", "#generativeart", "#creativecoding", "#cozy"]
+        BODY, channel_name=CHANNEL, hashtags=["#autumn", "#generativeart", "#creativecoding", "#cozy"]
     )
-    tags = build_tags(TAGS_EXTRA)
+    tags = build_tags(TAGS_EXTRA, channel_name=CHANNEL)
 
     if a.now:
         publish_at, privacy = None, "unlisted"
@@ -89,7 +93,7 @@ def main() -> int:
 
     video_id, channel_name = upload_video_to_youtube(
         video_path=VIDEO, title=TITLE, description=description, tags=tags,
-        privacy_status=privacy, desired_channel="MathRelaxing",
+        privacy_status=privacy, desired_channel=CHANNEL_TITLE,
         publish_at=publish_at, progress_callback=on_progress,
     )
     print(f"\n\nSubido a '{channel_name}'")
