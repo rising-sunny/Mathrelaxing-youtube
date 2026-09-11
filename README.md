@@ -37,7 +37,7 @@ shorts con motor `numpy` local; este README manda sobre el blueprint).
 
 ## Estado
 
-**En producción.** 105 videos publicados y 40 escenas en `scenes/`. El pipeline
+**En producción.** 105 videos publicados y 41 escenas en `scenes/`. El pipeline
 opera de punta a punta: escena → frames → audio → mux → overlay/CTA → subida.
 
 El foco actual son los **shorts verticales de 13-20 s** (ver *Formato de 1 hora*
@@ -48,7 +48,7 @@ Dos motores conviven en `scenes/`:
 
 | Motor | Cómo se invoca | Escenas |
 |---|---|---|
-| `numpy` | rasterizado puro en Python/PIL, sin Blender | Mandelbrot, Julia, solitones, cimática espectral, Clifford, Thomas, Hopf, three-body, reacción-difusión, Aizawa, Lorenz, pila de arena abeliana, 600-cell 4D, espiral de primos, teselado hiperbólico, árbol de otoño, aurora boreal, bola peluda, lluvia en el vidrio, Buddhabrot, bifurcación de Feigenbaum, empaquetamiento apolíneo, zeta de Riemann |
+| `numpy` | rasterizado puro en Python/PIL, sin Blender | Mandelbrot, Julia, solitones, cimática espectral, Clifford, Thomas, Hopf, three-body, reacción-difusión, Aizawa, Lorenz, pila de arena abeliana, 600-cell 4D, espiral de primos, teselado hiperbólico, árbol de otoño, aurora boreal, bola peluda, lluvia en el vidrio, Buddhabrot, bifurcación de Feigenbaum, empaquetamiento apolíneo, zeta de Riemann, geodésicas de Schwarzschild |
 | `eevee` | Blender headless (`--background`) | ABC flow, curl, péndulo doble, gravedad, Chladni, Rössler, tokamak, slice |
 
 `render/build_clip.py` es el orquestador genérico; cada `build_*.py` de la raíz

@@ -112,7 +112,15 @@ def build_description(
         if h.lower() not in {t.lower() for t in tags}:
             tags.append(h)
     parts.append(" ".join(tags))
-    return "\n\n".join(parts)
+    text = "\n\n".join(parts)
+    # YouTube rechaza < y > en el cuadro de descripcion: si se cuelan (tipico
+    # al escribir "Re(s) > 1"), el formulario falla al pegar y no dice por que.
+    bad = {c for c in "<>" if c in text}
+    if bad:
+        raise ValueError(
+            f"La descripcion tiene {' y '.join(sorted(bad))}: YouTube no los "
+            "acepta. Escribelo en palabras o usa la relacion al reves.")
+    return text
 
 
 def build_tags(extra: list[str] | None = None, limit: int = 30,

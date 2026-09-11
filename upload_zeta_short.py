@@ -39,8 +39,9 @@ BODY = (
     "The first ten trillion zeros have been checked. All on the line. Riemann "
     "guessed it in 1859 and nobody has proved it since — it is one of the "
     "seven Millennium Prize Problems, worth a million dollars.\n\n"
-    "The sum only converges when Re(s) > 1, so the plane you are looking at "
-    "is the analytic continuation, computed here with Euler–Maclaurin."
+    "That sum only converges to the right of the line Re(s) = 1, so the plane "
+    "you are looking at is the analytic continuation, computed here with "
+    "Euler–Maclaurin."
 )
 
 TAGS_EXTRA = [
