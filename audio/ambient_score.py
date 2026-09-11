@@ -80,6 +80,37 @@ PRESETS = {
         "mix": (0.45, 0.12, 0.88, 0.06),
         "wind": (280.0, 2600.0),
     },
+    # Cinematografico y grave: Do menor, con PROGRESION de acordes y un motivo
+    # melodico escrito en vez de campanas al azar. Pedal de Do debajo de todo:
+    # la armonia se mueve y la fundamental no, que es justo la sensacion de
+    # algo que atrae y no suelta. Cierra con riser + golpe en la costura.
+    "horizon": {
+        # i - VI - iv - VII sobre Do menor (Cm add9, A|bmaj9, Fm9, B|b add9)
+        "prog": [
+            [(65.41, 0.88), (98.00, 0.58), (155.56, 0.46), (196.00, 0.30), (293.66, 0.22)],
+            [(51.91, 0.88), (77.78, 0.58), (130.81, 0.46), (196.00, 0.30), (233.08, 0.22)],
+            [(43.65, 0.88), (65.41, 0.58), (103.83, 0.46), (155.56, 0.30), (196.00, 0.24)],
+            [(58.27, 0.88), (87.31, 0.58), (146.83, 0.46), (174.61, 0.30), (261.63, 0.22)],
+        ],
+        # Pedal de Do2 y no Do1: eq_tilt corta debajo de 45 Hz, asi que un
+        # pedal en 32.7 Hz no llega a existir en un telefono. En 65.4 se
+        # escucha, y Do cae bien sobre los cuatro acordes (fundamental, tercera
+        # de A|b, quinta de Fm, novena de B|b).
+        "bass": 65.41,
+        # (beat, duracion en beats, frecuencia) sobre 16 beats = un ciclo
+        "melody": [(0.0, 2.0, 392.00), (2.0, 1.0, 311.13), (3.0, 1.0, 349.23),
+                   (4.0, 2.0, 311.13), (6.0, 2.0, 261.63),
+                   (8.0, 2.0, 415.30), (10.0, 1.0, 392.00), (11.0, 1.0, 349.23),
+                   (12.0, 3.0, 392.00), (15.0, 1.0, 233.08)],
+        "beats": 16, "mel_decay": 1.9,
+        "bells": [523.25, 622.25, 698.46, 783.99, 932.33, 1046.50],
+        "n_bells": 5, "decay": 4.2, "wet": 0.40,
+        # pad, sub, campanas, viento, melodia, golpe. La melodia va POR ENCIMA
+        # del pad: a 3 dB por debajo se la come el colchon y deja de ser una
+        # melodia para volver a ser atmosfera.
+        "mix": (0.34, 0.34, 0.48, 0.09, 1.05, 0.50),
+        "wind": (400.0, 5200.0),
+    },
 }
 
 
@@ -129,6 +160,86 @@ def bells(n, T, rng, scale, n_events):
         idx = (np.arange(tail) + i0) % n          # envoltura: la cola vuelve al inicio
         np.add.at(out, idx, v)
     return out
+
+
+def chord_env(t, T, i, k, fade=0.40):
+    """Ventana del acorde i de k, periodica en T.
+
+    La cola del ultimo acorde se envuelve al principio, asi que el cruce entre
+    la ultima y la primera armonia es el mismo crossfade que el resto: el loop
+    cierra sin corte.
+    """
+    seg = T / k
+    x = np.mod(t - i * seg, T)
+    e = np.clip(np.minimum(x / fade, (seg + fade - x) / fade), 0.0, 1.0)
+    return e * e * (3.0 - 2.0 * e)
+
+
+def pad_prog(t, T, rng, prog, fade=0.40):
+    """Pad con progresion: cada acorde con su ventana, sumados con solape."""
+    sig = np.zeros_like(t)
+    for i, voices in enumerate(prog):
+        sig += chord_env(t, T, i, len(prog), fade) * pad(t, T, rng, voices)
+    return sig
+
+
+def melody(n, T, rng, notes, beats, decay=1.9):
+    """Motivo ESCRITO, no campanas al azar: es lo que hace que se recuerde.
+
+    Timbre de celesta -- parciales casi armonicos, ataque corto y cola larga --
+    y una octava arriba por encima para que brille en parlante de telefono. La
+    envoltura se suma en circular, igual que las campanas.
+    """
+    out = np.zeros(n)
+    beat = T / beats
+    tail = int(min(3.4, T) * SR)
+    tt = np.arange(tail) / SR
+    for start, dur, f0 in notes:
+        f0 = snap(f0, T)
+        env = np.exp(-tt / (decay * (0.55 + 0.45 * dur / 2.0)))
+        env *= np.clip(tt / 0.012, 0.0, 1.0)          # ataque, sin click
+        v = np.zeros(tail)
+        for mult, a in ((1.0, 1.0), (2.0, 0.30), (3.0, 0.12), (4.02, 0.05)):
+            v += a * np.sin(2 * np.pi * f0 * mult * tt)
+        v += 0.26 * np.sin(2 * np.pi * snap(f0 * 2.0, T) * tt) * np.exp(-tt / (decay * 0.6))
+        v *= env
+        idx = (np.arange(tail) + int(start * beat * SR)) % n
+        np.add.at(out, idx, v)
+    return out / (np.max(np.abs(out)) or 1.0)
+
+
+def impact(n, T, rng, lo=52.0, hi=190.0, boom=2.4, rise=2.8):
+    """Golpe grave en t=0 y riser que muere justo antes: cierra el ciclo.
+
+    El riser termina en t=T y el golpe arranca en t=0, que en un loop son el
+    mismo instante: el gesto queda entero cada vuelta en vez de cortarse.
+
+    El barrido va de 190 a 52 Hz y no a 27: eq_tilt corta 13 dB debajo de 45 Hz
+    (retumbe que en un telefono es silencio), asi que un sub-drop de manual se
+    perderia entero. En este rango pega igual y sobrevive al parlante chico.
+    """
+    out = np.zeros(n)
+    nb = min(n, int(boom * SR))
+    x = np.arange(nb) / SR
+    # barrido descendente de frecuencia: fase = integral de f(x)
+    k = np.log(lo / hi) / boom
+    ph = 2 * np.pi * hi * (np.exp(k * x) - 1.0) / k
+    out[:nb] += np.sin(ph) * np.exp(-x / 0.62)
+    out[:nb] += 0.16 * rng.normal(0, 1, nb) * np.exp(-x / 0.045)   # transitorio
+
+    nr = min(n, int(rise * SR))
+    y = np.arange(nr) / SR
+    frac = y / rise
+    # ruido con centro que sube: se sintetiza como un barrido de fase sobre
+    # ruido filtrado barato, y se apaga en los ultimos 8 ms para no chasquear
+    ns = rng.normal(0, 1, nr)
+    ns = np.cumsum(ns); ns -= np.linspace(ns[0], ns[-1], nr)       # paso-bajo + sin DC
+    ns /= (np.max(np.abs(ns)) or 1.0)
+    swirl = np.sin(2 * np.pi * (120.0 * y + 600.0 * y * frac))
+    r = (0.55 * ns + 0.45 * swirl) * frac ** 2.6
+    r *= np.clip((rise - y) / 0.008, 0.0, 1.0)
+    out[n - nr:] += 1.55 * r
+    return out / (np.max(np.abs(out)) or 1.0)
 
 
 def wind(n, T, rng, lo=260.0, hi=2100.0):
@@ -199,12 +310,23 @@ def compose(duration, preset="autumn", seed=7):
     T = float(duration)
     n = int(round(T * SR))
     t = np.arange(n) / SR
-    g_pad, g_sub, g_bell, g_wind = cfg["mix"]
+    g_pad, g_sub, g_bell, g_wind = cfg["mix"][:4]
 
     rng = np.random.default_rng(seed)
-    tonal = (g_pad * pad(t, T, rng, cfg["pad"])
-             + g_sub * sub(t, T, cfg["bass"])
-             + g_bell * bells(n, T, rng, cfg["bells"], cfg["n_bells"]))
+    if "prog" in cfg:
+        # Pieza con progresion y motivo. Los presets sin "prog" siguen por el
+        # camino de siempre y su salida no cambia.
+        g_mel, g_hit = cfg["mix"][4], cfg["mix"][5]
+        tonal = (g_pad * pad_prog(t, T, rng, cfg["prog"])
+                 + g_sub * sub(t, T, cfg["bass"])
+                 + g_bell * bells(n, T, rng, cfg["bells"], cfg["n_bells"])
+                 + g_mel * melody(n, T, rng, cfg["melody"], cfg["beats"],
+                                  cfg["mel_decay"])
+                 + g_hit * impact(n, T, np.random.default_rng(seed + 991)))
+    else:
+        tonal = (g_pad * pad(t, T, rng, cfg["pad"])
+                 + g_sub * sub(t, T, cfg["bass"])
+                 + g_bell * bells(n, T, rng, cfg["bells"], cfg["n_bells"]))
 
     chans = []
     for ch in range(2):

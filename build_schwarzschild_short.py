@@ -5,8 +5,10 @@ Particulas en el campo geodesico: rosetas que precesan porque la orbita no
 cierra, orbitas zoom-whirl pegadas a la esfera de fotones y caidas que se
 frenan y se apagan en el horizonte por el corrimiento al rojo. NO es un loop.
 
-Musica: si la pista licenciada esta disponible se usa esa; si no, el drone
-sintetizado de build_clip.
+Musica: preset "horizon" de audio/ambient_score.py — Do menor con progresion
+i-VI-iv-VII, pedal de Do fijo debajo, motivo melodico escrito y un golpe grave
+en la costura del loop. No lleva los golpes sonificados de build_clip: aca la
+musica es contenido, no acompanamiento.
 """
 import json
 import os
@@ -14,14 +16,12 @@ import subprocess
 import sys
 
 REPO = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(REPO, "tools"))
-from music_library import find_track  # noqa: E402
 
 NAME = "shorts_schwarzschild"
 OUTDIR = os.path.join(REPO, "output", NAME)
 EVENTS = os.path.join(REPO, "data", f"{NAME}_events.json")
 
-MUSIC_TRACK = "new_beginning"
+MUSIC_PRESET = "horizon"
 FRAMES = "900"
 RES = "1920"
 FPS = "60"
@@ -57,9 +57,6 @@ def overlay_spec():
 
 
 def main():
-    music = find_track(MUSIC_TRACK, required=False)
-    if music is None:
-        print(f"[{NAME}] Sin '{MUSIC_TRACK}': se usa el drone sintetizado.")
     os.makedirs(OUTDIR, exist_ok=True)
     print(f"\n[{NAME}] === Short 9:16 geodesicas de Schwarzschild ===")
 
@@ -73,13 +70,24 @@ def main():
             sys.exit("Error renderizando la escena.")
 
     r = subprocess.run([
-        sys.executable, os.path.join(REPO, "render", "build_clip.py"),
-        "--name", NAME, "--skip-render", "--attractor", "clifford",
-        "--frames", FRAMES, "--res", RES, "--fps", FPS,
-        "--format", "9:16",
-    ] + (["--music", music] if music else []))
+        sys.executable, os.path.join(REPO, "audio", "ambient_score.py"),
+        "--preset", MUSIC_PRESET, "--outdir", OUTDIR,
+        "--duration", str(int(FRAMES) / int(FPS)),
+    ])
     if r.returncode != 0:
-        sys.exit("Error en build_clip.")
+        sys.exit("Error componiendo la musica.")
+
+    clip_raw = os.path.join(OUTDIR, f"{NAME}.mp4")
+    r = subprocess.run([
+        "ffmpeg", "-y", "-framerate", FPS,
+        "-i", os.path.join(OUTDIR, "frames", "%04d.png"),
+        "-i", os.path.join(OUTDIR, "music.wav"),
+        "-c:v", "libx264", "-crf", "18", "-preset", "medium", "-pix_fmt", "yuv420p",
+        "-af", "loudnorm=I=-14:TP=-1.5:LRA=11",
+        "-c:a", "aac", "-b:a", "192k", "-shortest", clip_raw,
+    ])
+    if r.returncode != 0:
+        sys.exit("Error en el ensamblaje del clip.")
 
     overlay_dir = os.path.join(OUTDIR, "overlay")
     spec_path = os.path.join(OUTDIR, "overlay_spec.json")
