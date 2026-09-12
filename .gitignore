@@ -38,3 +38,6 @@ data/_*_events.json
 # Pistas licenciadas (Epidemic Sound): se resuelven por tools/music_library.py
 assets/music/*
 !assets/music/README.md
+
+# Cumulos DLA cacheados: se regeneran con la escena (minutos, no horas)
+output/**/cluster.npy

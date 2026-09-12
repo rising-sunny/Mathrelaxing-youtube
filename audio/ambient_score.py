@@ -111,6 +111,31 @@ PRESETS = {
         "mix": (0.34, 0.34, 0.48, 0.09, 1.05, 0.50),
         "wind": (400.0, 5200.0),
     },
+    # Luminoso y ascendente: Mi bemol mayor, I-vi-IV-V, pedal de Si bemol.
+    # Misma maquinaria que "horizon" pero en mayor y sin el golpe al frente:
+    # aca la pieza acompana algo que CRECE, no algo que traga.
+    "bloom": {
+        "prog": [
+            [(77.78, 0.86), (116.54, 0.56), (196.00, 0.46), (233.08, 0.30), (349.23, 0.22)],
+            [(65.41, 0.86), (98.00, 0.56), (155.56, 0.46), (233.08, 0.30), (293.66, 0.22)],
+            [(51.91, 0.86), (77.78, 0.56), (130.81, 0.46), (196.00, 0.30), (233.08, 0.22)],
+            [(58.27, 0.86), (87.31, 0.56), (146.83, 0.46), (174.61, 0.30), (261.63, 0.22)],
+        ],
+        # Pedal de Si bemol2 y no 1: en 58 Hz el corte de retumbe de eq_tilt
+        # se lo come casi entero. Quinta de Mi bemol, septima de Do menor,
+        # novena de La bemol: cae bien sobre los cuatro acordes.
+        "bass": 116.54,
+        "melody": [(0.0, 2.0, 466.16), (2.0, 1.0, 392.00), (3.0, 1.0, 415.30),
+                   (4.0, 2.0, 392.00), (6.0, 2.0, 311.13),
+                   (8.0, 2.0, 523.25), (10.0, 1.0, 466.16), (11.0, 1.0, 415.30),
+                   (12.0, 2.0, 466.16), (14.0, 1.0, 349.23), (15.0, 1.0, 392.00)],
+        "beats": 16, "mel_decay": 2.1,
+        "bells": [622.25, 698.46, 783.99, 932.33, 1046.50, 1244.51],
+        "n_bells": 7, "decay": 3.8, "wet": 0.42,
+        # pad, sub, campanas, viento, melodia, golpe
+        "mix": (0.34, 0.30, 0.52, 0.08, 1.00, 0.22),
+        "wind": (420.0, 5400.0),
+    },
 }
 
 
