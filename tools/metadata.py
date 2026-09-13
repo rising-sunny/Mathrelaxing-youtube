@@ -93,7 +93,7 @@ def build_description(
     *,
     hashtags: list[str] | None = None,
     subscribe: bool = True,
-    store: bool = True,
+    store: bool = False,   # la linea de la tienda ya no va en las descripciones
     channel_name: str | None = None,
 ) -> str:
     """Arma una descripción completa: CTA de suscripción → cuerpo → tienda → hashtags."""
