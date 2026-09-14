@@ -24,6 +24,14 @@ Verificado en el arranque: la identidad h = sigma^2/(8r) da un residuo de
 La cicloide, ademas, es la braquistocrona: la curva de descenso mas rapido
 entre dos puntos. Es la misma curva por las dos cosas.
 
+La escena NO repite el mismo vaiven: entran TANDAS cada vez mas grandes de
+cuentas (4, 14, 30, 62). Cada tanda se suelta en un multiplo exacto del
+periodo de la cicloide, que es la unica forma de que caiga en fase con las que
+ya estaban oscilando. Las dos cuencas reciben exactamente las mismas tandas en
+los mismos instantes, asi que el desorden del circulo es de la curva y no del
+calendario de sueltas. Al final la cicloide colapsa 62 cuentas en un punto
+cada medio periodo y el circulo es una banda revuelta.
+
     python scenes/tautochrone.py -- --frames 900 --res 1920 --name shorts_tauto --format 9:16
 Escribe output/<name>/frames/%04d.png y data/<name>_events.json
 """
@@ -51,7 +59,7 @@ RES = int(arg("--res", 1920))
 NAME = arg("--name", "shorts_tauto")
 FMT = arg("--format", "9:16")
 FPS = int(arg("--fps", 60))
-NBEADS = int(arg("--beads", 6))
+BATCHES = [(0, 4), (1, 14), (2, 30), (3, 62)]   # (periodo de suelta, cuantas)
 CYCLES = float(arg("--cycles", 4.0))    # oscilaciones de la cicloide en el clip
 SUB = int(arg("--sub", 12))             # subpasos de integracion por frame
 SS = int(arg("--ss", 2))                # supermuestreo del dibujo
@@ -114,15 +122,26 @@ def main():
     print(f"[tauto] periodo {2*math.pi/OMEGA:.4f} s, {CYCLES:g} oscilaciones "
           f"en {DURATION:g} s;  circulo L = {L:.4f} r, psi_max = {PSI_M:.4f}")
 
-    fr = np.linspace(0.14, 1.0, NBEADS)          # alturas iniciales, en 2r
-    h0 = fr * 2.0 * R
+    # Tandas: cada una se suelta en un multiplo del periodo de la cicloide,
+    # que es lo que las deja en fase con las anteriores.
+    period = 2.0 * math.pi / OMEGA
+    t0, h0 = [], []
+    for (kp, nb) in BATCHES:
+        for fr in np.linspace(0.13, 1.0, nb):
+            t0.append(kp * period)
+            h0.append(fr * 2.0 * R)
+    t0 = np.array(t0); h0 = np.array(h0)
+    NBEADS = len(h0)
     sig0 = np.sqrt(8.0 * R * h0)                 # cicloide: h = sigma^2/(8r)
     psi0 = -np.arccos(np.clip(1.0 - h0 / L, -1.0, 1.0))   # circulo, lado izq.
+    print(f"[tauto] {NBEADS} cuentas en {len(BATCHES)} tandas, "
+          f"sueltas en t = {sorted(set(t0.tolist()))}")
 
     # Circulo: RK4 sobre psi'' = -(g/L) sin psi. La cicloide no se integra,
     # tiene solucion exacta y por eso no acumula error.
     psi = psi0.copy()
     vel = np.zeros(NBEADS)
+    born = np.zeros(NBEADS, dtype=bool)
     dt = 1.0 / (FPS * SUB)
 
     def acc(p):
@@ -156,30 +175,43 @@ def main():
     scale_note = ["D3", "F3", "A3", "C4", "D4", "F4", "A4", "C5"]
 
     for f in range(FRAMES):
-        t0 = f / FPS
         for k in range(SUB):
-            t = t0 + k * dt
+            t = f / FPS + k * dt
+            new = (~born) & (t0 <= t)
+            if new.any():
+                psi[new] = psi0[new]
+                vel[new] = 0.0
+                born |= new
             # circulo: RK4
+            alive = born
             k1v = acc(psi); k1p = vel
             k2v = acc(psi + 0.5 * dt * k1p); k2p = vel + 0.5 * dt * k1v
             k3v = acc(psi + 0.5 * dt * k2p); k3p = vel + 0.5 * dt * k2v
             k4v = acc(psi + dt * k3p);       k4p = vel + dt * k3v
             psi_new = psi + dt / 6 * (k1p + 2 * k2p + 2 * k3p + k4p)
             vel = vel + dt / 6 * (k1v + 2 * k2v + 2 * k3v + k4v)
-            for b in range(NBEADS):
-                if psi[b] * psi_new[b] < 0:
-                    cross_circle[b].append(t)
-                    hits_o.append((t, b))
+            psi_new = np.where(alive, psi_new, psi0)
+            vel = np.where(alive, vel, 0.0)
+            # El instante de cruce se INTERPOLA dentro del subpaso. Sin esto,
+            # dos cuentas que cruzan a la vez quedan registradas con hasta un
+            # subpaso (1.4 ms) de diferencia y el numero que sale en pantalla
+            # mide la resolucion del integrador, no la fisica.
+            for b in np.flatnonzero(alive & (psi * psi_new < 0)):
+                a0, a1 = abs(psi[b]), abs(psi_new[b])
+                tc = t + dt * a0 / (a0 + a1)
+                cross_circle[b].append(tc)
+                hits_o.append((tc, int(b)))
             psi = psi_new
 
-            sg = sig0 * np.cos(OMEGA * (t + dt))
-            sg_prev = sig0 * np.cos(OMEGA * t)
-            for b in range(NBEADS):
-                if sg_prev[b] * sg[b] < 0:
-                    cross_cyc[b].append(t)
-                    hits_c.append((t, b))
+            sg = sig0 * np.cos(OMEGA * (t + dt - t0))
+            sg_prev = sig0 * np.cos(OMEGA * (t - t0))
+            for b in np.flatnonzero(alive & (sg_prev * sg < 0)):
+                a0, a1 = abs(sg_prev[b]), abs(sg[b])
+                tc = t + dt * a0 / (a0 + a1)
+                cross_cyc[b].append(tc)
+                hits_c.append((tc, int(b)))
 
-        sigma = sig0 * np.cos(OMEGA * (t0 + SUB * dt))
+        sigma = sig0 * np.cos(OMEGA * (f / FPS + SUB * dt - t0))
         xc, yc = cycloid_xy(sigma)
         xo, yo = circle_xy(psi)
 
@@ -188,8 +220,9 @@ def main():
 
         # cuantas cuentas estan pegadas al fondo, por cuenco: en la cicloide
         # llegan las seis juntas y el destello es total; en el circulo gotean
-        near_o = float(np.mean(np.abs(xo) < 0.10 * R))
-        near_c = float(np.mean(np.abs(xc) < 0.10 * R))
+        liv = born
+        near_o = float(np.mean(np.abs(xo[liv]) < 0.10 * R)) if liv.any() else 0.0
+        near_c = float(np.mean(np.abs(xc[liv]) < 0.10 * R)) if liv.any() else 0.0
 
         for (ox, oy, fn, par, lab, near) in (
                 (cx, top_y, circle_xy, np.linspace(-PSI_M, PSI_M, 400), "circle", near_o),
@@ -224,16 +257,36 @@ def main():
                 dr.line([(hx * SS, yb * SS), (hx * SS, (yb + sh * 0.13) * SS)],
                         fill=c, width=max(SS, int(0.0032 * W * SS)))
 
-        for b in range(NBEADS):
+        # Solo las cuentas YA soltadas: si no, estan todas en pantalla desde
+        # el frame 0 y la escalada de tandas no existe.
+        nlive = int(born.sum())
+        rad = (0.0165 - 0.0075 * min(1.0, nlive / 60.0)) * W * SS
+        for b in np.flatnonzero(born):
             c = tuple(int(255 * v) for v in col[b])
             for (ox, oy, xx, yy) in ((cx, top_y, xo[b], yo[b]),
                                      (cx, bot_y, xc[b], yc[b])):
                 X = (ox + xx * scale) * SS
                 Y = (oy + yy * scale) * SS
-                rad = 0.0155 * W * SS
                 dr.ellipse([X - rad, Y - rad, X + rad, Y + rad], fill=c)
 
         a = np.asarray(img.resize((W, H), Image.LANCZOS)).astype(np.float32) / 255.0
+
+        # Fogonazo en el fondo de cada cuenco, proporcional a cuantas cuentas
+        # estan llegando a la vez. En la cicloide llegan TODAS y crece con las
+        # tandas; en el circulo gotean y casi no se enciende.
+        for (oy, near, tint) in ((top_y, near_o, (1.0, 0.80, 0.42)),
+                                 (bot_y, near_c, (1.0, 0.86, 0.46))):
+            amp = near * min(1.0, nlive / 40.0)
+            if amp > 0.02:
+                yb = int(oy + bowl_h)
+                rr = int(0.16 * W)
+                y1, y2 = max(0, yb - rr), min(H, yb + rr)
+                x1, x2 = max(0, int(cx) - rr), min(W, int(cx) + rr)
+                gy, gx = np.mgrid[y1:y2, x1:x2]
+                d2 = ((gy - yb) ** 2 + (gx - cx) ** 2).astype(np.float32)
+                blob = np.exp(-d2 / (2 * (0.052 * W) ** 2)) * (0.85 * amp)
+                a[y1:y2, x1:x2] += blob[..., None] * np.array(tint, dtype=np.float32)
+        a = np.clip(a, 0.0, 1.0)
         trail = trail * 0.90
         trail = np.maximum(trail, a * 0.55)
         a = np.clip(a + 0.75 * trail, 0.0, 1.0)
@@ -241,14 +294,15 @@ def main():
         Image.fromarray((a * 255).astype(np.uint8), "RGB").save(
             os.path.join(FRAMES_DIR, f"{f:04d}.png"))
 
-        nmin = min(len(c) for c in cross_circle)
-        if nmin > 0:
-            last_c = [c[nmin - 1] for c in cross_circle]
-            last_y = [c[nmin - 1] for c in cross_cyc if len(c) >= nmin]
-            sc = max(last_c) - min(last_c)
-            sy = (max(last_y) - min(last_y)) if len(last_y) == NBEADS else 0.0
-        else:
-            sc = sy = 0.0
+        # Se compara el ULTIMO cruce de cada cuenta viva. Comparar el n-esimo
+        # de cada una seria un error: las tandas nacen en instantes distintos,
+        # asi que el n-esimo de una no es el mismo evento que el de otra y el
+        # numero medido acaba siendo el calendario de sueltas, no la curva.
+        act = np.flatnonzero(born)
+        last_c = [cross_circle[b][-1] for b in act if cross_circle[b]]
+        last_y = [cross_cyc[b][-1] for b in act if cross_cyc[b]]
+        sc = (max(last_c) - min(last_c)) if len(last_c) > 1 else 0.0
+        sy = (max(last_y) - min(last_y)) if len(last_y) > 1 else 0.0
         spreads.append((sc, sy))
 
         if f % max(1, FRAMES // 8) == 0:
@@ -258,16 +312,19 @@ def main():
             print(f"[tauto] {f + 1}/{FRAMES}  desfase circulo {sc:.3f} s  "
                   f"cicloide {sy:.3f} s")
 
-    n = min(len(c) for c in cross_cyc)
-    spread_cyc = max(max(c[:n]) - min(c[:n]) for c in zip(*[c[:n] for c in cross_cyc]))
-    print(f"[tauto] cruces de la cicloide: {n} por cuenta, "
-          f"desfase maximo {spread_cyc:.2e} s")
+    # Desfase real de la cicloide: para cada INSTANTE de cruce, cuantas
+    # cuentas distintas cayeron exactamente ahi.
+    allc = sorted({round(t, 9) for c in cross_cyc for t in c})
+    spread_cyc = max((s[1] for s in spreads), default=0.0)
+    print(f"[tauto] instantes de cruce distintos en la cicloide: {len(allc)} "
+          f"para {NBEADS} cuentas; desfase maximo {spread_cyc:.2e} s")
 
     with open(EVENTS_PATH, "w", encoding="utf-8") as jf:
         json.dump({"duration_s": DURATION, "fps": FPS, "events": events,
                    "spreads": spreads, "beads": NBEADS,
                    "period_s": 2 * math.pi / OMEGA,
-                   "cycloid_spread_s": float(spread_cyc), "crossings": int(n)}, jf)
+                   "cycloid_spread_s": float(spread_cyc),
+                   "crossings": len(allc), "batches": BATCHES}, jf)
     print(f"[tauto] Done! {FRAMES} frames -> {FRAMES_DIR}")
 
 

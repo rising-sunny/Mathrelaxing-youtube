@@ -28,14 +28,17 @@ BODY_TMPL = (
     "Two bowls, the same depth and the same width, drawn inside the same box "
     "so you can check. The top one is an arc of a circle. The bottom one is a "
     "cycloid — the curve a point on a rolling wheel traces out.\n\n"
-    "Six beads, six different starting heights, all released at the same "
-    "instant. On the circle they drift apart: a pendulum's period grows with "
-    "its swing, so the high ones fall behind. By the end of this clip they "
-    "reach the bottom {gap:.2f} seconds apart.\n\n"
-    "On the cycloid they never drift. Not approximately: the gap measured "
-    "across all {ncross} passes through the bottom is exactly zero. The "
-    "cycloid needs no numerical integration at all — the motion has a closed "
-    "form, so there is no error to accumulate.\n\n"
+    "Beads keep arriving: 4, then 18, then 48, then {n}, every one of them "
+    "released from rest at a different height. Each new batch drops in at an "
+    "exact multiple of the cycloid's period, which is the only way it can "
+    "land in step with the ones already swinging. Both bowls get the same "
+    "batches at the same instants.\n\n"
+    "On the circle they smear. A pendulum's period grows with its swing, so "
+    "the high ones fall behind, and by the end they are reaching the bottom "
+    "{gap:.2f} seconds apart. On the cycloid all {n} collapse onto the same "
+    "point, over and over. Across the whole run those {n} beads pass through "
+    "the bottom at only {ncross} distinct instants — the gap inside each one "
+    "is {cyc:.0e} seconds, which is machine precision, not physics.\n\n"
     "The reason is one line of algebra. Measure the arc σ travelled from the "
     "lowest point of a cycloid and the height above that point turns out to "
     "be exactly\n\n"
@@ -49,9 +52,9 @@ BODY_TMPL = (
     "cheeks to force the bob onto exactly this curve. The same cycloid is "
     "also the brachistochrone, the fastest slide between two points. One "
     "curve, both records.\n\n"
-    "The cycloid bowl completes exactly four swings in these 15 seconds, so "
-    "it loops seamlessly. The circular one cannot: its period depends on "
-    "where you start."
+    "The strips under each bowl record every pass through the bottom, one "
+    "mark per bead. Cycloid: clean vertical columns. Circle: smears that keep "
+    "widening."
 )
 
 TAGS_EXTRA = [
@@ -72,7 +75,8 @@ def body() -> str:
     with open(EVENTS, encoding="utf-8") as fh:
         ev = json.load(fh)
     gap = max(s[0] for s in ev["spreads"])
-    return BODY_TMPL.format(gap=gap, ncross=ev["crossings"])
+    return BODY_TMPL.format(gap=gap, ncross=ev["crossings"],
+                            n=ev["beads"], cyc=max(ev["cycloid_spread_s"], 1e-16))
 
 
 def main() -> int:
