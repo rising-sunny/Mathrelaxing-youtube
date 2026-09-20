@@ -234,6 +234,30 @@ PRESETS = {
         "mix": (0.36, 0.30, 0.30, 0.08, 0.92, 0.32),
         "wind": (380.0, 4800.0),
     },
+    # Amplio y en caida: Mi menor, i-VI-III-VII. La melodia baja en tres
+    # frases sucesivas y solo al final vuelve a subir, que es exactamente lo
+    # que hace el campo: se fragmenta, cae en escala y termina en unos pocos
+    # remolinos grandes.
+    "cascade": {
+        "prog": [
+            [(82.41, 0.86), (123.47, 0.56), (164.81, 0.46), (196.00, 0.30), (246.94, 0.22)],
+            [(65.41, 0.86), (98.00, 0.56), (130.81, 0.46), (164.81, 0.30), (196.00, 0.22)],
+            [(98.00, 0.86), (146.83, 0.56), (196.00, 0.46), (246.94, 0.30), (293.66, 0.22)],
+            [(73.42, 0.86), (110.00, 0.56), (146.83, 0.46), (185.00, 0.30), (220.00, 0.22)],
+        ],
+        "bass": 82.41,             # pedal de Mi2; por debajo de 60 Hz el
+        # filtro de inclinacion se lo come y en un telefono no queda nada
+        "melody": [(0.0, 1.5, 987.77), (1.5, 0.5, 880.00), (2.0, 2.0, 783.99),
+                   (4.0, 1.5, 659.26), (5.5, 0.5, 587.33), (6.0, 2.0, 523.25),
+                   (8.0, 1.5, 587.33), (9.5, 0.5, 493.88), (10.0, 2.0, 392.00),
+                   (12.0, 1.0, 440.00), (13.0, 1.0, 493.88), (14.0, 2.0, 587.33)],
+        "beats": 16, "mel_decay": 2.4,
+        "bells": [659.26, 783.99, 880.00, 987.77, 1174.66],
+        "n_bells": 7, "decay": 4.4, "wet": 0.40,
+        # pad, sub, campanas, viento, melodia, golpe
+        "mix": (0.36, 0.30, 0.40, 0.09, 0.96, 0.28),
+        "wind": (360.0, 5200.0),
+    },
 }
 
 
