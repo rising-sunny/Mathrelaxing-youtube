@@ -53,8 +53,9 @@ BODY_TMPL = (
     "Astronomy, and the band never credited it.\n\n"
     "The signal here is simulated from the standard model — Gaussian pulse "
     "with log-normal variability plus band-limited noise — using the real "
-    "spin period. It is not archive data. Time is compressed about {sp:.0f} "
-    "to 1."
+    "spin period. It is not archive data. The star itself turns in real "
+    "time, one rotation every {period} seconds; only the stack below it is "
+    "compressed, about {sp:.0f} to 1."
 )
 
 TAGS_EXTRA = [

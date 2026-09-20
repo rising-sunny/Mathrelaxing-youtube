@@ -113,7 +113,7 @@ def main():
     branded = os.path.join(OUTDIR, f"{NAME}_branded.mp4")
     r = subprocess.run([
         sys.executable, os.path.join(REPO, "tools", "brand_cta.py"),
-        "-i", with_math, "-o", branded, "--cta-y", "0.795", "--handle-y", "0.028",
+        "-i", with_math, "-o", branded, "--cta-y", "0.885", "--handle-y", "0.028",
     ])
     if r.returncode != 0:
         sys.exit("Error quemando el CTA.")
