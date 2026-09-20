@@ -23,8 +23,13 @@ MUSIC_PRESET = "cascade"
 FRAMES = "900"
 RES = "1920"
 FPS = "60"
-NU = "3.0e-5"
-TURNS = "45"
+# nu=1.2e-5 en 540x960 es el punto exacto: la sonda de resolucion da 0.000%
+# de crecimiento espurio de max|w| y deja solo 7.9e-4 de la enstrofia contra
+# el corte espectral. Con 6e-6 ni 540x960 aguanta.
+NX, NY = "540", "960"
+K0 = "30"
+NU = "1.2e-5"
+TURNS = "60"
 
 
 def overlay_spec():
@@ -65,6 +70,7 @@ def main():
         r = subprocess.run([
             sys.executable, os.path.join(REPO, "scenes", "navier_stokes.py"), "--",
             "--frames", FRAMES, "--res", RES, "--fps", FPS,
+            "--nx", NX, "--ny", NY, "--k0", K0,
             "--nu", NU, "--turns", TURNS, "--name", NAME,
         ])
         if r.returncode != 0:
