@@ -208,6 +208,32 @@ PRESETS = {
         "mix": (0.32, 0.30, 0.34, 0.07, 0.78, 0.34),
         "wind": (420.0, 5000.0),
     },
+    # Vasto y con pulso: Si menor, i-VI-III-VII, pedal de Fa# bajo los cuatro.
+    # La "melodia" no es una linea sino un BLIP corto y agudo cada dos tiempos,
+    # con la altura cambiando por acorde: un pulsar es un reloj y la pieza
+    # tenia que sonar como uno.
+    "beacon": {
+        "prog": [
+            [(61.74, 0.88), (92.50, 0.56), (146.83, 0.46), (220.00, 0.28), (277.18, 0.20)],
+            [(49.00, 0.88), (73.42, 0.56), (123.47, 0.46), (185.00, 0.28), (220.00, 0.20)],
+            [(73.42, 0.88), (110.00, 0.56), (185.00, 0.46), (220.00, 0.28), (329.63, 0.20)],
+            [(55.00, 0.88), (82.41, 0.56), (138.59, 0.46), (185.00, 0.28), (246.94, 0.20)],
+        ],
+        "bass": 92.50,             # pedal de Fa#2 bajo los cuatro acordes
+        "melody": [(0.0, 0.35, 739.99), (2.0, 0.35, 739.99),
+                   (4.0, 0.35, 587.33), (6.0, 0.35, 587.33),
+                   (8.0, 0.35, 739.99), (10.0, 0.35, 739.99),
+                   (12.0, 0.35, 659.26), (14.0, 0.35, 659.26)],
+        "beats": 16, "mel_decay": 0.60,
+        "bells": [493.88, 587.33, 739.99, 880.00, 1108.73],
+        # wet 0.40 y no 0.44: la reverb es lo unico decorrelado entre canales
+        # y con 0.44 la perdida al sumar a mono daba -1.14 dB, fuera de linea
+        # con el resto de los presets. Los shorts se oyen en mono.
+        "n_bells": 5, "decay": 4.6, "wet": 0.40,
+        # pad, sub, campanas, viento, melodia, golpe
+        "mix": (0.36, 0.30, 0.30, 0.08, 0.92, 0.32),
+        "wind": (380.0, 4800.0),
+    },
 }
 
 
