@@ -83,7 +83,10 @@ def main():
         "-i", os.path.join(OUTDIR, "frames", "%04d.png"),
         "-i", os.path.join(OUTDIR, "music.wav"),
         "-c:v", "libx264", "-crf", "17", "-preset", "medium", "-pix_fmt", "yuv420p",
-        "-af", "loudnorm=I=-14:TP=-1.5:LRA=11",
+        # loudnorm de una pasada va en modo dinamico y se pasa del techo:
+        # con este preset dejaba el pico real en +0.9 dBFS, o sea recortando.
+        # El limitador detras es la red de seguridad (0.84 = -1.5 dBFS).
+        "-af", "loudnorm=I=-14:TP=-1.5:LRA=11,alimiter=limit=0.84:level=false",
         "-c:a", "aac", "-b:a", "192k", "-shortest", clip,
     ])
     if r.returncode != 0:
