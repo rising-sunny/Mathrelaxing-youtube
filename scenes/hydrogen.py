@@ -49,21 +49,26 @@ FADE = int(arg("--fade", 14))           # cuadros de cruce entre orbitales
 TILT = math.radians(float(arg("--tilt", 42.0)))
 SPINS = float(arg("--spins", 1.30))     # vueltas de plato por orbital
 
-# (n, l, m, elevacion). m > 0 -> combinacion real, la de los libros.
+# (n, l, m, elevacion, peso de duracion). m > 0 -> combinacion real.
 #
 # La elevacion va por estado y no es un capricho: un orbital con m=0 apila
 # sus lobulos SOBRE el eje y se lee de perfil, mientras que uno con m=l los
 # reparte en un anillo alrededor del eje y solo se lee desde arriba. Con una
 # camara unica la mitad de la lista sale como la misma mancuerna borrosa.
+#
+# Las duraciones tampoco son iguales. El 1s es una esfera y no hay giro que
+# la mueva: dejarle 1.9 s al principio es regalar los segundos que deciden
+# si alguien se queda. Se le da menos de un segundo y el sobrante va a los
+# dos ultimos, que son los que valen la pena mirar.
 STATES = [
-    (1, 0, 0, 26.0),    # 1s   una esfera
-    (2, 1, 0, 13.0),    # 2p   la mancuerna, de perfil
-    (3, 2, 0, 20.0),    # 3d   mancuerna con anillo en la cintura
-    (4, 3, 0, 11.0),    # 4f   cuatro lobulos apilados en el eje
-    (5, 0, 0, 30.0),    # 5s   cuatro capas anidadas
-    (5, 3, 2, 48.0),    # 5f   con un nodo radial
-    (6, 4, 4, 66.0),    # 6g   ocho lobulos, casi desde arriba
-    (7, 6, 6, 72.0),    # 7i   doce lobulos, desde arriba
+    (1, 0, 0, 26.0, 0.55),   # 1s   una esfera
+    (2, 1, 0, 13.0, 0.80),   # 2p   la mancuerna, de perfil
+    (3, 2, 0, 20.0, 1.00),   # 3d   mancuerna con anillo en la cintura
+    (4, 3, 0, 11.0, 1.00),   # 4f   cuatro lobulos apilados en el eje
+    (5, 0, 0, 30.0, 1.25),   # 5s   cuatro capas anidadas
+    (5, 3, 2, 48.0, 1.10),   # 5f   con un nodo radial
+    (6, 4, 4, 66.0, 1.30),   # 6g   ocho lobulos, casi desde arriba
+    (7, 6, 6, 72.0, 2.00),   # 7i   doce lobulos, desde arriba
 ]
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -208,21 +213,24 @@ def project(vol, spin, tilt, gain):
 def main():
     worst_norm, worst_e, ovl = verify()
 
-    seg = FRAMES // len(STATES)
+    w = np.array([st[4] for st in STATES], float)
+    lens = np.maximum(2, np.round(w / w.sum() * FRAMES).astype(int))
+    lens[-1] += FRAMES - lens.sum()          # el ultimo absorbe el redondeo
+    starts = np.concatenate([[0], np.cumsum(lens)])
     boxes, nodes = [], []
-    for (n, l, m, _t) in STATES:
+    for (n, l, m, _t, _w) in STATES:
         boxes.append(box_radius(n, l))
         nodes.append((n - l - 1, l))
     print("[h] " + " | ".join(
         f"{n}{'spdfghi'[l]}{'' if m == 0 else m} caja {b:.0f} a0"
-        for (n, l, m, _t), b in zip(STATES, boxes)))
+        for (n, l, m, _t, _w), b in zip(STATES, boxes)))
 
     # El brillo se normaliza por estado: |psi| cae varios ordenes de magnitud
     # al subir n. Se usa un PERCENTIL, no el maximo: en las orbitales s el
     # pico central es enorme comparado con las capas de fuera, y dividir por
     # el maximo deja el 5s como un punto con cuatro capas invisibles.
     def build(i):
-        n, l, m, _t = STATES[i]
+        n, l, m, _t, _w = STATES[i]
         v = volume(n, l, m, NV, boxes[i])
         a = np.abs(v)
         ref = np.percentile(a[a > 0], 99.86)
@@ -234,8 +242,10 @@ def main():
     events, shown = [], []
 
     for f in range(FRAMES):
-        i = min(len(STATES) - 1, f // seg)
-        k = f - i * seg                                   # cuadro dentro del tramo
+        i = int(np.searchsorted(starts, f, side="right") - 1)
+        i = min(i, len(STATES) - 1)
+        seg = int(lens[i])
+        k = f - int(starts[i])                            # cuadro dentro del tramo
         spin = 2 * math.pi * SPINS * (k / seg)
         base = math.radians(STATES[i][3])
         tilt = base + math.radians(7.0) * math.sin(2 * math.pi * k / seg)
@@ -266,7 +276,7 @@ def main():
         frame.paste(tile, ((W_PIX - side) // 2, int(0.455 * H_PIX) - side // 2))
         frame.save(os.path.join(FRAMES_DIR, f"{f:04d}.png"))
 
-        n, l, m, _t = STATES[i]
+        n, l, m, _t, _w = STATES[i]
         shown.append({"n": n, "l": l, "m": m, "box": boxes[i],
                       "radial_nodes": nodes[i][0], "angular_nodes": nodes[i][1],
                       "energy_ev": -13.605693122994 / (n * n)})
