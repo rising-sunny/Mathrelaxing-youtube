@@ -53,10 +53,12 @@ BODY_TMPL = (
     "to {erel:.0e} relative error. States with different n are orthogonal "
     "to {orth:.0e}.\n\n"
     "Watch the size counter. The box grows from {b0:.0f} to {b1:.0f} Bohr "
-    "radii across the eight states, because an orbital swells like n "
-    "squared. The n=7 state is roughly twenty times wider than the ground "
-    "state, which is why loosely bound electrons are the ones that do "
-    "chemistry.\n\n"
+    "radii across the eight states. The mean radius of an orbital is "
+    "(3n squared minus l(l+1)) / 2, so it swells roughly with the square "
+    "of n, tempered by the angular momentum. Measured on what you can "
+    "actually see, the last state is about {ratio:.0f} times wider than "
+    "the first. That swelling is why loosely bound electrons are the ones "
+    "that do chemistry.\n\n"
     "And the energies climb toward zero like 1 over n squared, from "
     "{e0:.2f} eV down to {e1:.2f} eV. Zero is where the electron escapes. "
     "The whole visible spectrum of hydrogen, every line Balmer measured in "
@@ -83,7 +85,8 @@ def body() -> str:
     return BODY_TMPL.format(
         nv=ev["nv"], norm=ev["worst_norm"], erel=ev["worst_energy_rel"],
         orth=ev["orthogonality"], b0=ev["boxes"][0], b1=max(ev["boxes"]),
-        e0=ev["shown"][0]["energy_ev"], e1=ev["shown"][-1]["energy_ev"])
+        e0=ev["shown"][0]["energy_ev"], e1=ev["shown"][-1]["energy_ev"],
+        ratio=max(ev["boxes"]) / ev["boxes"][0])
 
 
 def main() -> int:
