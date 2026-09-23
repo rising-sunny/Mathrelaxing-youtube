@@ -408,6 +408,7 @@ def main():
                     prev[x], cur[x] = a, b
                     tchg[x], glow_t[x], glow_k[x], tdur[x] = e["t"], e["t"], 1, 1.0 / FPS
                 n_fx += 1
+                n_col += 1              # el pais atascado queda coloreado aqui
             ei += 1
 
         k = count_at(t)
