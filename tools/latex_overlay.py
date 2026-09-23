@@ -19,7 +19,8 @@ para 1080 px de ancho; se reescala solo a otras resoluciones.
 
 El "scrim" es un degradado opaco en los bordes, debajo del texto: sin el, sobre
 una escena que llena el cuadro las formulas compiten con el dibujo y no se leen.
-`extent` es que fraccion de la altura cubre y `strength` su opacidad maxima.
+`extent` es que fraccion de la altura cubre y `strength` su opacidad maxima;
+`hold` (opcional) es una meseta a opacidad maxima antes del degradado.
 
     python tools/latex_overlay.py --spec spec.json --outdir out/ --res-w 1080 --res-h 1920
 """
@@ -74,6 +75,14 @@ def _scrim(spec, res_w, res_h):
             continue
         n = max(1, int(band["extent"] * res_h))
         ramp = np.linspace(band["strength"], 0.0, n) ** 1.5
+        # "hold": meseta opaca desde el borde antes del degradado. Sobre una
+        # escena clara y llena de detalle (un mapa de colores) el degradado
+        # solo deja el texto al ~20% de oscuridad y no se lee. Por defecto 0:
+        # los shorts anteriores quedan identicos.
+        h = int(band.get("hold", 0.0) * res_h)
+        if h > 0:
+            ramp = np.concatenate([np.full(h, band["strength"]), ramp])
+            n += h
         idx = rows[:n] if side == "top" else rows[res_h - n:][::-1]
         alpha[idx, 0] = np.maximum(alpha[idx, 0], ramp)
     img = np.zeros((res_h, res_w, 4), dtype=np.uint8)

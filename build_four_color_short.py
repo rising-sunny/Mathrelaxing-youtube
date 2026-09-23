@@ -46,7 +46,9 @@ def overlay_spec():
         texts.append(txt)
     return {
         "scrim": {"rgb": [4, 6, 14],
-                  "top": {"extent": 0.26, "strength": 0.96},
+                  # el mapa final es claro y denso: el texto necesita una
+                  # franja casi opaca, no solo un degradado
+                  "top": {"extent": 0.12, "strength": 0.88, "hold": 0.19},
                   "bottom": {"extent": 0.16, "strength": 0.70}},
         "static": [
             {"text": lead, "y": 0.946, "rgba": [1.0, 1.0, 1.0, 0.95], "size": 17},
