@@ -286,6 +286,82 @@ PRESETS = {
         "mix": (0.34, 0.28, 0.30, 0.10, 0.80, 0.26),
         "wind": (420.0, 5200.0),
     },
+    # Epico y con pulso: La menor, i-VI-III-VII (Am-F-C-G). Melodia principal
+    # que sube acorde tras acorde hasta el Re agudo del final, arpegio en
+    # corcheas debajo a menos intensidad, bombo en cada tiempo y charles en el
+    # contratiempo. Tres golpes graves marcan el video del cerebro de mosca:
+    # el estimulo (1.8 s), la Fibra Gigante (4.35 s) y el salto (6.52 s). El
+    # arco sube hasta el salto y vuelve al nivel de partida para cerrar.
+    "ignite": {
+        "prog": [
+            [(110.00, 0.86), (164.81, 0.56), (220.00, 0.46), (261.63, 0.30), (329.63, 0.22)],
+            [(87.31, 0.86), (130.81, 0.56), (174.61, 0.46), (220.00, 0.30), (261.63, 0.22)],
+            [(65.41, 0.86), (98.00, 0.56), (130.81, 0.46), (164.81, 0.30), (196.00, 0.22)],
+            [(98.00, 0.86), (146.83, 0.56), (196.00, 0.46), (246.94, 0.30), (293.66, 0.22)],
+        ],
+        "bass": 110.00,            # pedal de La2
+        "melody": [(0.0, 0.5, 440.00, 0.4),
+                   (0.0, 1.5, 659.26, 1.0),
+                   (0.5, 0.5, 523.25, 0.4),
+                   (1.0, 0.5, 659.26, 0.4),
+                   (1.5, 0.5, 523.25, 0.4),
+                   (1.5, 0.5, 587.33, 1.0),
+                   (2.0, 0.5, 440.00, 0.4),
+                   (2.0, 1.0, 523.25, 1.0),
+                   (2.5, 0.5, 523.25, 0.4),
+                   (3.0, 0.5, 659.26, 0.4),
+                   (3.0, 1.0, 659.26, 1.0),
+                   (3.5, 0.5, 523.25, 0.4),
+                   (4.0, 0.5, 349.23, 0.4),
+                   (4.0, 1.5, 698.46, 1.0),
+                   (4.5, 0.5, 440.00, 0.4),
+                   (5.0, 0.5, 523.25, 0.4),
+                   (5.5, 0.5, 440.00, 0.4),
+                   (5.5, 0.5, 659.26, 1.0),
+                   (6.0, 0.5, 349.23, 0.4),
+                   (6.0, 1.0, 523.25, 1.0),
+                   (6.5, 0.5, 440.00, 0.4),
+                   (7.0, 0.5, 523.25, 0.4),
+                   (7.0, 1.0, 880.00, 1.0),
+                   (7.5, 0.5, 440.00, 0.4),
+                   (8.0, 0.5, 523.25, 0.4),
+                   (8.0, 1.5, 783.99, 1.0),
+                   (8.5, 0.5, 659.26, 0.4),
+                   (9.0, 0.5, 783.99, 0.4),
+                   (9.5, 0.5, 659.26, 0.4),
+                   (9.5, 0.5, 659.26, 1.0),
+                   (10.0, 0.5, 523.25, 0.4),
+                   (10.0, 1.0, 783.99, 1.0),
+                   (10.5, 0.5, 659.26, 0.4),
+                   (11.0, 0.5, 783.99, 0.4),
+                   (11.0, 1.0, 1046.50, 1.0),
+                   (11.5, 0.5, 659.26, 0.4),
+                   (12.0, 0.5, 392.00, 0.4),
+                   (12.0, 1.0, 987.77, 1.0),
+                   (12.5, 0.5, 493.88, 0.4),
+                   (13.0, 0.5, 587.33, 0.4),
+                   (13.0, 0.5, 880.00, 1.0),
+                   (13.5, 0.5, 493.88, 0.4),
+                   (13.5, 0.5, 783.99, 1.0),
+                   (14.0, 0.5, 392.00, 0.4),
+                   (14.0, 1.0, 987.77, 1.0),
+                   (14.5, 0.5, 493.88, 0.4),
+                   (15.0, 0.5, 587.33, 0.4),
+                   (15.0, 1.0, 1174.66, 1.0),
+                   (15.5, 0.5, 493.88, 0.4)],
+        "beats": 16, "mel_decay": 1.4,
+        "bells": [880.00, 1046.50, 1318.51, 1567.98],
+        "n_bells": 5, "decay": 3.6, "wet": 0.36,
+        # pad, sub, campanas, viento, melodia, golpe
+        "mix": (0.40, 0.34, 0.18, 0.06, 1.05, 0.26),
+        "wind": (400.0, 5200.0),
+        "booms": [(1.80, 0.75), (4.35, 0.90), (6.52, 1.00)], "booms_mix": 0.55,
+        "arc": [(0.0, 0.62), (1.8, 0.70), (6.5, 1.00), (13.2, 1.00), (15.0, 0.62)],
+        "drive": [(0.0, 1.0, "k"), (0.5, 0.55, "h"), (1.0, 0.72, "k"), (1.5, 0.55, "h"), (2.0, 0.72, "k"), (2.5, 0.55, "h"), (3.0, 0.72, "k"), (3.5, 0.55, "h"), (4.0, 1.0, "k"), (4.5, 0.55, "h"), (5.0, 0.72, "k"), (5.5, 0.55, "h"), (6.0, 0.72, "k"), (6.5, 0.55, "h"), (7.0, 0.72, "k"), (7.5, 0.55, "h"), (8.0, 1.0, "k"), (8.5, 0.55, "h"), (9.0, 0.72, "k"), (9.5, 0.55, "h"), (10.0, 0.72, "k"), (10.5, 0.55, "h"), (11.0, 0.72, "k"), (11.5, 0.55, "h"), (12.0, 1.0, "k"), (12.5, 0.55, "h"), (13.0, 0.72, "k"), (13.5, 0.55, "h"), (14.0, 0.72, "k"), (14.5, 0.55, "h"), (15.0, 0.72, "k"), (15.5, 0.55, "h")],
+        "drive_mix": 0.42,
+        "drive_arc": [(0.0, 0.0), (1.6, 0.0), (2.4, 0.55), (6.5, 1.0), (12.8, 1.0),
+                      (14.6, 0.0), (15.0, 0.0)],
+    },
 }
 
 
@@ -369,7 +445,8 @@ def melody(n, T, rng, notes, beats, decay=1.9):
     beat = T / beats
     tail = int(min(3.4, T) * SR)
     tt = np.arange(tail) / SR
-    for start, dur, f0 in notes:
+    for note in notes:
+        start, dur, f0 = note[:3]
         f0 = snap(f0, T)
         env = np.exp(-tt / (decay * (0.55 + 0.45 * dur / 2.0)))
         env *= np.clip(tt / 0.012, 0.0, 1.0)          # ataque, sin click
@@ -378,6 +455,8 @@ def melody(n, T, rng, notes, beats, decay=1.9):
             v += a * np.sin(2 * np.pi * f0 * mult * tt)
         v += 0.26 * np.sin(2 * np.pi * snap(f0 * 2.0, T) * tt) * np.exp(-tt / (decay * 0.6))
         v *= env
+        if len(note) > 3:                             # intensidad opcional
+            v *= note[3]
         idx = (np.arange(tail) + int(start * beat * SR)) % n
         np.add.at(out, idx, v)
     return out / (np.max(np.abs(out)) or 1.0)
@@ -415,6 +494,57 @@ def impact(n, T, rng, lo=52.0, hi=190.0, boom=2.4, rise=2.8):
     r *= np.clip((rise - y) / 0.008, 0.0, 1.0)
     out[n - nr:] += 1.55 * r
     return out / (np.max(np.abs(out)) or 1.0)
+
+
+def drive(n, T, rng, pattern, beats):
+    """Pulso: bombo y charles. Cada golpe es (beat, intensidad, "k" o "h").
+
+    El bombo barre de 140 a 58 Hz y no mas abajo, por el mismo motivo que el
+    golpe de impact(): eq_tilt corta debajo de 45 Hz y en un telefono se
+    perderia. Se suma en circular, como la melodia, para que el ciclo cierre.
+    """
+    out = np.zeros(n)
+    beat = T / beats
+    nk = int(0.45 * SR)
+    x = np.arange(nk) / SR
+    kk = np.log(58.0 / 140.0) / 0.09
+    ph = 2 * np.pi * 140.0 * (np.exp(kk * np.minimum(x, 0.09)) - 1.0) / kk \
+        + 2 * np.pi * 58.0 * np.maximum(x - 0.09, 0.0)
+    kick = np.sin(ph) * np.exp(-x / 0.20) * np.clip(x / 0.002, 0, 1)
+    kick += 0.35 * rng.normal(0, 1, nk) * np.exp(-x / 0.006)
+    nh = int(0.12 * SR)
+    hn = rng.normal(0, 1, nh + 1)
+    hat = np.diff(hn) * np.exp(-np.arange(nh) / SR / 0.030) * 0.55
+    for b, vel, kind in pattern:
+        v = kick if kind == "k" else hat
+        idx = (np.arange(len(v)) + int(b * beat * SR)) % n
+        np.add.at(out, idx, vel * v)
+    return out / (np.max(np.abs(out)) or 1.0)
+
+
+def booms(n, T, rng, hits, lo=52.0, hi=200.0, boom=2.0):
+    """Golpes graves sueltos en instantes dados (segundos), sin el riser de
+    impact(): sirven para marcar momentos del video."""
+    out = np.zeros(n)
+    nb = min(n, int(boom * SR))
+    x = np.arange(nb) / SR
+    k = np.log(lo / hi) / boom
+    ph = 2 * np.pi * hi * (np.exp(k * x) - 1.0) / k
+    b = np.sin(ph) * np.exp(-x / 0.55) + 0.18 * rng.normal(0, 1, nb) * np.exp(-x / 0.04)
+    for t0, g in hits:
+        idx = (np.arange(nb) + int(t0 * SR)) % n
+        np.add.at(out, idx, g * b)
+    return out / (np.max(np.abs(out)) or 1.0)
+
+
+def arc_env(t, T, pts):
+    """Envolvente por tramos lineales (t, nivel). El primer y el ultimo nivel
+    tienen que ser iguales: si no, el ciclo pega un salto en la costura."""
+    ts = [p[0] for p in pts]
+    vs = [p[1] for p in pts]
+    assert abs(vs[0] - vs[-1]) < 1e-12 and ts[0] == 0.0 and abs(ts[-1] - T) < 1e-9, \
+        "el arco tiene que empezar y terminar en el mismo nivel"
+    return np.interp(t, ts, vs)
 
 
 def wind(n, T, rng, lo=260.0, hi=2100.0):
@@ -498,6 +628,15 @@ def compose(duration, preset="autumn", seed=7):
                  + g_mel * melody(n, T, rng, cfg["melody"], cfg["beats"],
                                   cfg["mel_decay"])
                  + g_hit * impact(n, T, np.random.default_rng(seed + 991)))
+        # capas opcionales: los presets que no las piden no cambian
+        if "booms" in cfg:
+            tonal = tonal + cfg["booms_mix"] * booms(
+                n, T, np.random.default_rng(seed + 443), cfg["booms"])
+        if "arc" in cfg:
+            tonal = tonal * arc_env(t, T, cfg["arc"])
+        if "drive" in cfg:
+            tonal = tonal + cfg["drive_mix"] * arc_env(t, T, cfg["drive_arc"]) * drive(
+                n, T, np.random.default_rng(seed + 557), cfg["drive"], cfg["beats"])
     else:
         tonal = (g_pad * pad(t, T, rng, cfg["pad"])
                  + g_sub * sub(t, T, cfg["bass"])

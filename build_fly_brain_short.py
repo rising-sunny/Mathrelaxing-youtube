@@ -4,7 +4,7 @@ Short 9:16 — Cerebro real de mosca (MaleCNS v1.0) simulado: el circuito del sa
 Detectores de amenaza -> Fibra Gigante -> motoneurona del salto, sobre
 las 164587 neuronas y 124 millones de sinapsis del conectoma.
 
-Musica: preset "drift" de audio/ambient_score.py.
+Musica: preset "ignite": La menor, melodia que sube, pulso y golpes en el estimulo, la Fibra Gigante y el salto de audio/ambient_score.py.
 """
 import json
 import os
@@ -17,7 +17,7 @@ NAME = "shorts_fly_brain"
 OUTDIR = os.path.join(REPO, "output", NAME)
 EVENTS = os.path.join(REPO, "data", f"{NAME}_events.json")
 
-MUSIC_PRESET = "drift"
+MUSIC_PRESET = "ignite"
 FRAMES = "900"
 RES = "1920"
 FPS = "60"
