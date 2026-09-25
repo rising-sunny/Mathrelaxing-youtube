@@ -2,9 +2,10 @@
 Short 9:16 — Doble rendija, un electron a la vez (15s).
 
 La onda de un electron (Schrodinger, split-step) cruza las dos rendijas,
-colapsa en un punto de la placa y 50000 impactos levantan las franjas.
+colapsa en un punto de la placa; despues una lluvia de electrones levanta
+las franjas, y al encender un detector en las rendijas desaparecen.
 
-Musica: preset "collapse" de audio/ambient_score.py.
+Musica: preset "titan" de audio/ambient_score.py.
 """
 import json
 import os
@@ -17,7 +18,7 @@ NAME = "shorts_slit"
 OUTDIR = os.path.join(REPO, "output", NAME)
 EVENTS = os.path.join(REPO, "data", f"{NAME}_events.json")
 
-MUSIC_PRESET = "collapse"
+MUSIC_PRESET = "titan"
 FRAMES = "900"
 RES = "1920"
 FPS = "60"
@@ -32,16 +33,25 @@ def overlay_spec():
     law = (r"$i\hbar\,\frac{\partial\psi}{\partial t}=-\frac{\hbar^2}{2m}"
            r"\nabla^2\psi+V\psi$")
     note = r"$\mathrm{colour=phase\ of}\ \psi\ \ \cdot\ \ \mathrm{brightness}=|\psi|$"
-    coll = int(round(ev["collapse_s"] * ev["fps"]))
+    fps = ev["fps"]
     texts = []
     for f in range(frames):
-        n = ev["shown"][min(f, len(ev["shown"]) - 1)]["n"]
-        if f <= coll:
+        t = f / fps
+        sh = ev["shown"][min(f, len(ev["shown"]) - 1)]
+        n2, n3 = sh["n2"], sh["n3"]
+        if t < ev["t1"]:
             txt = r"$\mathrm{one\ electron:\ its\ wave\ goes\ through\ BOTH\ slits}$"
-        elif n == 1:
+        elif t < ev["t1"] + 0.9:
             txt = r"$\mathrm{detected:\ ONE\ dot.\ The\ wave\ is\ gone}$"
+        elif t < ev["t_drop"]:
+            txt = (rf"$\mathrm{{each\ wave\ is\ one\ electron\ \cdot\ detected}}\ {n2:,}$"
+                   ).replace(",", "{,}")
+        elif t < ev["t_twist"] + 0.6:
+            txt = r"$\mathrm{now\ WATCH\ which\ slit\ it\ takes...}$"
+        elif t < 14.2:
+            txt = (rf"$\mathrm{{detector\ ON\ \cdot\ detected}}\ {n3:,}$").replace(",", "{,}")
         else:
-            txt = (rf"$\mathrm{{electrons\ detected:}}\ {n:,}$").replace(",", "{,}")
+            txt = r"$\mathrm{watched:\ the\ fringes\ are\ GONE}$"
         texts.append(txt)
     return {
         "scrim": {"rgb": [3, 4, 10],

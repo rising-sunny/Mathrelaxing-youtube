@@ -45,7 +45,7 @@ NAME = arg("--name", "shorts_slit")
 FPS = int(arg("--fps", 60))
 SEED = int(arg("--seed", 7))
 ONLY = {int(x) for x in arg("--only", "").split(",") if x}
-NDOTS = int(arg("--ndots", 50000))
+NDOTS = int(arg("--ndots", 20000))       # por acto
 
 H = RES
 W = RES * 9 // 16
@@ -70,8 +70,18 @@ DT = 0.5                                     # con 1.0 la pared rompe la energia
 V_WALL = 2.0                                # >> E = k0^2/2 ~ 0.14
 CAP_W, CAP_ETA = 60.0, 0.06
 
-T_COLLAPSE = float(arg("--t-collapse", 6.0))
 COLLAPSE_FRAC = 0.40                        # fraccion del flujo que ya llego
+
+# guion, en segundos, sobre los tiempos de la musica (16 tiempos en 15 s)
+T1 = 3.75                                   # colapso del primer electron (tiempo 4)
+T_STOP2 = 7.5                               # ultima salida de la primera lluvia
+T_DROP = 8.9                                # silencio antes del giro
+T_TWIST = 9.375                             # se encienden los detectores (tiempo 10)
+T_STOP3 = 13.0
+FLIGHT = 1.4                                # vuelo de cada electron en camara rapida
+GOLD, GOLD_DOT = [1.0, 0.72, 0.30], [1.0, 0.86, 0.58]
+CYAN, CYAN_DOT = [0.40, 0.78, 1.0], [0.62, 0.92, 1.0]
+RED = [1.0, 0.30, 0.50]
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(REPO, "output", NAME)
@@ -87,12 +97,14 @@ def kinetic(ny, nx, dt):
     return np.exp(-0.5j * dt * (ky[:, None] ** 2 + kx[None, :] ** 2))
 
 
-def wall_potential(ny, nx):
+def wall_potential(ny, nx, which="both"):
     y = np.arange(ny)[:, None] + 0.5
     x = np.arange(nx)[None, :] + 0.5 - nx / 2
     yw = Y_WALL * ny
     band = np.abs(y - yw) < (WALL_PX / SC) / 2
     open_ = (np.abs(np.abs(x) - D / 2) < A / 2)
+    if which == "left":
+        open_ = open_ & (x < 0)
     V = np.where(band & ~open_, V_WALL, 0.0)
     return V
 
@@ -214,20 +226,18 @@ def fringe_check(Px):
     return [float(m * SC) for m in meas], err
 
 
-def pass1():
-    if os.path.isfile(CACHE):
-        z = np.load(CACHE)
-        return {k: z[k] for k in z.files}
-    V = wall_potential(NY, NX)
-    mask = absorber(NY, NX)
-    sim = Sim(NY, NX, V, mask)
+def run_config(which, n_snap):
+    """Simula un electron con las dos rendijas ("both") o solo la izquierda
+    ("left"). Devuelve el flujo medido en la pantalla, la densidad promediada
+    y n_snap fotos de psi repartidas hasta el colapso."""
+    V = wall_potential(NY, NX, which)
+    sim = Sim(NY, NX, V, absorber(NY, NX))
     psi = packet(NY, NX, Y_SRC * NY)
     ys = int(Y_SCREEN * NY)
     yw = int(Y_WALL * NY)
     Px = np.zeros(NX)
     ghost = np.zeros((NY, NX), np.float32)
-    flux_t = []
-    trans = 0.0
+    flux_t, above = [], []
     step = 0
     while True:
         psi = sim.step(psi)
@@ -236,20 +246,62 @@ def pass1():
         Px += -jy * DT
         flux_t.append(float(np.sum(-jy) * DT))
         ghost += np.abs(psi) ** 2
-        if step % 100 == 0:
+        above.append(float(np.sum(np.abs(psi[:yw - 4]) ** 2)))
+        if step % 500 == 0:
             left = float(np.sum(np.abs(psi[ys - 4:yw]) ** 2))
-            tot = float(np.sum(np.abs(psi) ** 2))
-            print(f"[slit] paso {step}: entre pared y pantalla {left:.2e}, "
-                  f"norma {tot:.3f}, flujo acumulado {Px.sum():.4f}")
+            print(f"[slit] {which}: paso {step}, flujo acumulado {Px.sum():.4f}")
             if step > 600 and left < 1e-4 * max(Px.sum(), 1e-9):
                 break
     cum = np.cumsum(flux_t)
     n_coll = int(np.searchsorted(cum, COLLAPSE_FRAC * cum[-1]))
-    out = {"Px": Px, "ghost": ghost, "cum": cum, "n_coll": np.array(n_coll),
-           "steps": np.array(step)}
+    # cuando la onda cruza la pared: la mitad de lo que pasara ya esta arriba
+    ab = np.array(above)
+    n_slit = int(np.searchsorted(ab, 0.5 * ab[:n_coll].max()))
+    # fotos equiespaciadas hasta el colapso: se re-simula con el mismo
+    # integrador, sale identico y no hace falta guardar miles de pasos
+    snaps = []
+    targets = np.round(np.linspace(0, n_coll, n_snap)).astype(int)
+    psi = packet(NY, NX, Y_SRC * NY)
+    k = 0
+    for tg in targets:
+        while k < tg:
+            psi = sim.step(psi)
+            k += 1
+        snaps.append(psi.astype(np.complex64))
+    return {"Px": Px, "ghost": ghost, "n_coll": n_coll, "n_slit": n_slit,
+            "steps": step, "snaps": np.array(snaps)}
+
+
+def pass1(n_snap):
+    if os.path.isfile(CACHE):
+        z = np.load(CACHE)
+        out = {k: z[k] for k in z.files}
+        out["snaps_both"] = np.load(CACHE.replace(".npz", "_both.npy"), mmap_mode="r")
+        out["snaps_left"] = np.load(CACHE.replace(".npz", "_left.npy"), mmap_mode="r")
+        return out
+    b = run_config("both", n_snap)
+    l = run_config("left", n_snap)
+    out = {"Px": b["Px"], "ghost": b["ghost"], "n_coll": np.array(b["n_coll"]),
+           "n_slit": np.array(b["n_slit"]), "steps": np.array(b["steps"]),
+           "PxL": l["Px"], "ghostL": l["ghost"], "n_collL": np.array(l["n_coll"])}
     os.makedirs(OUT, exist_ok=True)
     np.savez(CACHE, **out)
-    return out
+    np.save(CACHE.replace(".npz", "_both.npy"), b["snaps"])
+    # la izquierda solo se usa en la lluvia: a media resolucion basta
+    np.save(CACHE.replace(".npz", "_left.npy"), l["snaps"][:, ::2, ::2])
+    return pass1(n_snap)
+
+
+def visibility(P):
+    """contraste de franjas en el centro: maximo central contra el minimo
+    mas cercano (donde caen los primeros ceros de dos rendijas)"""
+    x = (np.arange(NX) + 0.5 - NX / 2) * SC
+    L = (Y_WALL - Y_SCREEN) * H
+    x1 = 0.5 * LAM_PX * L / D_PX                  # primer minimo de Fraunhofer
+    p = gaussian_filter(P, 1.0)
+    c = p[np.abs(x) < 6].mean()
+    m = p[np.abs(np.abs(x) - x1) < 6].mean()
+    return (c - m) / (c + m)
 
 
 # ------------------------------------------------------------------ dibujo
@@ -327,126 +379,270 @@ def splat(acc, x, y, w):
                            minlength=H * W).reshape(H, W)
 
 
-def n_dots(t):
-    """cuantos electrones han llegado a la placa en el segundo t"""
-    t0 = T_COLLAPSE
-    singles = [0.0, 0.85, 1.55, 2.15, 2.6]
-    if t < t0:
+def smoothstep(a, b, x):
+    u = min(1.0, max(0.0, (x - a) / (b - a)))
+    return u * u * (3 - 2 * u)
+
+
+def wave_small(psi, ref_lo, ref_hi):
+    """color de fase y brillo de |psi| a la resolucion de la foto"""
+    ny = psi.shape[0]
+    yw = int(Y_WALL * ny)
+    gain = np.empty(ny)
+    gain[:yw] = 1 / ref_hi
+    gain[yw:] = 1 / ref_lo
+    a = np.abs(psi) * gain[:, None]
+    v = 1 - np.exp(-1.6 * a ** 1.3)
+    return palette(np.angle(psi) % (2 * np.pi)) * v[..., None]
+
+
+def emissions(t0, t1, r0, tau, rmax):
+    """instantes de salida de los electrones: ritmo que crece exponencial"""
+    out, t = [], t0
+    while t < t1:
+        out.append(t)
+        t += 1.0 / min(rmax, r0 * math.exp((t - t0) / tau))
+    return np.array(out)
+
+
+def fast_forward(t, n0, n1, ta, tb):
+    """camara rapida: de n0 a n1 impactos entre ta y tb"""
+    if t < ta:
         return 0
-    s = t - t0
-    n = sum(1 for q in singles if s >= q)
-    if s <= singles[-1]:
-        return n
-    t_end = 13.6 - t0
-    u = min(1.0, (s - singles[-1]) / (t_end - singles[-1]))
-    return int(round(len(singles) * (NDOTS / len(singles)) ** (u ** 1.15)))
+    u = min(1.0, (t - ta) / (tb - ta))
+    return int(round(n0 * (n1 / n0) ** (u ** 1.3)))
+
+
+def curve_layer(xs, h, y_base, height):
+    """linea fina con brillo: puntos cada medio pixel repartidos bilineal"""
+    lay = np.zeros((H, W))
+    xf = np.arange(0, W - 1, 0.5)
+    yf = y_base - np.interp(xf, xs, h) * height
+    splat(lay, xf, yf, np.full(len(xf), 0.5))
+    return gaussian_filter(lay, 0.6) * 2.2 + gaussian_filter(lay, 4.0) * 3.0
 
 
 def main():
     os.makedirs(FRAMES_DIR, exist_ok=True)
     ver = verify()
-    p1 = pass1()
+    n_snap = int(round(T1 * FPS)) + 1
+    p1 = pass1(n_snap)
     Px = np.maximum(p1["Px"], 0)
+    PL = np.maximum(p1["PxL"], 0)
+    PW = PL + PL[::-1]                       # con detector: suma sin interferencia
     ords, ferr = fringe_check(Px)
+    v2, vw = visibility(Px), visibility(PW)
+    print(f"[slit] contraste de franjas: dos rendijas {v2:.3f} | mirando por cual "
+          f"pasa {vw:.3f}")
+    assert v2 > 0.9, "sin detector deberia haber franjas casi perfectas"
+    assert vw < 0.1, "con detector las franjas tendrian que desaparecer"
     n_coll = int(p1["n_coll"])
-    trans = float(p1["Px"].sum())
-    print(f"[slit] colapso en el paso {n_coll} de {int(p1['steps'])}, "
-          f"llega a la pantalla {trans * 100:.1f}% de la probabilidad")
+    trans = float(Px.sum())
+    transL = float(PL.sum())
+    t_slit = float(p1["n_slit"]) / n_coll          # fraccion del vuelo al cruzar
+    print(f"[slit] colapso en el paso {n_coll}; pasa por las dos {trans * 100:.1f}%, "
+          f"por una sola {transL * 100:.1f}%; cruza la pared al {t_slit * 100:.0f}% "
+          f"del vuelo")
 
-    # donde caen los electrones: muestreo de la P(x) medida
     rng = np.random.default_rng(SEED)
-    cdf = np.cumsum(Px) / Px.sum()
-    u = rng.random(NDOTS)
-    xc = (np.searchsorted(cdf, u) + rng.random(NDOTS)) * SC
-    yc = rng.uniform(Y_PLATE0 * H + 6, Y_PLATE1 * H - 6, NDOTS)
 
-    wall, wall_m = wall_layer()
+    def sample(P, n):
+        cdf = np.cumsum(P) / P.sum()
+        return (np.searchsorted(cdf, rng.random(n)) + rng.random(n)) * SC
+
+    y0p, y1p = Y_PLATE0 * H + 6, Y_PLATE1 * H - 6
+    x2 = sample(Px, NDOTS)
+    y2 = rng.uniform(y0p, y1p, NDOTS)
+    side3 = rng.random(NDOTS) < 0.5                 # True: izquierda
+    x3 = np.where(side3, sample(PL, NDOTS), W - sample(PL, NDOTS))
+    y3 = rng.uniform(y0p, y1p, NDOTS)
+
+    # electrones visibles: el primero (acto 1) y las dos lluvias
+    em2 = emissions(T1, T_STOP2, 1.3, 1.1, 40.0)
+    em3 = emissions(T_TWIST, T_STOP3, 6.0, 1.3, 45.0)
+    arr2 = np.concatenate([[T1], em2 + FLIGHT])     # llegadas a la placa
+    arr3 = em3 + FLIGHT
+    n2v, n3v = len(arr2), len(arr3)
+    print(f"[slit] ondas visibles: {n2v} sin detector, {n3v} con detector")
+
+    wall, _ = wall_layer()
     base = screen_line()
-    # huella: densidad de probabilidad promediada en todo el experimento.
-    # Arriba de la pared en oro (lo que llega a la placa), abajo en azul (la
-    # onda que llega y la que rebota)
-    gy = zoom(p1["ghost"], (H / NY, W / NX), order=1)
     yw = int(Y_WALL * H)
-    gy[: int(Y_SCREEN * H)] = 0
-    hi, lo = gy[:yw], gy[yw:]
-    hi = np.clip((hi / np.percentile(hi[hi > 0], 99.7)) ** 0.55, 0, 1.4)
-    lo = np.clip((lo / np.percentile(lo[lo > 0], 99.7)) ** 0.8, 0, 1.2)
-    ghost_rgb = np.concatenate([hi[..., None] * np.array([1.0, 0.72, 0.30]),
-                                lo[..., None] * np.array([0.25, 0.45, 1.0]) * 0.6])
-    V = wall_potential(NY, NX)
-    sim = Sim(NY, NX, V, absorber(NY, NX))
-    psi = packet(NY, NX, Y_SRC * NY)
-    ref_lo = float(np.abs(psi).max())
+
+    def ghost_img(g, col_hi):
+        gy = zoom(g, (H / NY, W / NX), order=1)
+        gy[: int(Y_SCREEN * H)] = 0
+        hi, lo = gy[:yw], gy[yw:]
+        hi = np.clip((hi / np.percentile(hi[hi > 0], 99.7)) ** 0.55, 0, 1.4)
+        lo = np.clip((lo / np.percentile(lo[lo > 0], 99.7)) ** 0.8, 0, 1.2)
+        return np.concatenate([hi[..., None] * np.array(col_hi),
+                               lo[..., None] * np.array([0.25, 0.45, 1.0]) * 0.6])
+
+    ghost2 = ghost_img(p1["ghost"], GOLD)
+    ghost3 = ghost_img(p1["ghostL"] + p1["ghostL"][:, ::-1], CYAN)
+
+    snaps = p1["snaps_both"]
+    both_lo = np.ascontiguousarray(snaps[:, ::2, ::2])
+    left_lo = np.asarray(p1["snaps_left"])
+    ref_lo = float(np.abs(snaps[0]).max())
     ref_hi = ref_lo * 0.22
-    sim_step = 0
-    coll_f = int(round(T_COLLAPSE * FPS))
     last_wave = None
-    dot_x0, dot_y0 = xc[0], yc[0]
-    acc = np.zeros((H, W))
-    t_arr = np.full(NDOTS, -9.0)
-    placed = 0
+
+    # detectores sobre cada rendija
+    yy, xx = np.mgrid[0:H, 0:W]
+    y_det = Y_WALL * H - 30
+    rings = []
+    for sx in (-1, 1):
+        r = np.hypot(xx - (W / 2 + sx * D_PX / 2), yy - y_det)
+        ring = np.exp(-((r - 12) / 2.2) ** 2) + 0.5 * np.exp(-(r / 5) ** 2)
+        rings.append(ring + gaussian_filter(ring, 10) * 4)
+
+    # histograma: cuentas por tira de 4 px, escala comun (el pico sin detector = 1)
+    bw = 4
+    nb = W // bw
+    xb = (np.arange(nb) + 0.5) * bw
+
+    def binned(P):
+        xs = (np.arange(NX) + 0.5) * SC
+        return np.bincount(np.minimum((xs / bw).astype(int), nb - 1), P, nb)
+
+    pk = binned(Px / Px.sum()).max()
+
+    acc2 = np.zeros((H, W))
+    acc3 = np.zeros((H, W))
+    t2 = np.full(NDOTS, -9.0)
+    t3 = np.full(NDOTS, -9.0)
+    placed2 = placed3 = 0
     shown = []
     for f in range(FRAMES):
         t = f / FPS
         img = base.copy()
-        if f <= coll_f:
-            target = int(round(n_coll * f / coll_f))
-            while sim_step < target:
-                psi = sim.step(psi)
-                sim_step += 1
-            if not ONLY or f in ONLY or f == coll_f:
-                wrgb, _ = wave_rgb(psi, ref_lo, ref_hi)
-                last_wave = wrgb
-                img += wrgb * 1.35
-        else:
-            # colapso: la onda se encoge hacia el punto donde cae el electron
-            s = (t - T_COLLAPSE) / 0.35
-            if s < 1 and last_wave is not None:
-                yy = np.arange(H)[:, None] - dot_y0
-                xx = np.arange(W)[None, :] - dot_x0
-                r = (1 - s) ** 2 * 1400 + 4
-                m = np.exp(-(xx ** 2 + yy ** 2) / (2 * r * r)) * (1 - s) ** 1.5
-                img += last_wave * 1.35 * m[..., None]
-        # la huella de la onda (densidad promedio) aparece con los impactos
-        nd = n_dots(t)
-        if nd > placed:
-            k = np.arange(placed, nd)
-            wgt = np.full(len(k), 1.0)
-            splat(acc, xc[k], yc[k], wgt)
-            t_arr[k] = t
-            placed = nd
-        if placed:
-            ga = min(1.0, math.log1p(placed) / math.log1p(NDOTS)) ** 2.2
-            img += ghost_rgb * 0.55 * ga
+        # ---- acto 1: el primer electron, a resolucion completa
+        if t < T1:
+            last_wave, _ = wave_rgb(np.asarray(snaps[f]), ref_lo, ref_hi)
+            img += last_wave * 1.35
+        elif t < T1 + 0.35 and last_wave is not None:
+            s_ = (t - T1) / 0.35
+            r = (1 - s_) ** 2 * 1400 + 4
+            m = np.exp(-((xx - x2[0]) ** 2 + (yy - y2[0]) ** 2) / (2 * r * r)) * (1 - s_) ** 1.5
+            img += last_wave * 1.35 * m[..., None]
+
+        # ---- las lluvias: cada onda es un electron distinto, a media resolucion
+        live = []
+        for i, e in enumerate(em2):
+            a = t - e
+            if 0 <= a < FLIGHT + 0.2:
+                live.append((a, "both", i + 1, 2))
+        for i, e in enumerate(em3):
+            a = t - e
+            if 0 <= a < FLIGHT + 0.2:
+                live.append((a, "L" if side3[i] else "R", i, 3))
+        if live:
+            n_act = sum(1 for a, *_ in live if a < FLIGHT)
+            wgt = 1.0 / (1 + n_act / 5.0) ** 0.6
+            acc_w = np.zeros((NY // 2, NX // 2, 3))
+            for a, side, k, act in live:
+                idx = min(n_snap - 1, int(round(min(a, FLIGHT) / FLIGHT * (n_snap - 1))))
+                if side == "both":
+                    ps = both_lo[idx]
+                elif side == "L":
+                    ps = left_lo[idx]
+                else:
+                    ps = left_lo[idx][:, ::-1]
+                rgb = wave_small(ps, ref_lo, ref_hi)
+                g = wgt * min(1.0, a / 0.12)
+                if a >= FLIGHT:                   # colapso hacia su punto
+                    s_ = (a - FLIGHT) / 0.2
+                    dx, dy = (x2[k], y2[k]) if act == 2 else (x3[k], y3[k])
+                    r = (1 - s_) ** 2 * 450 + 2
+                    ly, lx = np.mgrid[0:NY // 2, 0:NX // 2]
+                    m = np.exp(-((lx - dx / 3) ** 2 + (ly - dy / 3) ** 2) / (2 * r * r))
+                    rgb = rgb * (m * (1 - s_) ** 1.5)[..., None]
+                acc_w += rgb * g
+            img += np.stack([zoom(acc_w[..., c], 3, order=1) for c in range(3)], -1) * 1.35
+
+        # ---- impactos
+        n2 = min(NDOTS, max(int(np.sum(arr2 <= t)), fast_forward(t, n2v, NDOTS, 7.0, 8.75)))
+        n3 = min(NDOTS, max(int(np.sum(arr3 <= t)), fast_forward(t, n3v, NDOTS, 12.2, 14.2)))
+        if n2 > placed2:
+            k = np.arange(placed2, n2)
+            splat(acc2, x2[k], y2[k], np.ones(len(k)))
+            t2[k] = t
+            placed2 = n2
+        if n3 > placed3:
+            k = np.arange(placed3, n3)
+            splat(acc3, x3[k], y3[k], np.ones(len(k)))
+            t3[k] = t
+            placed3 = n3
+
+        # huellas: la densidad promedio aparece cuando la lluvia se vuelve densa
+        g2 = 0.55 * smoothstep(5.6, 8.6, t) * (1 - 0.85 * smoothstep(T_TWIST, T_TWIST + 1.0, t))
+        g3 = 0.55 * smoothstep(T_TWIST + 1.0, 13.4, t)
+        if g2 > 0:
+            img += ghost2 * g2
+        if g3 > 0:
+            img += ghost3 * g3
+
+        dim2 = 1 - 0.72 * smoothstep(T_DROP, T_TWIST, t)
+        for acc, placed, col, dim, tt_, xs_, ys_ in (
+                (acc2, placed2, GOLD_DOT, dim2, t2, x2, y2),
+                (acc3, placed3, CYAN_DOT, 1.0, t3, x3, y3)):
+            if not placed:
+                continue
             dens = gaussian_filter(acc, 0.8)
-            gain_d = 6.0 / (1 + placed / 3000) ** 0.72
-            dimg = 1 - np.exp(-dens * gain_d)
-            img += dimg[..., None] * np.array([1.0, 0.86, 0.58]) * 1.6
-            # destello de los impactos recientes: cada uno brilla al llegar
-            age = t - t_arr[:placed]
+            gain_d = 6.0 / (1 + placed / 2500) ** 0.72
+            img += (1 - np.exp(-dens * gain_d))[..., None] * np.array(col) * 1.6 * dim
+            age = t - tt_[:placed]
             fresh = np.nonzero(age < 0.6)[0]
             if len(fresh):
-                amp = np.exp(-age[fresh] * 5.0) * (1.0 if placed <= 5 else
-                                                   min(1.0, 40.0 / len(fresh)))
+                amp = np.exp(-age[fresh] * 5.0) * min(1.0, 30.0 / len(fresh))
                 fl = np.zeros((H, W))
-                splat(fl, xc[fresh], yc[fresh], amp)
+                splat(fl, xs_[fresh], ys_[fresh], amp)
                 fl = gaussian_filter(fl, 2.5) * 25 + gaussian_filter(fl, 12) * 180
                 img += fl[..., None] * np.array([1.0, 0.95, 0.85])
+
+        # histogramas medidos sobre la placa, en escala comun
+        for placed, xs_, col, dim in ((placed2, x2, GOLD_DOT, dim2 ** 0.5),
+                                      (placed3, x3, CYAN_DOT, 1.0)):
+            if placed < 25:
+                continue
+            h = np.bincount(np.minimum((xs_[:placed] / bw).astype(int), nb - 1),
+                            minlength=nb) / (placed * pk)
+            h = gaussian_filter(h, 1.2)
+            al = min(1.0, math.log10(placed / 25) / 1.6) * dim
+            img += curve_layer(xb, h, y1p + 2, 0.105 * H)[..., None] * np.array(col) * al
+
+        # detectores: se encienden en el giro y destellan cuando pasa su electron
+        if t >= T_TWIST - 0.3:
+            on = smoothstep(T_TWIST - 0.3, T_TWIST, t)
+            boom = math.exp(-max(0.0, t - T_TWIST) * 3.0) * 2.5
+            for j, ring in enumerate(rings):
+                want_left = j == 0
+                fl = sum(math.exp(-abs(t - (e + t_slit * FLIGHT)) * 9.0)
+                         for i, e in enumerate(em3)
+                         if side3[i] == want_left and abs(t - (e + t_slit * FLIGHT)) < 0.5)
+                img += ring[..., None] * np.array(RED) * (0.45 * on + boom + 1.4 * min(fl, 1.5))
+
         img += wall
         img = tone(img)
         save(f, img)
-        shown.append({"n": int(placed), "t_sim": int(min(sim_step, n_coll))})
+        shown.append({"n2": int(placed2), "n3": int(placed3)})
         if f % 60 == 0:
-            print(f"[slit] cuadro {f}/{FRAMES}: paso {sim_step}, electrones {placed}")
+            print(f"[slit] cuadro {f}/{FRAMES}: ondas en vuelo {len(live)}, "
+                  f"impactos {placed2} + {placed3}")
 
     ev = {"duration_s": FRAMES / FPS, "fps": FPS, "ndots": NDOTS,
           "lambda_px": LAM_PX, "d_px": D_PX, "a_px": A_PX,
           "L_px": (Y_WALL - Y_SCREEN) * H,
           "fringe_px": LAM_PX * (Y_WALL - Y_SCREEN) * H / D_PX,
           "fringe_err": ferr, "peaks_px": ords,
-          "transmitted": trans, "collapse_s": T_COLLAPSE, "grid": [NY, NX],
+          "visibility_both": v2, "visibility_watched": vw,
+          "transmitted": trans, "transmitted_one": transL,
+          "t1": T1, "t_drop": T_DROP, "t_twist": T_TWIST,
+          "waves_visible": [n2v, n3v], "grid": [NY, NX],
           "verify": ver, "shown": shown,
-          "events": [{"frame": coll_f, "note": "A4"}]}
+          "events": [{"frame": int(round(T1 * FPS)), "note": "A4"},
+                     {"frame": int(round(T_TWIST * FPS)), "note": "A4"}]}
     os.makedirs(os.path.dirname(EVENTS), exist_ok=True)
     with open(EVENTS, "w", encoding="utf-8") as fh:
         json.dump(ev, fh)

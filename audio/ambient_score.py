@@ -422,6 +422,42 @@ PRESETS = {
         "drive_arc": [(0.0, 0.3), (6.0, 1.0), (13.4, 1.0), (15.0, 0.3)],
         "drive": [(7.0, 0.72, "k"), (7.5, 0.55, "h"), (8.0, 1.0, "k"), (8.5, 0.55, "h"), (9.0, 0.72, "k"), (9.5, 0.55, "h"), (10.0, 0.72, "k"), (10.5, 0.55, "h"), (11.0, 0.72, "k"), (11.5, 0.55, "h"), (12.0, 1.0, "k"), (12.5, 0.55, "h"), (13.0, 0.72, "k"), (13.5, 0.55, "h"), (14.0, 0.72, "k"), (14.5, 0.55, "h"), (15.0, 0.72, "k"), (15.5, 0.55, "h")],
     },
+    # Epico: Re menor, i-VI-iv-V (Dm-Bb-Gm-A). Ostinato de cuerdas en
+    # semicorcheas, metales con el tema, taikos, platillos y subidas. Dos
+    # golpes marcan el video de la doble rendija: el colapso del primer
+    # electron (3.75 s, tiempo 4) y el giro cuando se encienden los detectores
+    # (9.375 s, tiempo 10), precedido de medio tiempo de silencio.
+    "titan": {
+        "prog": [
+            [(73.42, 0.86), (110.00, 0.56), (146.83, 0.46), (174.61, 0.30), (220.00, 0.22)],
+            [(58.27, 0.86), (87.31, 0.56), (116.54, 0.46), (146.83, 0.30), (174.61, 0.22)],
+            [(98.00, 0.86), (146.83, 0.56), (196.00, 0.46), (233.08, 0.30), (293.66, 0.22)],
+            [(110.00, 0.86), (164.81, 0.56), (220.00, 0.46), (277.18, 0.30), (329.63, 0.22)],
+        ],
+        "bass": 73.42,             # pedal de Re2
+        "melody": [(4.0, 0.5, 1174.66, 0.5), (6.0, 0.5, 1396.91, 0.4),
+                   (10.0, 0.5, 1567.98, 0.6), (12.0, 0.5, 1318.51, 0.5)],
+        "beats": 16, "mel_decay": 1.2,
+        "bells": [1174.66, 1396.91, 1760.00],
+        "n_bells": 4, "decay": 2.8, "wet": 0.32,
+        # pad, sub, campanas, viento, melodia, golpe
+        "mix": (0.38, 0.30, 0.10, 0.05, 0.35, 0.0),
+        "wind": (400.0, 5200.0),
+        "booms": [(3.75, 0.90), (9.375, 1.00)], "booms_mix": 0.55,
+        "arc": [(0.0, 0.60), (3.70, 0.80), (3.75, 1.00), (8.85, 1.00), (8.95, 0.20),
+                (9.36, 0.20), (9.375, 1.00), (14.3, 1.00), (15.0, 0.60)],
+        "epic": {
+            # cuerdas, metales, taikos, platillos, subidas
+            "mix": (0.55, 0.75, 0.85, 0.22, 0.35),
+            "arc": [(0.0, 0.55), (3.70, 0.75), (3.75, 1.00), (8.85, 1.00), (8.92, 0.08),
+                    (9.36, 0.08), (9.375, 1.15), (14.3, 1.15), (15.0, 0.55)],
+            "strings": [(0.0, 0.25, 146.83), (0.25, 0.15, 146.83), (0.5, 0.206, 220.0), (0.75, 0.174, 146.83), (1.0, 0.338, 293.66), (1.25, 0.198, 146.83), (1.5, 0.267, 220.0), (1.75, 0.222, 174.61), (2.0, 0.425, 146.83), (2.25, 0.246, 146.83), (2.5, 0.328, 220.0), (2.75, 0.27, 146.83), (3.0, 0.512, 293.66), (3.25, 0.294, 146.83), (3.5, 0.389, 220.0), (3.75, 0.318, 174.61), (4.0, 0.6, 116.54), (4.25, 0.34, 116.54), (4.5, 0.445, 174.61), (4.75, 0.36, 116.54), (5.0, 0.673, 233.08), (5.25, 0.38, 116.54), (5.5, 0.496, 174.61), (5.75, 0.4, 146.83), (6.0, 0.745, 116.54), (6.25, 0.42, 116.54), (6.5, 0.547, 174.61), (6.75, 0.44, 116.54), (7.0, 0.818, 233.08), (7.25, 0.46, 116.54), (7.5, 0.598, 174.61), (7.75, 0.48, 146.83), (8.0, 0.891, 98.0), (8.25, 0.5, 98.0), (8.5, 0.649, 146.83), (8.75, 0.52, 98.0), (9.0, 0.964, 196.0), (9.25, 0.54, 98.0), (10.0, 1.0, 98.0), (10.0, 0.5, 196.0), (10.25, 0.55, 98.0), (10.25, 0.275, 196.0), (10.5, 0.7, 146.83), (10.5, 0.35, 293.66), (10.75, 0.55, 98.0), (10.75, 0.275, 196.0), (11.0, 1.0, 196.0), (11.0, 0.5, 392.0), (11.25, 0.55, 98.0), (11.25, 0.275, 196.0), (11.5, 0.7, 146.83), (11.5, 0.35, 293.66), (11.75, 0.55, 116.54), (11.75, 0.275, 233.08), (12.0, 1.0, 110.0), (12.0, 0.5, 220.0), (12.25, 0.55, 110.0), (12.25, 0.275, 220.0), (12.5, 0.7, 164.81), (12.5, 0.35, 329.62), (12.75, 0.55, 110.0), (12.75, 0.275, 220.0), (13.0, 1.0, 220.0), (13.0, 0.5, 440.0), (13.25, 0.55, 110.0), (13.25, 0.275, 220.0), (13.5, 0.7, 164.81), (13.5, 0.35, 329.62), (13.75, 0.55, 138.59), (13.75, 0.275, 277.18), (14.0, 1.0, 110.0), (14.0, 0.5, 220.0), (14.25, 0.55, 110.0), (14.25, 0.275, 220.0), (14.5, 0.7, 164.81), (14.5, 0.35, 329.62), (14.75, 0.55, 110.0), (14.75, 0.275, 220.0), (15.0, 1.0, 220.0), (15.0, 0.5, 440.0), (15.25, 0.55, 110.0), (15.25, 0.275, 220.0), (15.5, 0.7, 164.81), (15.5, 0.35, 329.62), (15.75, 0.55, 138.59), (15.75, 0.275, 277.18)],
+            "brass": [(0, 2, 293.66, 0.45), (2, 1, 349.23, 0.5), (3, 1, 440.0, 0.6), (4, 1.5, 466.16, 1.0), (5.5, 0.5, 440.0, 0.9), (6, 1, 349.23, 0.9), (7, 1, 587.33, 1.0), (8, 1, 587.33, 1.0), (9, 0.5, 466.16, 0.9), (10, 1.5, 783.99, 1.0), (11.5, 0.5, 698.46, 1.0), (12, 1.5, 659.26, 1.0), (13.5, 0.5, 554.37, 1.0), (14, 1, 440.0, 0.9), (15, 0.5, 659.26, 0.8), (15.5, 0.5, 554.37, 0.7)],
+            "taiko": [(1, 0.35), (2, 0.45), (3, 0.55), (3.5, 0.6), (3.75, 0.7), (4, 1.0), (4.5, 0.5), (5.0, 0.85), (5.5, 0.5), (6.0, 0.85), (6.5, 0.5), (7.0, 0.85), (7.5, 0.5), (8.0, 0.85), (8.5, 0.55), (8.75, 0.7), (9.0, 0.85), (9.25, 1.0), (10, 1.0), (10.5, 0.6), (11.0, 0.9), (11.5, 0.6), (12.0, 0.9), (12.5, 0.6), (13.0, 0.9), (13.5, 0.6), (14.0, 0.9), (14.5, 0.6), (15.0, 0.9), (15.5, 0.6), (14.25, 0.45), (14.75, 0.45), (15.25, 0.45), (15.75, 0.45)],
+            "crash": [(3.75, 1.0), (9.375, 1.0), (13.125, 0.5)],
+            "risers": [(2.2, 3.75), (7.4, 9.375)],
+        },
+    },
 }
 
 
@@ -607,6 +643,109 @@ def arc_env(t, T, pts):
     return np.interp(t, ts, vs)
 
 
+def _saw(f0, tt, top=5000.0):
+    """diente de sierra de banda limitada: armonicos hasta 'top' Hz"""
+    v = np.zeros_like(tt)
+    for k in range(1, int(top // f0) + 1):
+        v += np.sin(2 * np.pi * k * f0 * tt) / k * (1.0 / (1 + (k * f0 / 2400.0) ** 2))
+    return v
+
+
+def strings(n, T, notes, beats):
+    """Ostinato de cuerdas en staccato: sierra filtrada, ataque de 6 ms y
+    cola de 0.16 s. Cada nota es (beat, intensidad, Hz). Suma circular."""
+    out = np.zeros(n)
+    beat = T / beats
+    nl = int(0.5 * SR)
+    tt = np.arange(nl) / SR
+    env = np.clip(tt / 0.006, 0, 1) * np.exp(-tt / 0.16)
+    cache = {}
+    for b, vel, f0 in notes:
+        f0 = snap(f0, T)
+        if f0 not in cache:
+            # dos voces levemente desafinadas: seccion, no un solo instrumento
+            cache[f0] = (_saw(f0, tt) + _saw(f0 * 1.004, tt)) * env
+        idx = (np.arange(nl) + int(b * beat * SR)) % n
+        np.add.at(out, idx, vel * cache[f0])
+    return out / (np.max(np.abs(out)) or 1.0)
+
+
+def brass(n, T, notes, beats):
+    """Metales: sierra con ataque lento, vibrato que entra tarde y brillo que
+    crece con la nota. Cada nota es (beat, duracion en beats, Hz, intensidad)."""
+    out = np.zeros(n)
+    beat = T / beats
+    for b, dur, f0, vel in notes:
+        f0 = snap(f0, T)
+        L = dur * beat + 0.35
+        tt = np.arange(int(L * SR)) / SR
+        vib = 1 + 0.006 * np.sin(2 * np.pi * 5.2 * tt) * np.clip((tt - 0.25) / 0.3, 0, 1)
+        ph = 2 * np.pi * f0 * np.cumsum(vib) / SR
+        v = np.zeros_like(tt)
+        for k in range(1, 12):
+            if k * f0 > 6000:
+                break
+            bright = np.clip(0.35 + 0.65 * tt / 0.25, 0, 1)
+            v += np.sin(k * ph) / k ** (1.9 - 0.8 * bright)
+        v += 0.5 * np.sin(0.5 * ph)                       # octava abajo
+        env = np.clip(tt / 0.07, 0, 1) * np.clip((L - tt) / 0.30, 0, 1)
+        idx = (np.arange(len(tt)) + int(b * beat * SR)) % n
+        np.add.at(out, idx, vel * v * env)
+    return out / (np.max(np.abs(out)) or 1.0)
+
+
+def taiko(n, T, rng, hits, beats):
+    """Tambor grande: membrana con modos inarmonicos que caen de tono, mas el
+    golpe de la maza. Cada golpe es (beat, intensidad)."""
+    out = np.zeros(n)
+    beat = T / beats
+    nl = int(0.9 * SR)
+    x = np.arange(nl) / SR
+    bend = 1 + 0.35 * np.exp(-x / 0.05)
+    drum = np.zeros(nl)
+    for m, a, d in ((1.0, 1.0, 0.42), (1.59, 0.45, 0.22), (2.14, 0.30, 0.14), (2.65, 0.18, 0.09)):
+        ph = 2 * np.pi * 88.0 * m * np.cumsum(bend) / SR
+        drum += a * np.sin(ph) * np.exp(-x / d)
+    slap = rng.normal(0, 1, nl)
+    slap = np.convolve(slap, np.ones(6) / 6, mode="same") * np.exp(-x / 0.018)
+    drum = (drum + 0.9 * slap) * np.clip(x / 0.0015, 0, 1)
+    for b, vel in hits:
+        idx = (np.arange(nl) + int(b * beat * SR)) % n
+        np.add.at(out, idx, vel * drum)
+    return out / (np.max(np.abs(out)) or 1.0)
+
+
+def crash(n, T, rng, hits):
+    """Platillo: ruido brillante con cola larga. Golpes en segundos."""
+    out = np.zeros(n)
+    nl = int(2.2 * SR)
+    x = np.arange(nl) / SR
+    c = np.diff(rng.normal(0, 1, nl + 1)) * (np.exp(-x / 0.9) + 0.6 * np.exp(-x / 0.08))
+    c *= np.clip(x / 0.002, 0, 1)
+    for t0, g in hits:
+        idx = (np.arange(nl) + int(t0 * SR)) % n
+        np.add.at(out, idx, g * c)
+    return out / (np.max(np.abs(out)) or 1.0)
+
+
+def risers(n, T, rng, spans):
+    """Subidas de tension que terminan justo en un golpe: ruido que se abre y
+    un tono que sube una octava. Cada una es (inicio, fin) en segundos."""
+    out = np.zeros(n)
+    for t0, t1 in spans:
+        nl = int((t1 - t0) * SR)
+        y = np.arange(nl) / SR
+        fr = y / (t1 - t0)
+        ns = np.diff(rng.normal(0, 1, nl + 1))
+        ns = np.convolve(ns, np.ones(3) / 3, mode="same")
+        f = 220.0 * 2 ** (fr * 1.5)
+        tone_ = np.sin(2 * np.pi * np.cumsum(f) / SR) + 0.5 * np.sin(4 * np.pi * np.cumsum(f) / SR)
+        r = (0.6 * ns + 0.4 * tone_) * fr ** 2.4 * np.clip((t1 - t0 - y) / 0.006, 0, 1)
+        idx = (np.arange(nl) + int(t0 * SR)) % n
+        np.add.at(out, idx, r)
+    return out / (np.max(np.abs(out)) or 1.0)
+
+
 def wind(n, T, rng, lo=260.0, hi=2100.0):
     """Ruido moldeado sintetizado en frecuencia: periodico por definicion."""
     nf = n // 2 + 1
@@ -697,6 +836,20 @@ def compose(duration, preset="autumn", seed=7):
         if "drive" in cfg:
             tonal = tonal + cfg["drive_mix"] * arc_env(t, T, cfg["drive_arc"]) * drive(
                 n, T, np.random.default_rng(seed + 557), cfg["drive"], cfg["beats"])
+        if "epic" in cfg:
+            # orquesta: cuerdas, metales, taikos, platillos y subidas. Van
+            # despues del arco general, cada capa con su propio arco
+            ep = cfg["epic"]
+            env = arc_env(t, T, ep["arc"])
+            tonal = tonal + env * (
+                ep["mix"][0] * strings(n, T, ep["strings"], cfg["beats"])
+                + ep["mix"][1] * brass(n, T, ep["brass"], cfg["beats"])
+                + ep["mix"][2] * taiko(n, T, np.random.default_rng(seed + 661),
+                                       ep["taiko"], cfg["beats"]))
+            tonal = tonal + ep["mix"][3] * crash(
+                n, T, np.random.default_rng(seed + 673), ep["crash"])
+            tonal = tonal + ep["mix"][4] * risers(
+                n, T, np.random.default_rng(seed + 683), ep["risers"])
     else:
         tonal = (g_pad * pad(t, T, rng, cfg["pad"])
                  + g_sub * sub(t, T, cfg["bass"])
