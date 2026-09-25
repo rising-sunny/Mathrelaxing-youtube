@@ -23,48 +23,55 @@ EVENTS = os.path.join(REPO, "data", "shorts_slit_events.json")
 CHILE_UTC_OFFSET = -4
 PUBLISH_HOUR = 8
 
-TITLE = "One Electron Goes Through Both Slits 🌊 #physics #shorts"
+TITLE = "Watch the Electron and the Pattern Vanishes 👁️ #physics #shorts"
 
 BODY_TMPL = (
     "Feynman called it the only mystery of quantum mechanics.\n\n"
-    "Fire ONE electron at a wall with two slits. What travels is not a little "
-    "ball but a wave, and that wave goes through both slits at once. The two "
-    "halves overlap on the other side and interfere: where crest meets crest "
-    "the wave grows, where crest meets trough it cancels. Those dark rays in "
-    "the fan are places the electron is forbidden to land.\n\n"
-    "Then it hits the detector, and the wave is gone. One dot. One place. "
-    "Nothing about that single dot looks like a wave.\n\n"
-    "Now repeat it {n:,} times. Every dot is a separate electron, and yet "
-    "together they draw the stripes of the wave that no single electron "
-    "ever showed you.\n\n"
+    "Act 1. Fire ONE electron at a wall with two slits. What travels is not a "
+    "little ball but a wave, and it goes through both slits at once. The two "
+    "halves interfere: those dark rays in the fan are places the electron is "
+    "forbidden to land. Then it hits the detector and the wave is gone. One "
+    "dot.\n\n"
+    "Act 2. Keep firing. Every wave you see is a separate electron, and every "
+    "one ends as a single dot, yet together {n:,} dots draw the stripes of a "
+    "wave. The curve on the plate is the live histogram of where they "
+    "landed.\n\n"
+    "Act 3. Now put a detector at the slits to see which one each electron "
+    "takes. It lights up left or right, every time, never both. And the "
+    "stripes are gone: another {n:,} electrons pile into one smooth hump. "
+    "The gold curve is the pattern from before, the blue one is the pattern "
+    "while watching. Nothing else changed. Knowing the path kills the "
+    "interference.\n\n"
     "This is not an animation of the idea. It is the Schrodinger equation\n\n"
     "i hbar dpsi/dt = -hbar^2/(2m) laplacian(psi) + V psi\n\n"
     "solved numerically on a {nx} by {ny} grid with the split-step Fourier "
-    "method. The colour is the phase of psi, the brightness its size. The "
-    "dots are not placed by hand either: the flow of probability through "
-    "the detector line was measured during the simulation, and each "
-    "electron lands at a random spot drawn from that measured distribution. "
-    "Only {tr:.0f}% of the wave makes it through the slits at all; the rest "
-    "bounces back. The blue glow at the bottom at the end is the incoming "
-    "and reflected wave, averaged over the whole run.\n\n"
+    "method, once with both slits open and once with a single slit. The "
+    "colour is the phase of psi, the brightness its size. The dots are not "
+    "placed by hand: the flow of probability through the detector line was "
+    "measured in each simulation, and every electron lands at a random spot "
+    "drawn from that measured distribution. With the detector on, each "
+    "electron goes through one slit, so its dot is drawn from the one-slit "
+    "result.\n\n"
     "Checked before a single frame was drawn:\n\n"
-    "Probability is conserved: the total stays at 1 to within {ne:.0e}.\n\n"
-    "A free wave packet spreads exactly as the textbook formula says, "
-    "sigma(t) = sigma0 sqrt(1 + (hbar t / 2 m sigma0^2)^2), to {sr:.0e}.\n\n"
+    "Probability is conserved to {ne:.0e}, and a free wave packet spreads "
+    "exactly as the textbook formula says, to {sr:.0e}.\n\n"
     "Energy stays constant while a test packet slams into a wall, to "
     "{ed:.1%}.\n\n"
-    "And the bright fringes land where the two-slit formula puts them, "
-    "cos^2(pi d sin(theta) / lambda) under the single-slit envelope: "
-    "{npk} maxima, spaced about {fr:.0f} pixels apart as lambda L / d "
-    "predicts, all within {fe:.0%} of a fringe of the formula.\n\n"
-    "Tonomura's team at Hitachi did it with real electrons in 1989, one at "
-    "a time (with an electron biprism instead of two slits), and the dots "
-    "built up exactly like this."
+    "The bright fringes land where the two-slit formula puts them, "
+    "cos^2(pi d sin(theta) / lambda) under the single-slit envelope: {npk} "
+    "maxima, about {fr:.0f} pixels apart as lambda L / d predicts, all within "
+    "{fe:.0%} of a fringe.\n\n"
+    "Fringe contrast in the centre: {v2:.2f} with both paths open, {vw:.2f} "
+    "when the path is known.\n\n"
+    "Tonomura's team at Hitachi built up the pattern with real electrons in "
+    "1989, one at a time (with an electron biprism instead of two slits). "
+    "Which-path experiments with atoms and photons have shown the fringes "
+    "vanish when the path is marked."
 )
 
 TAGS_EXTRA = [
     "double slit experiment", "quantum mechanics", "wave particle duality",
-    "schrodinger equation", "electron interference", "wave function collapse",
+    "schrodinger equation", "electron interference", "wave function collapse", "which path", "observer effect",
     "feynman", "quantum physics", "interference pattern", "tonomura",
     "split step fourier", "physics simulation",
 ]
@@ -83,7 +90,8 @@ def body() -> str:
     v = ev["verify"]
     return BODY_TMPL.format(
         n=ev["ndots"], nx=ev["grid"][1], ny=ev["grid"][0],
-        tr=ev["transmitted"] * 100, ne=v["norm_err"], sr=v["sigma_rel"],
+        ne=v["norm_err"], sr=v["sigma_rel"],
+        v2=ev["visibility_both"], vw=ev["visibility_watched"],
         ed=v["energy_drift"], npk=len(ev["peaks_px"]), fr=ev["fringe_px"],
         fe=max(ev["fringe_err"], 0.01))
 

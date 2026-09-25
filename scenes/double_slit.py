@@ -466,6 +466,9 @@ def main():
     print(f"[slit] ondas visibles: {n2v} sin detector, {n3v} con detector")
 
     wall, _ = wall_layer()
+    # la onda no se dibuja encima de la placa: ahi ya colapso
+    ys_px = Y_SCREEN * H
+    below = np.clip((np.arange(H) - (ys_px - 4)) / 10.0, 0, 1)
     base = screen_line()
     yw = int(Y_WALL * H)
 
@@ -516,19 +519,37 @@ def main():
     shown = []
     for f in range(FRAMES):
         t = f / FPS
+        # ---- impactos
+        n2 = min(NDOTS, max(int(np.sum(arr2 <= t)), fast_forward(t, n2v, NDOTS, 7.0, 8.75)))
+        n3 = min(NDOTS, max(int(np.sum(arr3 <= t)), fast_forward(t, n3v, NDOTS, 12.2, 14.2)))
+        if n2 > placed2:
+            k = np.arange(placed2, n2)
+            splat(acc2, x2[k], y2[k], np.ones(len(k)))
+            t2[k] = t
+            placed2 = n2
+        if n3 > placed3:
+            k = np.arange(placed3, n3)
+            splat(acc3, x3[k], y3[k], np.ones(len(k)))
+            t3[k] = t
+            placed3 = n3
+
+        live = []
+        # vista previa: los impactos se acumulan igual, el dibujo se salta
+        if ONLY and f not in ONLY and f != int(math.ceil(T1 * FPS)) - 1:
+            shown.append({"n2": int(placed2), "n3": int(placed3)})
+            continue
         img = base.copy()
         # ---- acto 1: el primer electron, a resolucion completa
         if t < T1:
             last_wave, _ = wave_rgb(np.asarray(snaps[f]), ref_lo, ref_hi)
-            img += last_wave * 1.35
+            img += last_wave * (1.35 * below)[:, None, None]
         elif t < T1 + 0.35 and last_wave is not None:
             s_ = (t - T1) / 0.35
             r = (1 - s_) ** 2 * 1400 + 4
             m = np.exp(-((xx - x2[0]) ** 2 + (yy - y2[0]) ** 2) / (2 * r * r)) * (1 - s_) ** 1.5
-            img += last_wave * 1.35 * m[..., None]
+            img += last_wave * (1.35 * below)[:, None, None] * m[..., None]
 
         # ---- las lluvias: cada onda es un electron distinto, a media resolucion
-        live = []
         for i, e in enumerate(em2):
             a = t - e
             if 0 <= a < FLIGHT + 0.2:
@@ -539,7 +560,8 @@ def main():
                 live.append((a, "L" if side3[i] else "R", i, 3))
         if live:
             n_act = sum(1 for a, *_ in live if a < FLIGHT)
-            wgt = 1.0 / (1 + n_act / 5.0) ** 0.6
+            # brillo total casi constante: si no, decenas de ondas saturan en blanco
+            wgt = 1.0 / (1 + max(0, n_act - 1) / 1.5) ** 0.95
             acc_w = np.zeros((NY // 2, NX // 2, 3))
             for a, side, k, act in live:
                 idx = min(n_snap - 1, int(round(min(a, FLIGHT) / FLIGHT * (n_snap - 1))))
@@ -559,34 +581,21 @@ def main():
                     m = np.exp(-((lx - dx / 3) ** 2 + (ly - dy / 3) ** 2) / (2 * r * r))
                     rgb = rgb * (m * (1 - s_) ** 1.5)[..., None]
                 acc_w += rgb * g
-            img += np.stack([zoom(acc_w[..., c], 3, order=1) for c in range(3)], -1) * 1.35
-
-        # ---- impactos
-        n2 = min(NDOTS, max(int(np.sum(arr2 <= t)), fast_forward(t, n2v, NDOTS, 7.0, 8.75)))
-        n3 = min(NDOTS, max(int(np.sum(arr3 <= t)), fast_forward(t, n3v, NDOTS, 12.2, 14.2)))
-        if n2 > placed2:
-            k = np.arange(placed2, n2)
-            splat(acc2, x2[k], y2[k], np.ones(len(k)))
-            t2[k] = t
-            placed2 = n2
-        if n3 > placed3:
-            k = np.arange(placed3, n3)
-            splat(acc3, x3[k], y3[k], np.ones(len(k)))
-            t3[k] = t
-            placed3 = n3
+            img += np.stack([zoom(acc_w[..., c], 3, order=1) for c in range(3)], -1) \
+                * (1.35 * below)[:, None, None]
 
         # huellas: la densidad promedio aparece cuando la lluvia se vuelve densa
-        g2 = 0.55 * smoothstep(5.6, 8.6, t) * (1 - 0.85 * smoothstep(T_TWIST, T_TWIST + 1.0, t))
+        g2 = 0.55 * smoothstep(5.6, 8.6, t) * (1 - smoothstep(T_TWIST, T_TWIST + 1.2, t))
         g3 = 0.55 * smoothstep(T_TWIST + 1.0, 13.4, t)
         if g2 > 0:
             img += ghost2 * g2
         if g3 > 0:
             img += ghost3 * g3
 
-        dim2 = 1 - 0.72 * smoothstep(T_DROP, T_TWIST, t)
+        dim2 = 1 - 0.6 * smoothstep(T_DROP, T_TWIST, t)
         for acc, placed, col, dim, tt_, xs_, ys_ in (
                 (acc2, placed2, GOLD_DOT, dim2, t2, x2, y2),
-                (acc3, placed3, CYAN_DOT, 1.0, t3, x3, y3)):
+                (acc3, placed3, CYAN_DOT, 0.75, t3, x3, y3)):
             if not placed:
                 continue
             dens = gaussian_filter(acc, 0.8)
@@ -602,13 +611,13 @@ def main():
                 img += fl[..., None] * np.array([1.0, 0.95, 0.85])
 
         # histogramas medidos sobre la placa, en escala comun
-        for placed, xs_, col, dim in ((placed2, x2, GOLD_DOT, dim2 ** 0.5),
+        for placed, xs_, col, dim in ((placed2, x2, GOLD_DOT, dim2 ** 0.3),
                                       (placed3, x3, CYAN_DOT, 1.0)):
             if placed < 25:
                 continue
             h = np.bincount(np.minimum((xs_[:placed] / bw).astype(int), nb - 1),
                             minlength=nb) / (placed * pk)
-            h = gaussian_filter(h, 1.2)
+            h = np.minimum(gaussian_filter(h, 1.2), 1.12)    # que no salga de la placa
             al = min(1.0, math.log10(placed / 25) / 1.6) * dim
             img += curve_layer(xb, h, y1p + 2, 0.105 * H)[..., None] * np.array(col) * al
 
