@@ -45,7 +45,8 @@ BODY_TMPL = (
     "neighbours copy the swerve, and the panic travels through the flock as "
     "a wave. Order drops to {pmin:.2f}, the "
     "sheet tears and folds, and then it heals itself. At dusk the flock "
-    "pours down into the reeds to sleep.\n\n"
+    "pours down into the reeds to sleep, more aligned than ever: phi "
+    "{pend:.2f}.\n\n"
     "The maths underneath was checked first. In the Vicsek model, the "
     "simplest version of this rule, order must switch off as noise goes "
     "up, like a magnet losing its magnetism when heated. Measured with 2,500 "
@@ -77,7 +78,7 @@ def body() -> str:
     v = ev["verify"]["phis"]
     return BODY_TMPL.format(
         n=ev["n"], p0=phis[0], pmax=max(phis[:f0]), pmin=min(phis[f0:f1]),
-        v0=v[0], v1=v[1], v2=v[2], v3=v[3])
+        v0=v[0], v1=v[1], v2=v[2], v3=v[3], pend=phis[-1])
 
 
 def main() -> int:
