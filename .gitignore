@@ -44,3 +44,4 @@ output/**/cluster.npy
 
 # conectoma MaleCNS (FlyEM, CC-BY): ~560 MB, se descarga solo desde el bucket publico
 data/malecns/
+data/soundfonts/
