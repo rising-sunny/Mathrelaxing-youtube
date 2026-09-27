@@ -85,7 +85,7 @@ WATER, JELLY, SNOW, SAND = 0, 1, 2, 3
 FLOOR = 0.25
 WALL_L, WALL_R = 0.02, 0.98
 PEGS = [(0.28, 0.78, 0.05), (0.75, 0.93, 0.05)]
-HOP = (0.40, 0.60, 1.10, 1.36)                  # tolva: x0, x1, y0, y1
+HOP = (0.42, 0.58, 1.10, 1.36)                  # tolva: x0, x1, y0, y1
 HOP_OPEN = 0.035                                # media apertura del fondo
 GATE_X = 0.63
 TANK_TOP = 0.60
@@ -190,10 +190,13 @@ def grid_update():
             px, py = i * DX, j * DX
             # caja
             if walls_on[None] == 1:
-                if px < WALL_L and grid_v[i, j][0] < 0:
-                    grid_v[i, j][0] = 0
-                if px > WALL_R and grid_v[i, j][0] > 0:
-                    grid_v[i, j][0] = 0
+                # paredes con roce: sin esto el agua trepa en chorros finos
+                if px < WALL_L:
+                    grid_v[i, j][0] = ti.max(grid_v[i, j][0], 0.0)
+                    grid_v[i, j][1] *= 0.9
+                if px > WALL_R:
+                    grid_v[i, j][0] = ti.min(grid_v[i, j][0], 0.0)
+                    grid_v[i, j][1] *= 0.9
                 if py < FLOOR:
                     grid_v[i, j][1] = ti.max(grid_v[i, j][1], 0.0)
                     grid_v[i, j][0] *= 0.6                      # roce con el suelo
@@ -224,8 +227,9 @@ def grid_update():
                     grid_v[i, j][1] = ti.max(grid_v[i, j][1], 0.0)
                 # compuerta del deposito: se levanta desde abajo
                 if ti.abs(px - GATE_X) < 1.5 * DX and py > gate_y[None] and \
-                        py < TANK_TOP + 0.08 and grid_v[i, j][0] < 0:
+                        py < TANK_TOP + 0.22 and grid_v[i, j][0] < 0:
                     grid_v[i, j][0] = 0
+                    grid_v[i, j][1] *= 0.9
 
 
 @ti.kernel
@@ -393,7 +397,7 @@ def build_scene(rng):
         return (p[:, 0] > left + 2 * DX) & (p[:, 0] < right - 2 * DX)
     groups["sand"] = place(lattice(x0, x1, y0 + DX, y1 - 0.02, rng, in_hop), SAND)
     # gelatina: bloque que cae sobre el poste izquierdo
-    groups["jelly"] = place(lattice(0.17, 0.37, 1.05, 1.25, rng), JELLY, vel=(0.25, 0.0))
+    groups["jelly"] = place(lattice(0.08, 0.26, 1.05, 1.23, rng), JELLY, vel=(0.0, 0.0))
     # nieve: bola, entra en escena mas tarde (inactiva hasta entonces)
     groups["snow"] = place(lattice(0.66, 0.84, 1.16, 1.34, rng,
                                    lambda p: np.hypot(p[:, 0] - 0.75, p[:, 1] - 1.25) < 0.088),
@@ -418,6 +422,136 @@ def splat(acc, xs, ys, w):
                            minlength=H * W).reshape(H, W)
 
 
+def sim_px(xs, ys):
+    return xs * W, H - ys / YMAX * H
+
+
+def static_layers():
+    """fondo, suelo, postes y tolva: no cambian"""
+    yy, xx = np.mgrid[0:H, 0:W]
+    u = yy / H
+    bg = np.stack([0.030 + 0.03 * u, 0.035 + 0.035 * u, 0.07 + 0.05 * u], -1)
+    r = np.hypot((xx - W / 2) / W, (yy - H * 0.55) / H)
+    bg *= (1 - 0.55 * r ** 2)[..., None]
+    # rejilla de laboratorio muy tenue
+    gx = np.abs(((xx / W) / 0.05 + 0.5) % 1 - 0.5) < 0.012
+    gy = np.abs((((H - yy) / H * YMAX) / 0.05 + 0.5) % 1 - 0.5) < 0.012
+    bg += ((gx | gy) * 0.018)[..., None]
+    fy = H - FLOOR / YMAX * H
+    floor = yy > fy
+    bg[floor] = np.array([0.055, 0.06, 0.08]) * (1 - 0.4 * ((yy[floor] - fy) / (H - fy)))[:, None]
+    bg[(np.abs(yy - fy) < 1.5)] = [0.35, 0.40, 0.50]
+    fg = np.zeros((H, W, 4))                      # rgb + alfa, va encima de todo
+    for cx, cy, rr in PEGS:
+        px, py = sim_px(cx, cy)
+        rp = rr * W
+        d = np.hypot(xx - px, yy - py)
+        m = np.clip(rp - d + 0.5, 0, 1)
+        lx, ly = (xx - px) / rp, (yy - py) / rp
+        shade = np.clip(0.45 - 0.35 * lx - 0.45 * ly, 0.05, 1)
+        spec = np.exp(-((lx + 0.35) ** 2 + (ly + 0.45) ** 2) / 0.02)
+        col = np.stack([0.55 * shade + spec, 0.58 * shade + spec, 0.66 * shade + spec], -1)
+        fg[..., :3] = fg[..., :3] * (1 - m[..., None]) + col * m[..., None]
+        fg[..., 3] = np.maximum(fg[..., 3], m)
+    # tolva de vidrio
+    x0, x1, y0, y1 = HOP
+    gl = np.zeros((H, W))
+    for fr in np.linspace(0, 1, 400):
+        yv = y0 + (y1 - y0) * fr
+        for xv in (0.5 - HOP_OPEN - (0.5 - HOP_OPEN - x0) * fr,
+                   0.5 + HOP_OPEN + (x1 - 0.5 - HOP_OPEN) * fr):
+            px, py = sim_px(xv, yv)
+            gl[int(py), int(px)] = 1
+    gl = np.clip(gaussian_filter(gl, 1.0) * 5, 0, 1)
+    glass = np.array([0.55, 0.80, 1.0])
+    fg[..., :3] += gl[..., None] * glass
+    fg[..., 3] = np.maximum(fg[..., 3], gl * 0.8)
+    return {"bg": bg, "fg": fg, "xx": xx, "yy": yy}
+
+
+def splat_rgbw(xs, ys, cols, w):
+    acc = np.zeros((4, H * W))
+    xi = np.floor(xs).astype(int)
+    yi = np.floor(ys).astype(int)
+    fx, fy = xs - xi, ys - yi
+    ok = (xi >= 0) & (xi < W - 1) & (yi >= 0) & (yi < H - 1)
+    xi, yi, fx, fy, w, cols = xi[ok], yi[ok], fx[ok], fy[ok], w[ok], cols[ok]
+    for dx, dy, ww in ((0, 0, (1 - fx) * (1 - fy)), (1, 0, fx * (1 - fy)),
+                       (0, 1, (1 - fx) * fy), (1, 1, fx * fy)):
+        idx = (yi + dy) * W + xi + dx
+        wt = w * ww
+        acc[3] += np.bincount(idx, wt, minlength=H * W)
+        for c in range(3):
+            acc[c] += np.bincount(idx, wt * cols[:, c], minlength=H * W)
+    return acc.reshape(4, H, W)
+
+
+def render(ps, vs, ms, ac, rest, tone, t, st):
+    sel = ac == 1
+    ps, vs, ms, rest, tone = ps[sel], vs[sel], ms[sel], rest[sel], tone[sel]
+    xs, ys = sim_px(ps[:, 0], ps[:, 1])
+    cols = np.zeros((len(ps), 3))
+    sp = np.linalg.norm(vs, axis=1)
+    # agua: azul que se aclara con la velocidad, espuma blanca si va rapida
+    w_ = ms == WATER
+    foam = np.clip((sp[w_] - 1.2) / 1.5, 0, 1)[:, None]
+    cols[w_] = np.array([0.08, 0.42, 0.98]) * (1 - foam) + np.array([0.90, 0.97, 1.0]) * foam
+    # gelatina: cuadricula pintada en su forma de reposo -> se ve la deformacion
+    j_ = ms == JELLY
+    cx = np.floor((rest[j_, 0] - 0.08) / 0.03) + np.floor((rest[j_, 1] - 1.05) / 0.03)
+    chk = (cx % 2)[:, None]
+    cols[j_] = np.array([0.20, 0.95, 0.72]) * chk + np.array([0.95, 0.30, 0.62]) * (1 - chk)
+    s_ = ms == SNOW
+    cols[s_] = np.array([1.12, 1.15, 1.2]) * tone[s_, None] ** 0.25
+    a_ = ms == SAND
+    cols[a_] = np.array([0.95, 0.70, 0.33]) * tone[a_, None]
+    # el agua se suaviza mas que los solidos: es una superficie continua
+    rgb = np.zeros((H, W, 3))
+    wsum = np.zeros((H, W))
+    for sig_, sel_ in ((2.2, w_), (1.1, ~w_)):
+        if not sel_.any():
+            continue
+        acc = splat_rgbw(xs[sel_], ys[sel_], cols[sel_], np.ones(sel_.sum()))
+        ws = gaussian_filter(acc[3], sig_)
+        wsum += ws
+        for c in range(3):
+            rgb[..., c] += gaussian_filter(acc[c], sig_)
+    rgb /= np.maximum(wsum, 1e-6)[..., None]
+    alpha = np.clip(1 - np.exp(-wsum * 1.8), 0, 1)
+    # relieve: normal a partir de la cobertura suavizada -> luz desde arriba a la izquierda
+    hgt = gaussian_filter(alpha, 3.0)
+    gy, gx = np.gradient(hgt)
+    nx, ny, nz = -gx * 9, -gy * 9, np.ones_like(gx)
+    nn = np.sqrt(nx * nx + ny * ny + nz * nz)
+    lx, ly, lz = -0.45, -0.6, 0.66
+    lam = np.clip((nx * lx + ny * ly + nz * lz) / nn, 0, 1)
+    # especular solo en agua y gelatina
+    wet = np.zeros(len(ps))
+    wet[w_] = 1.0
+    wet[j_] = 0.7
+    accw = splat_rgbw(xs, ys, np.zeros((len(ps), 3)), wet)[3]
+    wetm = np.clip(gaussian_filter(accw, 2.0) / np.maximum(wsum, 1e-6), 0, 1)
+    hx, hy, hz_ = lx, ly, lz + 1
+    hn = math.sqrt(hx * hx + hy * hy + hz_ * hz_)
+    spec = np.clip((nx * hx + ny * hy + nz * hz_) / (nn * hn), 0, 1) ** 40 * wetm
+    shade = 0.55 + 0.6 * lam
+    mat_img = rgb * shade[..., None] + spec[..., None] * 0.8
+    img = st["bg"] * (1 - alpha[..., None]) + mat_img * alpha[..., None]
+    # compuerta: panel metalico que sube
+    gx0 = GATE_X * W
+    gyb = H - max(gate_y[None], FLOOR) / YMAX * H
+    gyt = H - (TANK_TOP + 0.22) / YMAX * H
+    pan = (np.abs(st["xx"] - gx0) < 5) & (st["yy"] < gyb) & (st["yy"] > gyt)
+    img[pan] = img[pan] * 0.2 + np.array([0.50, 0.55, 0.62]) * 0.8
+    fg = st["fg"]
+    img = img * (1 - fg[..., 3:]) + fg[..., :3]
+    # brillo suave de lo mas claro
+    lum = img.max(-1)
+    bloom = gaussian_filter(np.clip(lum - 0.75, 0, None), 8)
+    img += bloom[..., None] * np.array([0.6, 0.75, 1.0]) * 0.8
+    return np.clip(img, 0, 1) ** 0.92
+
+
 def save(f, img):
     if ONLY and f not in ONLY:
         return
@@ -435,6 +569,7 @@ def main():
     tone = rng.uniform(0.75, 1.15, n)
     sub = int(round(SIM_PER_S / FPS / DT))
     print(f"[mpm] {n} particulas | {sub} subpasos por cuadro | rejilla {NX}x{NY}")
+    static = static_layers()
     shown = []
     for f in range(FRAMES):
         t = f / FPS
@@ -450,20 +585,12 @@ def main():
         shown.append({"t": t})
         if ONLY and f not in ONLY:
             continue
-        ps = x.to_numpy()[:n]
-        ms = mat.to_numpy()[:n]
-        ac = act.to_numpy()[:n]
-        px, py = to_px(ps)
-        img = np.zeros((H, W, 3)) + 0.05
-        for m_, col in ((WATER, (0.2, 0.5, 1.0)), (JELLY, (0.3, 1.0, 0.8)),
-                        (SNOW, (1, 1, 1)), (SAND, (1.0, 0.75, 0.3))):
-            sel = (ms == m_) & (ac == 1)
-            d = np.zeros((H, W))
-            splat(d, px[sel], py[sel], np.ones(sel.sum()))
-            d = gaussian_filter(d, 1.5)
-            img += (1 - np.exp(-d * 3))[..., None] * np.array(col)
+        img = render(x.to_numpy()[:n], v.to_numpy()[:n], mat.to_numpy()[:n],
+                     act.to_numpy()[:n], rest, tone, t, static)
         save(f, img)
         print(f"[mpm] cuadro {f}")
+        if ONLY and f >= max(ONLY):
+            break
 
     ev = {"duration_s": FRAMES / FPS, "fps": FPS, "n": int(n), "verify": ver,
           "shown": shown, "t_snow": T_SNOW, "t_sand": T_SAND, "t_gate": T_GATE}
