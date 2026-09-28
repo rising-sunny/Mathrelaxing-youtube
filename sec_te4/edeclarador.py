@@ -5,6 +5,7 @@ lee: listados, bandejas y la ventana del certificado ("Imprimir" para el PDF). N
 ni crea presentaciones.
 """
 import json
+import logging
 import re
 import time
 import unicodedata
@@ -28,6 +29,7 @@ BANDEJAS = {  # estado -> opción del menú "Bandeja de Entrada"
 }
 ESTADOS = ("Inscrito", *BANDEJAS)
 RUT = r"\d{1,2}(?:\.?\d{3}){2}-[\dkK]"
+logging.getLogger("pypdf").setLevel(logging.ERROR)  # avisos internos de PDF que no afectan la lectura
 JSID = re.compile(r";jsessionid=[^?#]*", re.I)
 ES_TE4 = re.compile(r"\bTE-?4\b", re.I)
 
@@ -312,6 +314,12 @@ def leer_certificado(texto):
     return d
 
 
+def leer_pdf(ruta):
+    """Datos de un certificado TE4 guardado en PDF."""
+    from pypdf import PdfReader
+    return leer_certificado(" ".join(p.extract_text() or "" for p in PdfReader(ruta).pages))
+
+
 # ---------------------------------------------------------------- RUT, base local y búsqueda
 
 def rut_normal(rut):
@@ -402,6 +410,20 @@ def actualizar(rut, clave, visible=False, avisar=lambda texto, i=None, n=None: N
                                    "vuelve a actualizar para continuar.")
             if i % 10 == 0:
                 guardar(datos)
+        # algunos certificados antiguos traen la comuna y la región solo en el PDF, no en la ventana
+        sin_comuna = [r for r in inscritos if r.get("kw") is not None and not r.get("comuna")]
+        for i, r in enumerate(sin_comuna, 1):
+            if detener():
+                break
+            ruta = ruta_pdf(rut, r["folio"])
+            try:
+                if not ruta.exists():
+                    avisar(f"Leyendo la comuna desde el PDF del folio {r['folio']} ({i} de {len(sin_comuna)})…",
+                           i, len(sin_comuna))
+                    s.descargar_pdf(r["folio"], ruta)
+                r.update({k: v for k, v in leer_pdf(ruta).items() if k in ("comuna", "region") and v})
+            except (PWError, ErrorSEC, OSError) as e:
+                avisar(f"No se pudo leer el PDF del folio {r['folio']}: {str(e).splitlines()[0]}")
     datos["actualizado"] = datetime.now().strftime("%d/%m/%Y %H:%M")
     guardar(datos)
     return datos
