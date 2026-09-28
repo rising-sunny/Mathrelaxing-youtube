@@ -6,13 +6,13 @@ Instalación (una vez):
 
 Uso:
     python sec_te4/descargar_te4.py                    # todos los certificados del listado
-    python sec_te4/descargar_te4.py --min-kw 10        # deja aparte solo los de potencia declarada >= 10 kW
+    python sec_te4/descargar_te4.py --min-kw 10        # deja aparte los de Potencia Total Instalada del EG >= 10 kW
     python sec_te4/descargar_te4.py --folios 123,456   # solo esos folios de inscripción
     python sec_te4/descargar_te4.py --manual           # entras tú (p. ej. con ClaveÚnica) y el script descarga
 
 El RUT y la clave se leen de las variables de entorno SEC_RUT y SEC_PASSWORD; si no están, se piden
 por consola. Los PDF quedan en sec_te4/certificados/TE4_<folio>.pdf (carpeta ignorada por git). Con
---min-kw, los de menor potencia declarada pasan a certificados/bajo_minimo/ y los que no se pudieron
+--min-kw, los de menor potencia pasan a certificados/bajo_minimo/ y los que no se pudieron
 leer con seguridad a certificados/revisar/.
 """
 import argparse
@@ -332,15 +332,15 @@ def descargar(contexto, page, destino, buscados, args):
     return ok, omitidos, fallidos
 
 
-def potencias_declaradas(ruta):
-    """Valores (kW) que siguen al rótulo 'Potencia Total Declarada' en el texto del certificado."""
+def potencias_eg(ruta):
+    """Valores (kW) de 'Potencia Total Instalada del EG' (sección 3, Detalle de Instalaciones) del certificado."""
     from pypdf import PdfReader
     try:
         texto = " ".join(p.extract_text() or "" for p in PdfReader(ruta).pages)
     except Exception:
         return set()
     texto = unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode().lower()
-    for rotulo in (r"potencia\s+total\s+declarada", r"potencia\s+declarada"):
+    for rotulo in (r"potencia\s+total\s+instalada\s+del\s+eg", r"potencia\s+total\s+instalada"):
         valores = set()
         for m in re.finditer(rotulo, texto):
             n = re.search(r"\d+(?:[.,]\d+)?", texto[m.end():m.end() + 60])
@@ -352,14 +352,14 @@ def potencias_declaradas(ruta):
 
 
 def clasificar(destino, min_kw):
-    """Deja en `destino` solo los certificados con potencia declarada >= min_kw; el resto va a subcarpetas.
+    """Deja en `destino` solo los certificados con potencia instalada del EG >= min_kw; el resto va a subcarpetas.
 
     Si el PDF no trae el valor o trae varios distintos, va a revisar/ en vez de adivinar.
     """
     bajo, revisar = destino / "bajo_minimo", destino / "revisar"
     elegidos, dudosos, n_bajo = [], [], 0
     for pdf in sorted({p for d in (destino, bajo, revisar) for p in d.glob("TE4_*.pdf")}, key=lambda p: p.name):
-        valores = potencias_declaradas(pdf)
+        valores = potencias_eg(pdf)
         kw = valores.pop() if len(valores) == 1 else None
         if kw is None:
             carpeta = revisar
@@ -371,12 +371,12 @@ def clasificar(destino, min_kw):
             carpeta, n_bajo = bajo, n_bajo + 1
         carpeta.mkdir(exist_ok=True)
         pdf.replace(carpeta / pdf.name)
-    print(f"\nPotencia declarada >= {min_kw:g} kW: {len(elegidos)} certificados (quedan en {destino})")
+    print(f"\nPotencia Total Instalada del EG >= {min_kw:g} kW: {len(elegidos)} certificados (quedan en {destino})")
     for linea in elegidos:
         print("  " + linea)
     print(f"Bajo {min_kw:g} kW: {n_bajo} (movidos a {bajo})")
     if dudosos:
-        print(f"No pude leer la potencia declarada con seguridad; revísalos a mano en {revisar}:")
+        print(f"No pude leer la potencia instalada del EG con seguridad; revísalos a mano en {revisar}:")
         for linea in dudosos:
             print("  " + linea)
 
@@ -384,7 +384,7 @@ def clasificar(destino, min_kw):
 def main():
     ap = argparse.ArgumentParser(description="Descarga certificados TE4 (PDF) desde el e-Declarador SEC.")
     ap.add_argument("--min-kw", type=lambda s: float(s.replace(",", ".")),
-                    help="deja en la carpeta solo los de potencia declarada >= este valor en kW (ej. 10)")
+                    help="deja en la carpeta solo los de Potencia Total Instalada del EG >= este valor en kW (ej. 10)")
     ap.add_argument("--folios", help="folios de inscripción separados por coma (por defecto, todos)")
     ap.add_argument("--manual", action="store_true",
                     help="inicias sesión y buscas tú en el navegador; el script descarga el listado")
