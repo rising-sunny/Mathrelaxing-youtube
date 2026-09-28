@@ -36,8 +36,9 @@ logging.getLogger("pypdf").setLevel(logging.ERROR)  # pypdf solo se usa con --mi
 AQUI = Path(__file__).resolve().parent
 DEBUG = AQUI / "debug"
 URL_LOGIN = "https://wlhttp.sec.cl/edeclaradorTE4/declarador.jsp"
-MENU_INSCRITAS = (r"^\s*declaraciones\s+inscritas\s*$", r"inscrit")
+MENU_INSCRITAS = (r"^\s*declaraciones\s+inscritas\b", r"inscrit")
 BOTON_BUSCAR = (r"^\s*buscar\s*$", r"buscar")
+BOTON_PDF = (r"imprimir", r"\bpdf\b|descargar")  # en la ventana "Firma digital SEC" del certificado
 AVISOS = []  # mensajes alert() del sitio
 
 # Marca con data-te4="i" el ícono "Ver Certificado" de cada fila del listado y devuelve los folios.
@@ -208,10 +209,17 @@ def login(page, url, rut, clave):
 
 
 def preparar_listado(page, args):
-    """Desde el menú entra a 'Declaraciones Inscritas' y ejecuta la búsqueda."""
+    """Desde el menú entra a 'Declaraciones Inscritas', filtra por TE4 y ejecuta la búsqueda."""
     for patrones in (MENU_INSCRITAS, BOTON_BUSCAR):
         if buscar_tabla(page)[1]:
             return
+        if patrones is BOTON_BUSCAR:  # el listado también trae TE6/TE7: se elige "TE4" en el tipo de trámite
+            for fr in page.frames:
+                try:
+                    fr.evaluate(r"""() => { for (const s of document.querySelectorAll("select"))
+                      for (const o of s.options) if (/\bTE-?4\b/i.test(o.text)) s.value = o.value; }""")
+                except Exception:
+                    pass
         if clic_texto(page, patrones) and args.debug:
             volcar_debug(page, "paso")
     if esperar_listado(page, 10):
@@ -250,9 +258,17 @@ def capturar_pdf(contexto, page, elemento, timeout_s, etiqueta):
     contexto.route("**/*", interceptar)
     try:
         clic(elemento)
-        fin = time.time() + timeout_s
+        fin, impreso = time.time() + timeout_s, False
         while not pdfs and time.time() < fin:
             page.wait_for_timeout(250)
+            nuevas = [p for p in contexto.pages if p not in antes and p.url != "about:blank"]
+            if nuevas and not impreso:
+                # la SEC abre el certificado como página HTML ("Firma digital SEC"): el PDF sale de su botón Imprimir
+                try:
+                    nuevas[-1].wait_for_load_state(timeout=15000)
+                except PWTimeout:
+                    pass
+                impreso = bool(pdfs) or clic_texto(nuevas[-1], BOTON_PDF)
     finally:
         contexto.unroute("**/*", interceptar)
         for p in contexto.pages:
