@@ -189,7 +189,73 @@ def score_shatter():
     return {"beats": B, "tracks": tracks, "drums": drums}
 
 
-SCORES = {"shatter": score_shatter}
+def score_critical():
+    """Iman de Ising. Mi menor, Em-C-Am-B, 24 pulsos en 15 s (96 BPM).
+    La musica hace lo mismo que el iman: en caliente, notas de arpa al azar
+    (desorden); al enfriar, el azar cede y aparece un arpegio ordenado (el
+    orden espontaneo); al recalentar vuelve el azar y cierra el bucle.
+    Tc a los 5.5 s (pulso 8.8), frio a 8.0 s (12.8), campo en contra 9.5 s
+    (15.2), recalentar 12.6 s (20.16)."""
+    B = 24
+    rng = np.random.default_rng(3)
+    T_CRIT, T_COLD, T_FIELD, T_HOT = 8.8, 12.8, 15.2, 20.16
+    chords = [["E2", "B2", "E3", "G3", "B3"], ["C2", "G2", "C3", "E3", "G3"],
+              ["A1", "E2", "A2", "C3", "E3"], ["B1", "F#2", "B2", "D#3", "A3"]]
+    arps = [["E4", "G4", "B4", "E5", "B4", "G4"], ["C4", "E4", "G4", "C5", "G4", "E4"],
+            ["A3", "C4", "E4", "A4", "E4", "C4"], ["B3", "D#4", "F#4", "A4", "F#4", "D#4"]]
+    penta = [n(p) for p in ("E4", "G4", "A4", "B4", "D5", "E5", "G5", "A5", "B5", "D6", "E6")]
+
+    def order(b):                          # 0 = caos, 1 = orden
+        if b < T_CRIT:
+            return (b / T_CRIT) ** 2
+        if b < T_HOT:
+            return 1.0
+        return 1 - (b - T_HOT) / (B - T_HOT)
+
+    harp, cel = [], []
+    for q in range(B * 4):
+        b = q * 0.25
+        o = order(b)
+        ch = int(b // 6)
+        # arpegio ordenado, que se oye mas cuanto mas orden hay
+        if o > 0.05:
+            note = n(arps[ch][q % 6]) + (12 if b >= T_FIELD and b < T_HOT else 0)
+            harp.append((b, 0.5, note, int(40 + 70 * o)))
+        # notas al azar, que se oyen mas cuanto mas caos hay
+        if rng.random() < 0.8 * (1 - o):
+            cel.append((b + rng.uniform(0, 0.2), 0.4, int(rng.choice(penta)),
+                        int(50 + 50 * (1 - o))))
+    tracks = [{"program": 46, "vol": 112, "pan": 44, "notes": harp},
+              {"program": 8, "vol": 96, "pan": 86, "notes": cel}]
+    pad = []
+    for i, ch in enumerate(chords):
+        for p in ch:
+            pad.append((i * 6, 6, n(p), 70))
+    tracks.append({"program": 48, "vol": 94, "pan": 56, "notes": pad,
+                   "expr": [(0, 55), (T_CRIT, 85), (T_COLD, 95), (T_FIELD, 124),
+                            (T_HOT, 100), (23.5, 58)]})
+    choir = [(b, d, n(p), v) for b, d, p, v in (
+        (T_CRIT, 3.2, "B4", 70), (T_CRIT, 3.2, "E4", 64), (T_COLD, 4, "E5", 76),
+        (T_COLD, 4, "A4", 70), (T_FIELD, 3.5, "B4", 100), (T_FIELD, 3.5, "F#5", 96),
+        (T_FIELD, 3.5, "D#5", 96))]
+    tracks.append({"program": 52, "vol": 104, "pan": 64, "notes": choir})
+    brass = [(T_FIELD, 3.4, n(p), 104) for p in ("B2", "F#3", "B3", "D#4")] + \
+        [(T_FIELD + 1.5, 2.0, n("F#4"), 110)]
+    tracks.append({"program": 61, "vol": 100, "pan": 70, "notes": brass,
+                   "expr": [(0, 60), (T_FIELD, 80), (T_FIELD + 1.4, 124), (T_HOT, 70)]})
+    # piano grave que toca la hora en Tc
+    tracks.append({"program": 0, "vol": 100, "pan": 60,
+                   "notes": [(T_CRIT, 2, n("E1"), 96), (T_CRIT, 2, n("E2"), 90),
+                             (T_COLD, 2, n("A1"), 92)]})
+    tim = [(T_FIELD - 1 + 0.125 * k, 0.12, n("B1"), 50 + 8 * k) for k in range(8)]
+    tim += [(T_FIELD, 1.5, n("E2"), 127), (T_HOT, 1, n("B1"), 90)]
+    tracks.append({"program": 47, "vol": 118, "pan": 64, "notes": tim})
+    drums = [(T_CRIT, 52, 70), (T_FIELD, 49, 127), (T_FIELD, 36, 120),
+             (T_FIELD + 2, 57, 96)]
+    return {"beats": B, "tracks": tracks, "drums": drums}
+
+
+SCORES = {"shatter": score_shatter, "critical": score_critical}
 
 
 def main():

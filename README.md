@@ -37,7 +37,7 @@ shorts con motor `numpy` local; este README manda sobre el blueprint).
 
 ## Estado
 
-**En producción.** 108 videos publicados y 57 escenas en `scenes/`. El pipeline
+**En producción.** 109 videos publicados y 58 escenas en `scenes/`. El pipeline
 opera de punta a punta: escena → frames → audio → mux → overlay/CTA → subida.
 
 El foco actual son los **shorts verticales de 13-20 s** (ver *Formato de 1 hora*
@@ -48,7 +48,7 @@ Dos motores conviven en `scenes/`:
 
 | Motor | Cómo se invoca | Escenas |
 |---|---|---|
-| `numpy` | rasterizado puro en Python/PIL, sin Blender | Mandelbrot, Julia, solitones, cimática espectral, Clifford, Thomas, Hopf, three-body, reacción-difusión, Aizawa, Lorenz, pila de arena abeliana, 600-cell 4D, espiral de primos, teselado hiperbólico, árbol de otoño, aurora boreal, bola peluda, lluvia en el vidrio, Buddhabrot, bifurcación de Feigenbaum, empaquetamiento apolíneo, zeta de Riemann, geodésicas de Schwarzschild, agregación limitada por difusión, plegado paramétrico, mapa del gato de Arnold, tautócrona, teorema de las tres distancias, R(3,3)=6, los 17 grupos de papel tapiz, plegado de pulsar, Navier-Stokes 2-D, orbitales del hidrogeno, luciernagas de Kuramoto, teorema de los cuatro colores, cerebro real de mosca (MaleCNS), doble rendija (Schrödinger), murmuración de estorninos, cuatro materiales con MPM (Taichi) |
+| `numpy` | rasterizado puro en Python/PIL, sin Blender | Mandelbrot, Julia, solitones, cimática espectral, Clifford, Thomas, Hopf, three-body, reacción-difusión, Aizawa, Lorenz, pila de arena abeliana, 600-cell 4D, espiral de primos, teselado hiperbólico, árbol de otoño, aurora boreal, bola peluda, lluvia en el vidrio, Buddhabrot, bifurcación de Feigenbaum, empaquetamiento apolíneo, zeta de Riemann, geodésicas de Schwarzschild, agregación limitada por difusión, plegado paramétrico, mapa del gato de Arnold, tautócrona, teorema de las tres distancias, R(3,3)=6, los 17 grupos de papel tapiz, plegado de pulsar, Navier-Stokes 2-D, orbitales del hidrogeno, luciernagas de Kuramoto, teorema de los cuatro colores, cerebro real de mosca (MaleCNS), doble rendija (Schrödinger), murmuración de estorninos, cuatro materiales con MPM (Taichi), iman de Ising |
 | `eevee` | Blender headless (`--background`) | ABC flow, curl, péndulo doble, gravedad, Chladni, Rössler, tokamak, slice |
 
 `render/build_clip.py` es el orquestador genérico; cada `build_*.py` de la raíz
