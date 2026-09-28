@@ -1,23 +1,29 @@
 """Descarga los certificados de inscripción TE4 (PDF) desde el e-Declarador de la SEC.
 
 Instalación (una vez):
-    pip install playwright
+    pip install playwright pypdf
     playwright install chromium
 
 Uso:
     python sec_te4/descargar_te4.py                    # todos los certificados del listado
+    python sec_te4/descargar_te4.py --min-kw 10        # deja aparte solo los de potencia declarada >= 10 kW
     python sec_te4/descargar_te4.py --folios 123,456   # solo esos folios de inscripción
     python sec_te4/descargar_te4.py --manual           # entras tú (p. ej. con ClaveÚnica) y el script descarga
 
 El RUT y la clave se leen de las variables de entorno SEC_RUT y SEC_PASSWORD; si no están, se piden
-por consola. Los PDF quedan en sec_te4/certificados/TE4_<folio>.pdf (carpeta ignorada por git).
+por consola. Los PDF quedan en sec_te4/certificados/TE4_<folio>.pdf (carpeta ignorada por git). Con
+--min-kw, los de menor potencia declarada pasan a certificados/bajo_minimo/ y los que no se pudieron
+leer con seguridad a certificados/revisar/.
 """
 import argparse
 import getpass
+import importlib.util
+import logging
 import os
 import re
 import sys
 import time
+import unicodedata
 from pathlib import Path
 from urllib.parse import urljoin
 
@@ -25,6 +31,7 @@ try:
     from playwright.sync_api import TimeoutError as PWTimeout, sync_playwright
 except ImportError:
     sys.exit("Falta Playwright: pip install playwright && playwright install chromium")
+logging.getLogger("pypdf").setLevel(logging.ERROR)  # pypdf solo se usa con --min-kw
 
 AQUI = Path(__file__).resolve().parent
 DEBUG = AQUI / "debug"
@@ -287,7 +294,8 @@ def descargar(contexto, page, destino, buscados, args):
             ruta = destino / f"TE4_{folio}.pdf"
             if buscados and folio not in buscados:
                 continue
-            if ruta.exists() and ruta.stat().st_size and not args.forzar:
+            previos = [destino / sub / ruta.name for sub in ("", "bajo_minimo", "revisar")]
+            if not args.forzar and any(p.exists() and p.stat().st_size for p in previos):
                 omitidos.append(folio)
                 continue
             fr, actuales = buscar_tabla(page)  # vuelve a marcar las filas por si la página se recargó
@@ -308,8 +316,59 @@ def descargar(contexto, page, destino, buscados, args):
     return ok, omitidos, fallidos
 
 
+def potencias_declaradas(ruta):
+    """Valores (kW) que siguen al rótulo 'Potencia Total Declarada' en el texto del certificado."""
+    from pypdf import PdfReader
+    try:
+        texto = " ".join(p.extract_text() or "" for p in PdfReader(ruta).pages)
+    except Exception:
+        return set()
+    texto = unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode().lower()
+    for rotulo in (r"potencia\s+total\s+declarada", r"potencia\s+declarada"):
+        valores = set()
+        for m in re.finditer(rotulo, texto):
+            n = re.search(r"\d+(?:[.,]\d+)?", texto[m.end():m.end() + 60])
+            if n:
+                valores.add(float(n.group().replace(",", ".")))
+        if valores:
+            return valores
+    return set()
+
+
+def clasificar(destino, min_kw):
+    """Deja en `destino` solo los certificados con potencia declarada >= min_kw; el resto va a subcarpetas.
+
+    Si el PDF no trae el valor o trae varios distintos, va a revisar/ en vez de adivinar.
+    """
+    bajo, revisar = destino / "bajo_minimo", destino / "revisar"
+    elegidos, dudosos, n_bajo = [], [], 0
+    for pdf in sorted({p for d in (destino, bajo, revisar) for p in d.glob("TE4_*.pdf")}, key=lambda p: p.name):
+        valores = potencias_declaradas(pdf)
+        kw = valores.pop() if len(valores) == 1 else None
+        if kw is None:
+            carpeta = revisar
+            dudosos.append(f"{pdf.name}  {sorted(valores) if valores else 'sin dato'}")
+        elif kw >= min_kw:
+            carpeta = destino
+            elegidos.append(f"{pdf.name}  {kw:g} kW")
+        else:
+            carpeta, n_bajo = bajo, n_bajo + 1
+        carpeta.mkdir(exist_ok=True)
+        pdf.replace(carpeta / pdf.name)
+    print(f"\nPotencia declarada >= {min_kw:g} kW: {len(elegidos)} certificados (quedan en {destino})")
+    for linea in elegidos:
+        print("  " + linea)
+    print(f"Bajo {min_kw:g} kW: {n_bajo} (movidos a {bajo})")
+    if dudosos:
+        print(f"No pude leer la potencia declarada con seguridad; revísalos a mano en {revisar}:")
+        for linea in dudosos:
+            print("  " + linea)
+
+
 def main():
     ap = argparse.ArgumentParser(description="Descarga certificados TE4 (PDF) desde el e-Declarador SEC.")
+    ap.add_argument("--min-kw", type=lambda s: float(s.replace(",", ".")),
+                    help="deja en la carpeta solo los de potencia declarada >= este valor en kW (ej. 10)")
     ap.add_argument("--folios", help="folios de inscripción separados por coma (por defecto, todos)")
     ap.add_argument("--manual", action="store_true",
                     help="inicias sesión y buscas tú en el navegador; el script descarga el listado")
@@ -322,6 +381,8 @@ def main():
     args = ap.parse_args()
     if args.manual and args.headless:
         ap.error("--manual necesita ver el navegador (quita --headless)")
+    if args.min_kw is not None and importlib.util.find_spec("pypdf") is None:
+        ap.error("--min-kw necesita pypdf: pip install pypdf")
 
     buscados = {re.sub(r"\D", "", f) for f in args.folios.split(",")} - {""} if args.folios else set()
     destino = Path(args.salida)
@@ -353,6 +414,8 @@ def main():
     faltan = sorted(buscados - set(ok + omitidos + fallidos))
     if faltan:
         print("No aparecieron en el listado:", ", ".join(faltan))
+    if args.min_kw is not None:
+        clasificar(destino, args.min_kw)
 
 
 if __name__ == "__main__":
