@@ -379,8 +379,9 @@ def verify():
     assert abs(a_lo - th_lo) < 2.5, "una pendiente suave de arena no deberia moverse"
     assert ang < th_lo + 25 and all(a < t - 8 for a, t in zip(a_hi, th_hi)), \
         "las pendientes empinadas tienen que derrumbarse"
-    return {"mass_err": mass_err, "g_err": g_err, "repose_deg": ang,
-            "wedges": {"start": [th_lo, *th_hi], "end": [a_lo, *a_hi]}}
+    return {"mass_err": float(mass_err), "g_err": float(g_err), "repose_deg": float(ang),
+            "wedges": {"start": [float(th_lo), *map(float, th_hi)],
+                       "end": [float(a_lo), *map(float, a_hi)]}}
 
 
 def slope_angle(ps):
