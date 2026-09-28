@@ -42,8 +42,10 @@ def overlay_spec():
             txt = r"$\mathrm{SNOW:\ elastic\ until\ it\ CRACKS}$"
         elif t < ev["t_gate"]:
             txt = r"$\mathrm{SAND:\ pure\ friction,\ it\ piles\ up}$"
-        elif t < 13.2:
+        elif t < ev["t_tilt"]:
             txt = r"$\mathrm{WATER:\ pressure\ only,\ it\ FLOWS}$"
+        elif t < 14.2:
+            txt = r"$\mathrm{TILT\ the\ box:\ all\ four\ obey\ the\ same}\ \mathbf{g}$"
         else:
             txt = (rf"$\mathrm{{{ev['n']:,}\ material\ points,\ one\ law}}$"
                    ).replace(",", "{,}")

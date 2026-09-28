@@ -91,9 +91,22 @@ GATE_X = 0.63
 TANK_TOP = 0.60
 
 # guion (segundos de video)
-T_SNOW = 2.4
-T_SAND = 4.6
-T_GATE = 9.4
+T_SNOW = 2.2
+T_SAND = 4.0
+T_GATE = 7.4
+TILT = [(0.0, 0.0), (10.6, 0.0), (11.4, 14.0), (12.8, 14.0), (13.6, -14.0),
+        (14.2, -14.0), (15.0, 0.0)]                # giro de la caja (grados, antihorario)
+PIVOT = (0.5, FLOOR + 0.1)
+
+
+def tilt_deg(t):
+    ts, vs = zip(*TILT)
+    k = int(np.searchsorted(ts, t, side="right")) - 1
+    if k >= len(ts) - 1:
+        return vs[-1]
+    u = (t - ts[k]) / (ts[k + 1] - ts[k])
+    u = u * u * (3 - 2 * u)
+    return vs[k] + (vs[k + 1] - vs[k]) * u
 
 x = ti.Vector.field(2, float, MAXP)
 v = ti.Vector.field(2, float, MAXP)
@@ -109,6 +122,7 @@ g_on = ti.field(float, ())                      # gravedad (0 para pruebas)
 hop_open = ti.field(int, ())
 gate_y = ti.field(float, ())                    # borde inferior de la compuerta
 walls_on = ti.field(int, ())
+gvec = ti.Vector.field(2, float, ())         # gravedad en el marco de la caja
 
 
 @ti.kernel
@@ -160,7 +174,7 @@ def p2g():
             for d in ti.static(range(2)):
                 ns = sig[d, d]
                 if m == SNOW:
-                    ns = ti.min(ti.max(sig[d, d], 1 - 2.5e-2), 1 + 4.5e-3)
+                    ns = ti.min(ti.max(sig[d, d], 1 - 2.5e-2), 1 + 3.0e-3)
                 Jp[p] *= sig[d, d] / ns
                 sig[d, d] = ns
                 J *= ns
@@ -186,7 +200,7 @@ def grid_update():
     for i, j in grid_m:
         if grid_m[i, j] > 0:
             grid_v[i, j] = grid_v[i, j] / grid_m[i, j]
-            grid_v[i, j][1] -= DT * GRAV * g_on[None]
+            grid_v[i, j] += DT * GRAV * g_on[None] * gvec[None]
             px, py = i * DX, j * DX
             # caja
             if walls_on[None] == 1:
@@ -315,6 +329,7 @@ def reset():
     n_part[None] = 0
     act.from_numpy(np.zeros(MAXP, np.int32))
     g_on[None] = 1.0
+    gvec[None] = [0.0, -1.0]
     walls_on[None] = 1
     hop_open[None] = 0
     gate_y[None] = FLOOR - 0.1
@@ -466,7 +481,8 @@ def static_layers():
     glass = np.array([0.55, 0.80, 1.0])
     fg[..., :3] += gl[..., None] * glass
     fg[..., 3] = np.maximum(fg[..., 3], gl * 0.8)
-    return {"bg": bg, "fg": fg, "xx": xx, "yy": yy}
+    world = np.stack([0.012 + 0.015 * u, 0.014 + 0.016 * u, 0.03 + 0.02 * u], -1)
+    return {"bg": bg, "fg": fg, "xx": xx, "yy": yy, "world": world}
 
 
 def splat_rgbw(xs, ys, cols, w):
@@ -549,7 +565,28 @@ def render(ps, vs, ms, ac, rest, tone, t, st):
     lum = img.max(-1)
     bloom = gaussian_filter(np.clip(lum - 0.75, 0, None), 8)
     img += bloom[..., None] * np.array([0.6, 0.75, 1.0]) * 0.8
+    th = tilt_deg(t)
+    if abs(th) > 1e-3:
+        img = rotate_box(img, th, st)
     return np.clip(img, 0, 1) ** 0.92
+
+
+def rotate_box(img, deg, st):
+    """la caja gira alrededor de un punto del suelo; afuera queda el fondo"""
+    from scipy.ndimage import affine_transform
+    px, py = sim_px(*PIVOT)
+    a = math.radians(deg)
+    # en pantalla (y hacia abajo) un giro antihorario es R(-a) en (fila, col)
+    ca, sa = math.cos(a), math.sin(a)
+    M = np.array([[ca, -sa], [sa, ca]])            # destino -> origen, en (fila, col)
+    c = np.array([py, px])
+    off = c - M @ c
+    out = np.empty_like(img)
+    for k in range(3):
+        out[..., k] = affine_transform(img[..., k], M, offset=off, order=1, cval=-1.0)
+    mask = out[..., 0] >= 0
+    world = st["world"]
+    return np.where(mask[..., None], out, world)
 
 
 def save(f, img):
@@ -580,6 +617,9 @@ def main():
                 act.from_numpy(a)
         hop_open[None] = 1 if t >= T_SAND else 0
         gate_y[None] = FLOOR - 0.1 + max(0.0, min(1.0, (t - T_GATE) / 0.25)) * 0.6
+        # la caja gira un angulo th: en su marco la gravedad gira -th
+        th = math.radians(tilt_deg(t))
+        gvec[None] = [-math.sin(th), -math.cos(th)]
         for _ in range(sub):
             step()
         shown.append({"t": t})
@@ -593,7 +633,8 @@ def main():
             break
 
     ev = {"duration_s": FRAMES / FPS, "fps": FPS, "n": int(n), "verify": ver,
-          "shown": shown, "t_snow": T_SNOW, "t_sand": T_SAND, "t_gate": T_GATE}
+          "shown": shown, "t_snow": T_SNOW, "t_sand": T_SAND, "t_gate": T_GATE,
+          "t_tilt": TILT[1][0]}
     os.makedirs(os.path.dirname(EVENTS), exist_ok=True)
     with open(EVENTS, "w", encoding="utf-8") as fh:
         json.dump(ev, fh)
