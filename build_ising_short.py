@@ -28,7 +28,7 @@ def overlay_spec():
     frames = int(FRAMES)
     with open(EVENTS, encoding="utf-8") as fh:
         ev = json.load(fh)
-    nsp = (ev["w"] // 2) * (ev["h"] // 2)
+    nsp = (ev["w"] // 3) * (ev["h"] // 3)
     lead = (rf"$\mathrm{{Ising\ magnet\ \cdot\ {nsp:,}\ spins}}$").replace(",", "{,}")
     law = (r"$H=-J\sum_{\langle ij\rangle}s_i s_j\ -\ h\sum_i s_i$")
     note = r"$T_c=\frac{2}{\ln(1+\sqrt{2})}=2.269\ \ \mathrm{(Onsager\ 1944)}$"
@@ -52,7 +52,7 @@ def overlay_spec():
         texts.append(rf"${lab}\ \ \cdot\ \ T={T:.2f}\ \ M={M:+.2f}$")
     return {
         "scrim": {"rgb": [4, 5, 12],
-                  "top": {"extent": 0.08, "strength": 0.80, "hold": 0.13},
+                  "top": {"extent": 0.06, "strength": 0.82, "hold": 0.20},
                   "bottom": {"extent": 0.10, "strength": 0.60}},
         "static": [
             {"text": lead, "y": 0.946, "rgba": [1.0, 1.0, 1.0, 0.95], "size": 17},

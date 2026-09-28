@@ -69,7 +69,7 @@ def body() -> str:
     rows = ev["verify"]["rows"]
     txt = ", ".join(f"at T = {T} it measured M = {m:.4f} against {o:.4f}"
                     for T, m, o in rows[:3])
-    return BODY_TMPL.format(nsp=(ev["w"] // 2) * (ev["h"] // 2), rows=txt,
+    return BODY_TMPL.format(nsp=(ev["w"] // 3) * (ev["h"] // 3), rows=txt,
                             mhot=rows[3][1])
 
 

@@ -57,7 +57,7 @@ TC = 2.0 / math.log(1.0 + math.sqrt(2.0))
 
 ti.init(arch=ti.cpu, random_seed=SEED)
 
-PX = 2                                       # pixeles por espin
+PX = 3                                       # pixeles por espin (2 no sobrevive a la compresion)
 LWID, LHEI = W // PX, H // PX
 spin = ti.field(ti.i8, (LWID, LHEI))
 heat = ti.field(ti.f32, (LWID, LHEI))        # actividad reciente (vueltas)
