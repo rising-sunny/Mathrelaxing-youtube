@@ -23,7 +23,7 @@ EVENTS = os.path.join(REPO, "data", "shorts_ising_events.json")
 CHILE_UTC_OFFSET = -4
 PUBLISH_HOUR = 8
 
-TITLE = "Half a Million Magnets Find Order 🧲 #physics #shorts"
+TITLE = "230,000 Magnets Find Order on Their Own 🧲 #physics #shorts"
 
 BODY_TMPL = (
     "Every tiny square on screen is a magnet, a spin, pointing up (blue) "
@@ -43,8 +43,9 @@ BODY_TMPL = (
     "because at low temperature the grid itself shapes them. The magnet "
     "flips in an avalanche.\n\n"
     "This is a Monte Carlo simulation (Metropolis, checkerboard updates) run "
-    "with Taichi. Onsager's exact result also gives the magnetisation below "
-    "Tc, M = (1 - sinh(2/T)^-4)^(1/8), and the simulation was checked "
+    "with Taichi. The exact magnetisation below Tc is also known, stated by "
+    "Onsager and proven by C. N. Yang in 1952, M = (1 - sinh(2/T)^-4)^(1/8), "
+    "and the simulation was checked "
     "against it before anything was drawn: {rows}. Above Tc it measured "
     "{mhot:.3f}, where the exact answer is zero."
 )
