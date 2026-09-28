@@ -1,3 +1,5 @@
-# Certificados descargados y volcados de depuración (contienen datos personales)
+# Base local, certificados descargados y entorno de Python (contienen datos personales / son regenerables)
+datos/
 certificados/
 debug/
+.venv/
