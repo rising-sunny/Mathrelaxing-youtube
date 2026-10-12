@@ -21,6 +21,7 @@ Uso:
     python audio/orchestra.py --score shatter --outdir output/x --duration 15
 """
 import argparse
+import math
 import os
 import subprocess
 import sys
@@ -255,7 +256,74 @@ def score_critical():
     return {"beats": B, "tracks": tracks, "drums": drums}
 
 
-SCORES = {"shatter": score_shatter, "critical": score_critical}
+def score_shimmer():
+    """Causticas en una piscina. Re lidio (Re mayor con Sol#), Dmaj7-Bm7-
+    Gmaj7-A, 24 pulsos en 15 s. Cada gota de lluvia del video suena como
+    una nota en el instante exacto en que cae (los tiempos salen de los
+    eventos de la escena). Piedra a los 8.5 s (pulso 13.6); el viento
+    levanta olas entre 9.8 y 13.2 s (15.68 a 21.12)."""
+    import json
+    B = 24
+    beat = 15.0 / B
+    with open(os.path.join(REPO, "data", "shorts_caustics_events.json"), encoding="utf-8") as fh:
+        ev = json.load(fh)
+    T_STONE = ev["t_stone"] / beat
+    W0, W1 = ev["t_wind"][0] / beat, ev["t_wind"][1] / beat
+    chords = [["D2", "A2", "D3", "F#3", "C#4"], ["B1", "F#2", "B2", "D3", "A3"],
+              ["G1", "D2", "G2", "B2", "F#3"], ["A1", "E2", "A2", "C#3", "G#3"]]
+    arps = [["D4", "F#4", "A4", "C#5", "E5", "C#5", "A4", "F#4"],
+            ["B3", "D4", "F#4", "A4", "C#5", "A4", "F#4", "D4"],
+            ["G3", "B3", "D4", "F#4", "A4", "F#4", "D4", "B3"],
+            ["A3", "C#4", "E4", "G#4", "B4", "G#4", "E4", "C#4"]]
+
+    def energy(b):
+        if b < W0:
+            return 0.45 + 0.25 * min(1.0, b / T_STONE)
+        if b < W1:
+            u = (b - W0) / (W1 - W0)
+            return 0.7 + 0.3 * math.sin(math.pi * u)
+        return 0.7 - 0.25 * (b - W1) / (B - W1)
+
+    harp = []
+    for q in range(B * 4):
+        b = q * 0.25
+        ch = int(b // 6)
+        harp.append((b, 0.6, n(arps[ch][q % 8]), int(45 + 60 * energy(b))))
+    # glissando del arpa cuando entra el viento
+    run = ["D4", "E4", "F#4", "G#4", "A4", "B4", "C#5", "D5", "E5", "F#5", "G#5", "A5",
+           "B5", "C#6", "D6", "E6"]
+    harp += [(W0 + k / 16, 0.5, n(p), 70 + 3 * k) for k, p in enumerate(run)]
+    tracks = [{"program": 46, "vol": 108, "pan": 44, "notes": harp}]
+    pad = [(i * 6, 6, n(p), 66) for i, ch in enumerate(chords) for p in ch]
+    tracks.append({"program": 49, "vol": 92, "pan": 58, "notes": pad,
+                   "expr": [(0, 58), (T_STONE, 80), (W0, 90), ((W0 + W1) / 2, 124),
+                            (W1, 96), (23.5, 60)]})
+    choir = [(W0, W1 - W0, n(p), 76) for p in ("A4", "C#5", "F#5")]
+    tracks.append({"program": 53, "vol": 100, "pan": 66, "notes": choir,
+                   "expr": [(0, 40), (W0, 50), ((W0 + W1) / 2, 120), (W1, 60)]})
+    # gotas: cada una es una nota, en su instante exacto
+    scale = [n(p) for p in ("D6", "E6", "F#6", "G#6", "A6", "B6", "C#7", "D7")]
+    rng = np.random.default_rng(5)
+    drop_tr = {8: [], 10: [], 46: []}
+    for k, (t, a) in enumerate(ev["drops"]):
+        prog = (8, 10, 46)[k % 3]
+        note = int(rng.choice(scale)) - (12 if prog == 46 else 0)
+        drop_tr[prog].append((t / beat, 0.5, note, int(min(118, 62 + 45 * a))))
+    for prog, notes in drop_tr.items():
+        tracks.append({"program": prog, "vol": 96, "pan": {8: 84, 10: 30, 46: 70}[prog],
+                       "notes": notes})
+    # la piedra
+    tracks.append({"program": 47, "vol": 118, "pan": 64,
+                   "notes": [(T_STONE, 1.5, n("D2"), 124), (T_STONE + 0.5, 1, n("A1"), 96)]})
+    tracks.append({"program": 0, "vol": 104, "pan": 60,
+                   "notes": [(T_STONE, 3, n("D1"), 100), (T_STONE, 3, n("D2"), 92),
+                             (T_STONE, 3, n("A2"), 84)]})
+    drums = [(T_STONE, 49, 96), (T_STONE, 36, 112), (W0, 52, 64), ((W0 + W1) / 2, 57, 80)]
+    return {"beats": B, "tracks": tracks, "drums": drums}
+
+
+SCORES = {"shatter": score_shatter, "critical": score_critical,
+          "shimmer": score_shimmer}
 
 
 def main():
