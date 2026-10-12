@@ -18,7 +18,9 @@ Se comprueba antes de dibujar:
      medida con Snell exacto, sin aproximar.
 
 Uso:
-    python scenes/caustics.py -- --frames 900 --res 1920 --name shorts_caustics
+    python scenes/caustics.py -- --sim-only            # simula y guarda la superficie
+    python scenes/caustics.py -- --no-verify --part 0/4   # dibuja 1 de cada 4 cuadros
+    (o todo junto, sin --sim-only ni --part)
 """
 import json
 import math
@@ -273,6 +275,13 @@ def main():
     stone = (T_STONE, GY * 0.55, GX * 0.45)
     shown, splashes = [], []
     di = 0
+    hpath = os.path.join(OUT, "surface.npy")
+    part = arg("--part")                      # "k/m": dibuja solo f % m == k
+    if part:
+        hs = np.load(hpath, mmap_mode="r")
+    else:
+        hs = np.lib.format.open_memmap(hpath, mode="w+", dtype=np.float32,
+                                       shape=(FRAMES, GY, GX))
     for f in range(FRAMES):
         tf = f / FPS
         force = np.zeros((GY, GX))
@@ -290,9 +299,17 @@ def main():
             u = (tf - T_WIND[0]) / (T_WIND[1] - T_WIND[0])
             env += (WIND_PEAK - BREEZE) * math.sin(math.pi * u) ** 2
         force += env * wind_field(f)
-        for s in range(SUB):
-            wv.step(force if s == 0 else None)
+        if not part:
+            for s in range(SUB):
+                wv.step(force if s == 0 else None)
+            hs[f] = wv.h
         shown.append({"t": tf})
+        if part:
+            k, m = map(int, part.split("/"))
+            if f % m != k:
+                continue
+        elif "--sim-only" in argv:
+            continue
         if ONLY and f not in ONLY:
             continue
         sp = None
@@ -304,9 +321,12 @@ def main():
                 r = 6 + 40 * a * age
                 d = np.hypot(XXc - x, YYc - y)
                 sp += a * (1 - age) ** 2 * np.exp(-((d - r) / (2 + 3 * a)) ** 2) * 0.8
-        img = render(wv.h, floor, tf, sp)
+        img = render(np.asarray(hs[f], np.float64), floor, tf, sp)
         save(f, img)
         print(f"[caust] cuadro {f}")
+    if part:
+        return
+    hs.flush()
     ev = {"duration_s": FRAMES / FPS, "fps": FPS, "verify": ver, "shown": shown,
           "n_drops": len(drops), "drops": [[float(d[0]), float(d[3])] for d in drops],
           "t_rain": T_RAIN, "t_stone": T_STONE,
