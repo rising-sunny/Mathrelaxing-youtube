@@ -1,14 +1,16 @@
 """MCP de solo lectura con las metricas del canal MathRelaxing (YouTube Data + Analytics).
 
-Requiere: pip install "mcp>=1.13" google-api-python-client google-auth-oauthlib
+Requiere: pip install "mcp>=1.13,<2" google-api-python-client google-auth-oauthlib
+(mcp 2.x renombro FastMCP; no usar). Autenticacion OAuth en yt_metrics_oauth.py.
 Autorizar (una vez):  python yt_metrics_mcp.py --auth
 Servir:               python yt_metrics_mcp.py
 
 Variables de entorno:
   YT_METRICS_CLIENT_SECRET  ruta al client_secret.json (default ./client_secret.json)
   YT_METRICS_TOKEN_FILE     ruta del token readonly   (default ./token_yt_metrics.json)
-  MCP_PATH_SECRET           segmento secreto de la URL (obligatorio): /<secreto>/mcp
-  MCP_ALLOWED_HOST          dominio publico que llega en el header Host (obligatorio)
+  MCP_OWNER_PASSWORD        contrasena que escribes al autorizar la conexion (obligatorio)
+  MCP_OAUTH_STORE           JSON con clientes/tokens OAuth (default ./oauth_store.json)
+  MCP_ALLOWED_HOST          dominio publico, sin https:// (obligatorio); el MCP queda en /mcp
   MCP_PORT                  puerto local (default 8765, escucha solo en 127.0.0.1)
 """
 import os
@@ -62,20 +64,35 @@ def build_server():
     from mcp.server.fastmcp import FastMCP
     from mcp.server.transport_security import TransportSecuritySettings
 
-    secret = os.environ["MCP_PATH_SECRET"]
+    from mcp.server.auth.settings import AuthSettings, ClientRegistrationOptions, RevocationOptions
+    from yt_metrics_oauth import SCOPE, OwnerOAuthProvider, register_approval_routes
+
     host = os.environ["MCP_ALLOWED_HOST"]
+    base = f"https://{host}"
+    provider = OwnerOAuthProvider(os.environ.get("MCP_OAUTH_STORE", "oauth_store.json"), base)
     mcp = FastMCP(
         "mathrelaxing-youtube-metrics",
         host="127.0.0.1",
         port=int(os.environ.get("MCP_PORT", "8765")),
-        streamable_http_path=f"/{secret}/mcp",
+        streamable_http_path="/mcp",
         stateless_http=True,
+        auth_server_provider=provider,
+        auth=AuthSettings(
+            issuer_url=base,
+            resource_server_url=f"{base}/mcp",
+            required_scopes=[SCOPE],
+            client_registration_options=ClientRegistrationOptions(
+                enabled=True, valid_scopes=[SCOPE], default_scopes=[SCOPE]),
+            revocation_options=RevocationOptions(enabled=True),
+        ),
         transport_security=TransportSecuritySettings(
             enable_dns_rebinding_protection=True,
             allowed_hosts=[host, f"{host}:*"],
             allowed_origins=[f"https://{host}"],
         ),
     )
+
+    register_approval_routes(mcp, provider, os.environ["MCP_OWNER_PASSWORD"])
 
     @mcp.tool()
     def yt_channel_overview(days: int = 28) -> dict:
