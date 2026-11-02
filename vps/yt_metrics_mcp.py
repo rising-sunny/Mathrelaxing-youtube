@@ -164,8 +164,9 @@ def authorize():
     from google_auth_oauthlib.flow import InstalledAppFlow
 
     flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRET, SCOPES)
-    # VPS sin navegador: abre un tunel  ssh -L 8080:localhost:8080 root@VPS  y pega la URL en tu PC.
-    creds = flow.run_local_server(port=8080, open_browser=False, access_type="offline", prompt="consent")
+    # VPS sin navegador: abre un tunel  ssh -L P:localhost:P root@VPS  (P = YT_METRICS_AUTH_PORT) y abre la URL en tu equipo.
+    port = int(os.environ.get("YT_METRICS_AUTH_PORT", "8080"))
+    creds = flow.run_local_server(port=port, open_browser=False, access_type="offline", prompt="consent")
     with open(TOKEN_FILE, "w", encoding="utf-8") as fh:
         fh.write(creds.to_json())
     os.chmod(TOKEN_FILE, 0o600)
