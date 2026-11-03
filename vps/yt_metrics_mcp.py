@@ -8,6 +8,7 @@ Servir:               python yt_metrics_mcp.py
 Variables de entorno:
   YT_METRICS_CLIENT_SECRET  ruta al client_secret.json (default ./client_secret.json)
   YT_METRICS_TOKEN_FILE     token del canal por defecto (default ./token_yt_metrics.json)
+  YT_METRICS_DB             SQLite del registro por hora (default snapshots.db junto al token)
   YT_METRICS_DEFAULT_CHANNEL alias del canal por defecto (default mathrelaxing)
 Canales extra: token_<alias>.json junto al token por defecto. Autorizar:  --auth --channel <alias>
   MCP_OWNER_PASSWORD        contrasena que escribes al autorizar la conexion (obligatorio)
@@ -18,7 +19,7 @@ Canales extra: token_<alias>.json junto al token por defecto. Autorizar:  --auth
 import os
 import re
 import sys
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from google.auth.transport.requests import Request
@@ -96,6 +97,21 @@ def _video(video_id: str) -> str:
     if not _VIDEO_ID.fullmatch(video_id):
         raise ValueError("video_id invalido (11 caracteres: letras, numeros, - y _)")
     return video_id
+
+
+_ISO_DUR = re.compile(r"PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?")
+
+
+def _seconds(iso_duration: str) -> int:
+    h, m_, s_ = (int(x or 0) for x in _ISO_DUR.fullmatch(iso_duration).groups())
+    return h * 3600 + m_ * 60 + s_
+
+
+def _since(published_iso: str) -> dict:
+    """Rango desde el dia de publicacion (menos 1: Analytics cuenta los dias en hora del Pacifico) hasta ayer."""
+    end = date.today() - timedelta(days=1)
+    start = datetime.fromisoformat(published_iso.replace("Z", "+00:00")).date() - timedelta(days=1)
+    return {"startDate": str(min(start, end)), "endDate": str(end)}
 
 
 def _rows(resp: dict) -> list[dict]:
@@ -205,11 +221,12 @@ def build_server():
         return _rows(resp)
 
     @mcp.tool()
-    def yt_traffic_sources(days: int = 28, channel: str = "") -> list[dict]:
-        """De donde viene la audiencia (Shorts feed, busqueda, sugeridos, etc.). `channel`: alias; vacio = por defecto."""
+    def yt_traffic_sources(days: int = 28, channel: str = "", video_id: str = "") -> list[dict]:
+        """De donde viene la audiencia (Shorts feed, busqueda, sugeridos, etc.). `video_id`: vacio = todo el canal. `channel`: alias; vacio = por defecto."""
+        extra = {"filters": f"video=={_video(video_id)}"} if video_id.strip() else {}
         resp = _analytics(channel).reports().query(
             ids="channel==MINE", dimensions="insightTrafficSourceType",
-            metrics="views,estimatedMinutesWatched", sort="-views", **_range(days),
+            metrics="views,estimatedMinutesWatched", sort="-views", **extra, **_range(days),
         ).execute()
         return _rows(resp)
 
@@ -257,6 +274,68 @@ def build_server():
             **extra, **_range(days),
         ).execute()
         return _rows(resp)
+
+    @mcp.tool()
+    def yt_view_curve(video_id: str) -> dict:
+        """Curva REAL de vistas de un video en sus primeras horas (registro cada 15 min las primeras 6 h, luego cada hora, hasta 72 h): vistas a 1h/3h/6h/12h/24h/48h, minutos hasta 50% y 90% de las vistas actuales, y la curva [minuto, vistas]. Solo existe para videos publicados despues de activar el registro."""
+        import yt_snapshots
+
+        out = yt_snapshots.view_curve(_video(video_id))
+        return out or {"video_id": video_id, "note": "Sin datos: el registro solo captura videos publicados en las ultimas 72 h desde que se activo."}
+
+    @mcp.tool()
+    def yt_series_report(limit: int = 10, title_contains: str = "", shorts_only: bool = True, channel: str = "") -> list[dict]:
+        """Una fila por video reciente (max 15) para comparar toda una serie de una vez: vistas del dia 1 y 2, vistas totales, % visto promedio, suscriptores, retencion (ret_start/ret_mid/ret_90/ret_end = fraccion de audiencia a 1%/50%/90%/100% del video; >1 = se repite en bucle; drop_last10 = caida entre el 90% y el final) y vistas a 1h/6h/24h si hay registro por hora. `title_contains`: filtra por texto del titulo (ej. 'Math Art'). `shorts_only`: solo videos de hasta 3 min."""
+        import yt_snapshots
+
+        limit = max(1, min(limit, 15))
+        yt, an = _data(channel), _analytics(channel)
+        uploads = yt.channels().list(part="contentDetails", mine=True).execute()[
+            "items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
+        ids = [i["contentDetails"]["videoId"] for i in yt.playlistItems().list(
+            part="contentDetails", playlistId=uploads, maxResults=50).execute()["items"]]
+        vids = yt.videos().list(part="snippet,statistics,contentDetails", id=",".join(ids)).execute()["items"]
+        vids.sort(key=lambda v: v["snippet"]["publishedAt"], reverse=True)
+        out = []
+        for v in vids:
+            title, dur = v["snippet"]["title"], _seconds(v["contentDetails"]["duration"])
+            if title_contains and title_contains.lower() not in title.lower():
+                continue
+            if shorts_only and dur > 180:
+                continue
+            row = {"video_id": v["id"], "title": title, "published_at": v["snippet"]["publishedAt"],
+                   "duration_s": dur, "public_views": int(v["statistics"].get("viewCount", 0))}
+            rng = _since(row["published_at"])
+            try:
+                days = [r for r in _rows(an.reports().query(
+                    ids="channel==MINE", dimensions="day", sort="day",
+                    metrics="views,averageViewPercentage,subscribersGained",
+                    filters=f"video=={v['id']}", **rng).execute()) if r.get("views")]
+                if days:
+                    total = sum(r["views"] for r in days)
+                    row.update(
+                        day1_views=days[0]["views"],
+                        day2_views=days[1]["views"] if len(days) > 1 else None,
+                        analytics_views=total,
+                        avg_view_pct=round(sum(r["views"] * r["averageViewPercentage"] for r in days) / total, 1),
+                        subs_gained=sum(r["subscribersGained"] for r in days))
+                ret = {round(r["elapsedVideoTimeRatio"], 2): r["audienceWatchRatio"] for r in _rows(
+                    an.reports().query(ids="channel==MINE", dimensions="elapsedVideoTimeRatio",
+                                       sort="elapsedVideoTimeRatio", metrics="audienceWatchRatio",
+                                       filters=f"video=={v['id']}", **rng).execute())}
+                g = lambda k: round(ret[k], 2) if k in ret else None  # noqa: E731
+                row.update(ret_start=g(0.01), ret_mid=g(0.5), ret_90=g(0.9), ret_end=g(1.0))
+                if row["ret_90"] is not None and row["ret_end"] is not None:
+                    row["drop_last10"] = round(row["ret_90"] - row["ret_end"], 2)
+            except Exception as exc:  # noqa: BLE001 - un video sin datos no debe romper el reporte
+                row["analytics_error"] = str(exc)[:120]
+            curve = yt_snapshots.view_curve(v["id"])
+            if curve:
+                row.update({f"views_{k}": curve["checkpoints"][k] for k in ("1h", "6h", "24h")})
+            out.append(row)
+            if len(out) >= limit:
+                break
+        return out
 
     return mcp
 
