@@ -1,0 +1,21 @@
+[Unit]
+Description=MathRelaxing video drafts
+After=network.target
+
+[Service]
+DynamicUser=yes
+WorkingDirectory=/opt/mathrelaxing-publisher
+StateDirectory=mathrelaxing-publisher
+StateDirectoryMode=0700
+LoadCredential=api-key:/etc/mathrelaxing-publisher/api-key
+ExecStart=/opt/mathrelaxing-publisher/venv/bin/uvicorn app:app --host 127.0.0.1 --port 8786 --workers 1 --no-access-log
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+
+[Install]
+WantedBy=multi-user.target

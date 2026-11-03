@@ -1,0 +1,13 @@
+[Unit]
+Description=MathRelaxing YouTube view snapshots
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=ytmetrics
+EnvironmentFile=/etc/yt-metrics.env
+WorkingDirectory=/var/lib/yt-metrics
+ExecStart=/opt/yt-metrics/venv/bin/python /opt/yt-metrics-src/vps/yt_snapshots.py
+NoNewPrivileges=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/yt-metrics

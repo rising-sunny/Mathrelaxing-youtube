@@ -1,0 +1,3210 @@
+{
+  "schema_version": 1,
+  "timezone": "America/Santiago",
+  "language": "en",
+  "start_date": "2026-10-28",
+  "end_date": "2026-11-26",
+  "daily_publish_time": "18:00",
+  "activation": "requires_explicit_local_enable",
+  "approval": "expression calendar; install after VPS smoke test",
+  "policy": {
+    "render_lead_hours_minimum": 24,
+    "ready_reserve_target": 3,
+    "on_failed_render": "skip_due_item_and_alert; do not publish unvalidated media",
+    "on_ambiguous_publish": "record needs_review; reconcile before retry",
+    "platform_attempts": "track independently; do not repeat successful platforms",
+    "prerequisites": [
+      "VPS preflight and renderer checks; enable locally after inspection"
+    ]
+  },
+  "music_policy": {
+    "type": "original_procedural_melodic_ambient",
+    "generation_location": "VPS",
+    "external_samples": false,
+    "downloaded_music_required": false,
+    "composition": "Original seeded motifs with slow harmonic progressions; avoid copying existing melodies.",
+    "verification_status": "specification_only_not_yet_integrated_on_VPS"
+  },
+  "items": [
+    {
+      "id": "mrx-01-2026-10-28",
+      "day": 1,
+      "publish_at": "2026-10-28T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-10-27T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "rose-7-4",
+        "expression": "r = cos(k·θ)",
+        "kind": "polar",
+        "parameters": {
+          "name": "k",
+          "range": [
+            1.75,
+            2.25
+          ],
+          "pingpong": false
+        },
+        "seed": 20261028,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#03040A",
+          "#28B9D8",
+          "#FFC95C"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71000,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "ONE FORMULA, ENDLESS PETALS",
+          "subtitle": "Polar rose r = cos(kθ) with a slowly changing k",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "A 7/4 Rose Drawn by 1 Equation | Math Art",
+        "youtube_description": "A 7/4 Rose Drawn by 1 Equation. How many petals do you count?\n\nPolar rose r = cos(kθ) with a slowly changing k. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "A 7/4 Rose Drawn by 1 Equation. How many petals do you count?\n\nPolar rose r = cos(kθ) with a slowly changing k. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "A 7/4 Rose Drawn by 1 Equation. How many petals do you count?\n\nPolar rose r = cos(kθ) with a slowly changing k. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-02-2026-10-29",
+      "day": 2,
+      "publish_at": "2026-10-29T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-10-28T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "spirograph",
+        "expression": "x = 2·cos t + d·cos(2t/3) ; y = 2·sin t − d·sin(2t/3)",
+        "kind": "param",
+        "parameters": {
+          "name": "d",
+          "range": [
+            1.5,
+            4.5
+          ],
+          "pingpong": true
+        },
+        "seed": 20261029,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#05030A",
+          "#B46CFF",
+          "#5CF2FF"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71001,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "A SPIROGRAPH WRITTEN IN MATH",
+          "subtitle": "Hypotrochoid with a changing pen distance d",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "The Spirograph Equation in 16 Seconds | Math Art",
+        "youtube_description": "The Spirograph Equation in 16 Seconds. Which loop is your favorite?\n\nHypotrochoid with a changing pen distance d. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "The Spirograph Equation in 16 Seconds. Which loop is your favorite?\n\nHypotrochoid with a changing pen distance d. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "The Spirograph Equation in 16 Seconds. Which loop is your favorite?\n\nHypotrochoid with a changing pen distance d. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-03-2026-10-30",
+      "day": 3,
+      "publish_at": "2026-10-30T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-10-29T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "fourier-square",
+        "expression": "y = 4/π · Σ sin((2n−1)x) / (2n−1) ; n = 1 … N",
+        "kind": "cartesian",
+        "parameters": {
+          "name": "N",
+          "range": [
+            1,
+            40
+          ],
+          "pingpong": false
+        },
+        "seed": 20261030,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#020806",
+          "#3DE89B",
+          "#F5F17A"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71002,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "ADD SINE WAVES… GET A SQUARE?",
+          "subtitle": "Fourier series of a square wave, adding one term at a time",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "40 Sine Waves Build a Perfect Square | Math Art",
+        "youtube_description": "40 Sine Waves Build a Perfect Square. Can you spot the overshoot at the edges?\n\nFourier series of a square wave, adding one term at a time. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "40 Sine Waves Build a Perfect Square. Can you spot the overshoot at the edges?\n\nFourier series of a square wave, adding one term at a time. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "40 Sine Waves Build a Perfect Square. Can you spot the overshoot at the edges?\n\nFourier series of a square wave, adding one term at a time. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-04-2026-10-31",
+      "day": 4,
+      "publish_at": "2026-10-31T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-10-30T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "butterfly",
+        "expression": "r = exp(sin θ) − a·cos(4θ) ; + sin⁵((2θ − π)/24)",
+        "kind": "polar",
+        "parameters": {
+          "name": "a",
+          "range": [
+            2.0,
+            2.8
+          ],
+          "pingpong": true
+        },
+        "seed": 20261031,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#0A0405",
+          "#FF6B6B",
+          "#FFD36B"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71003,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "THIS BUTTERFLY IS AN EQUATION",
+          "subtitle": "Temple Fay's butterfly curve in polar coordinates",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "The Butterfly Curve: 1 Equation, 12 Turns | Math Art",
+        "youtube_description": "The Butterfly Curve: 1 Equation, 12 Turns. Did you expect a formula to look this alive?\n\nTemple Fay's butterfly curve in polar coordinates. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "The Butterfly Curve: 1 Equation, 12 Turns. Did you expect a formula to look this alive?\n\nTemple Fay's butterfly curve in polar coordinates. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "The Butterfly Curve: 1 Equation, 12 Turns. Did you expect a formula to look this alive?\n\nTemple Fay's butterfly curve in polar coordinates. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-05-2026-11-01",
+      "day": 5,
+      "publish_at": "2026-11-01T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-10-31T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "heart",
+        "expression": "x = 16·sinᵖ t ; y = 13cos t − 5cos 2t − 2cos 3t − cos 4t",
+        "kind": "param",
+        "parameters": {
+          "name": "p",
+          "range": [
+            3.0,
+            1.2
+          ],
+          "pingpong": true
+        },
+        "seed": 20261101,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#03060C",
+          "#5C8DFF",
+          "#FF7AD9"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71004,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "A HEART MADE OF COSINES",
+          "subtitle": "Classic parametric heart curve with a changing exponent p",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "The Heart Equation with 4 Cosines | Math Art",
+        "youtube_description": "The Heart Equation with 4 Cosines. Who would you send this equation to?\n\nClassic parametric heart curve with a changing exponent p. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "The Heart Equation with 4 Cosines. Who would you send this equation to?\n\nClassic parametric heart curve with a changing exponent p. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "The Heart Equation with 4 Cosines. Who would you send this equation to?\n\nClassic parametric heart curve with a changing exponent p. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-06-2026-11-02",
+      "day": 6,
+      "publish_at": "2026-11-02T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-01T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "sinc",
+        "expression": "y = sin(a·x) / (a·x)",
+        "kind": "cartesian",
+        "parameters": {
+          "name": "a",
+          "range": [
+            0.6,
+            4.0
+          ],
+          "pingpong": true
+        },
+        "seed": 20261102,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#060606",
+          "#F2A65A",
+          "#7AE7FF"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71005,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "THE WAVE THAT NEVER QUITE STOPS",
+          "subtitle": "Normalized sinc function with a changing frequency a",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "The Sinc Function Squeezed 6 Times | Math Art",
+        "youtube_description": "The Sinc Function Squeezed 6 Times. Where does the wave reach zero?\n\nNormalized sinc function with a changing frequency a. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "The Sinc Function Squeezed 6 Times. Where does the wave reach zero?\n\nNormalized sinc function with a changing frequency a. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "The Sinc Function Squeezed 6 Times. Where does the wave reach zero?\n\nNormalized sinc function with a changing frequency a. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-07-2026-11-03",
+      "day": 7,
+      "publish_at": "2026-11-03T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-02T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "limacon",
+        "expression": "r = 1 + a·cos θ",
+        "kind": "polar",
+        "parameters": {
+          "name": "a",
+          "range": [
+            0.3,
+            2.0
+          ],
+          "pingpong": false
+        },
+        "seed": 20261103,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#03040A",
+          "#28B9D8",
+          "#FFC95C"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71006,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "WATCH A LOOP GROW INSIDE",
+          "subtitle": "Limaçon of Pascal: circle, cardioid and inner loop",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "From Circle to Inner Loop with 1 Parameter | Math Art",
+        "youtube_description": "From Circle to Inner Loop with 1 Parameter. At which value does the cardioid appear?\n\nLimaçon of Pascal: circle, cardioid and inner loop. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "From Circle to Inner Loop with 1 Parameter. At which value does the cardioid appear?\n\nLimaçon of Pascal: circle, cardioid and inner loop. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "From Circle to Inner Loop with 1 Parameter. At which value does the cardioid appear?\n\nLimaçon of Pascal: circle, cardioid and inner loop. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-08-2026-11-04",
+      "day": 8,
+      "publish_at": "2026-11-04T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-03T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "farris-wheel",
+        "expression": "z = exp(it) + ½·exp(6it) ; + c·i·exp(−14it)",
+        "kind": "param",
+        "parameters": {
+          "name": "c",
+          "range": [
+            0.3333333333333333,
+            0.6
+          ],
+          "pingpong": true
+        },
+        "seed": 20261104,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#05030A",
+          "#B46CFF",
+          "#5CF2FF"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71007,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "THREE CIRCLES, ONE SYMMETRY",
+          "subtitle": "Farris wheel: a sum of three rotating circles",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "3 Spinning Circles Draw This Pattern | Math Art",
+        "youtube_description": "3 Spinning Circles Draw This Pattern. How many symmetry axes can you find?\n\nFarris wheel: a sum of three rotating circles. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "3 Spinning Circles Draw This Pattern. How many symmetry axes can you find?\n\nFarris wheel: a sum of three rotating circles. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "3 Spinning Circles Draw This Pattern. How many symmetry axes can you find?\n\nFarris wheel: a sum of three rotating circles. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-09-2026-11-05",
+      "day": 9,
+      "publish_at": "2026-11-05T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-04T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "taylor-sin",
+        "expression": "y = Σ (−1)ᵏ x²ᵏ⁺¹ / (2k+1)! ; k = 0 … N",
+        "kind": "cartesian",
+        "parameters": {
+          "name": "N",
+          "range": [
+            0,
+            12
+          ],
+          "pingpong": false
+        },
+        "seed": 20261105,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#020806",
+          "#3DE89B",
+          "#F5F17A"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71008,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "POLYNOMIALS PRETENDING TO BE SINE",
+          "subtitle": "Taylor polynomials of sin(x) approaching the sine curve",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "12 Polynomials Become a Sine Wave | Math Art",
+        "youtube_description": "12 Polynomials Become a Sine Wave. How many terms until it fits?\n\nTaylor polynomials of sin(x) approaching the sine curve. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "12 Polynomials Become a Sine Wave. How many terms until it fits?\n\nTaylor polynomials of sin(x) approaching the sine curve. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "12 Polynomials Become a Sine Wave. How many terms until it fits?\n\nTaylor polynomials of sin(x) approaching the sine curve. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-10-2026-11-06",
+      "day": 10,
+      "publish_at": "2026-11-06T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-05T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "rose-ripple",
+        "expression": "r = sin(4θ) + a·sin(12θ)",
+        "kind": "polar",
+        "parameters": {
+          "name": "a",
+          "range": [
+            0.0,
+            0.6
+          ],
+          "pingpong": true
+        },
+        "seed": 20261106,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#0A0405",
+          "#FF6B6B",
+          "#FFD36B"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71009,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "ONE TERM CHANGES EVERY PETAL",
+          "subtitle": "Rose curve with an added higher harmonic",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "8 Petals with Ripples from 1 Extra Term | Math Art",
+        "youtube_description": "8 Petals with Ripples from 1 Extra Term. Which version do you prefer?\n\nRose curve with an added higher harmonic. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "8 Petals with Ripples from 1 Extra Term. Which version do you prefer?\n\nRose curve with an added higher harmonic. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "8 Petals with Ripples from 1 Extra Term. Which version do you prefer?\n\nRose curve with an added higher harmonic. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-11-2026-11-07",
+      "day": 11,
+      "publish_at": "2026-11-07T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-06T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "maurer-rose",
+        "expression": "θₖ = k·d°,  r = sin(6·θₖ) ; k = 0 … 360",
+        "kind": "param",
+        "parameters": {
+          "name": "d",
+          "range": [
+            71,
+            79
+          ],
+          "pingpong": false
+        },
+        "seed": 20261107,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#03060C",
+          "#5C8DFF",
+          "#FF7AD9"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71010,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "STRAIGHT LINES, CURVED FLOWER",
+          "subtitle": "Maurer rose: straight segments jumping along a 6-petal rose",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "361 Straight Lines Hide a Rose | Math Art",
+        "youtube_description": "361 Straight Lines Hide a Rose. Can you still see the rose?\n\nMaurer rose: straight segments jumping along a 6-petal rose. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "361 Straight Lines Hide a Rose. Can you still see the rose?\n\nMaurer rose: straight segments jumping along a 6-petal rose. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "361 Straight Lines Hide a Rose. Can you still see the rose?\n\nMaurer rose: straight segments jumping along a 6-petal rose. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-12-2026-11-08",
+      "day": 12,
+      "publish_at": "2026-11-08T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-07T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "wave-packet",
+        "expression": "y = exp(−x²/2)·cos(ω·x)",
+        "kind": "cartesian",
+        "parameters": {
+          "name": "ω",
+          "range": [
+            2,
+            12
+          ],
+          "pingpong": true
+        },
+        "seed": 20261108,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#060606",
+          "#F2A65A",
+          "#7AE7FF"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71011,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "A WAVE INSIDE A BELL",
+          "subtitle": "Gaussian wave packet with a changing frequency ω",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "A Wave Trapped Inside 1 Bell Curve | Math Art",
+        "youtube_description": "A Wave Trapped Inside 1 Bell Curve. Where does the energy concentrate?\n\nGaussian wave packet with a changing frequency ω. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "A Wave Trapped Inside 1 Bell Curve. Where does the energy concentrate?\n\nGaussian wave packet with a changing frequency ω. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "A Wave Trapped Inside 1 Bell Curve. Where does the energy concentrate?\n\nGaussian wave packet with a changing frequency ω. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-13-2026-11-09",
+      "day": 13,
+      "publish_at": "2026-11-09T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-08T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "abs-cos-power",
+        "expression": "r = |cos(3θ)|ᵖ",
+        "kind": "polar",
+        "parameters": {
+          "name": "p",
+          "range": [
+            0.25,
+            3.0
+          ],
+          "pingpong": true
+        },
+        "seed": 20261109,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#03040A",
+          "#28B9D8",
+          "#FFC95C"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71012,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "ROUND OR SHARP? ONE EXPONENT",
+          "subtitle": "Rose curve raised to a changing power p",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "6 Petals from Round to Sharp | Math Art",
+        "youtube_description": "6 Petals from Round to Sharp. Round petals or sharp ones?\n\nRose curve raised to a changing power p. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "6 Petals from Round to Sharp. Round petals or sharp ones?\n\nRose curve raised to a changing power p. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "6 Petals from Round to Sharp. Round petals or sharp ones?\n\nRose curve raised to a changing power p. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-14-2026-11-10",
+      "day": 14,
+      "publish_at": "2026-11-10T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-09T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "epicycloid",
+        "expression": "x = (k+1)·cos t − cos((k+1)t) ; y = (k+1)·sin t − sin((k+1)t)",
+        "kind": "param",
+        "parameters": {
+          "name": "k",
+          "range": [
+            3.0,
+            5.0
+          ],
+          "pingpong": false
+        },
+        "seed": 20261110,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#05030A",
+          "#B46CFF",
+          "#5CF2FF"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71013,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "ROLL A CIRCLE AROUND A CIRCLE",
+          "subtitle": "Epicycloid traced by a point on a rolling circle",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "A Circle Rolling Around 3 to 5 Cusps | Math Art",
+        "youtube_description": "A Circle Rolling Around 3 to 5 Cusps. How many cusps do you see at the end?\n\nEpicycloid traced by a point on a rolling circle. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "A Circle Rolling Around 3 to 5 Cusps. How many cusps do you see at the end?\n\nEpicycloid traced by a point on a rolling circle. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "A Circle Rolling Around 3 to 5 Cusps. How many cusps do you see at the end?\n\nEpicycloid traced by a point on a rolling circle. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-15-2026-11-11",
+      "day": 15,
+      "publish_at": "2026-11-11T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-10T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "weierstrass",
+        "expression": "y = Σ 0.5ⁿ·cos(3ⁿ·π·x) ; n = 0 … N",
+        "kind": "cartesian",
+        "parameters": {
+          "name": "N",
+          "range": [
+            0,
+            6
+          ],
+          "pingpong": false
+        },
+        "seed": 20261111,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#020806",
+          "#3DE89B",
+          "#F5F17A"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71014,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "CONTINUOUS EVERYWHERE, SMOOTH NOWHERE",
+          "subtitle": "Partial sums of the Weierstrass function",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "A Curve with 0 Smooth Points | Math Art",
+        "youtube_description": "A Curve with 0 Smooth Points. Would you call this a curve?\n\nPartial sums of the Weierstrass function. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "A Curve with 0 Smooth Points. Would you call this a curve?\n\nPartial sums of the Weierstrass function. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "A Curve with 0 Smooth Points. Would you call this a curve?\n\nPartial sums of the Weierstrass function. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-16-2026-11-12",
+      "day": 16,
+      "publish_at": "2026-11-12T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-11T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "nephroid-sin-half",
+        "expression": "r = 1 + a·sin(θ/2)",
+        "kind": "polar",
+        "parameters": {
+          "name": "a",
+          "range": [
+            2.0,
+            0.5
+          ],
+          "pingpong": true
+        },
+        "seed": 20261112,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#0A0405",
+          "#FF6B6B",
+          "#FFD36B"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71015,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "HALF AN ANGLE, TWICE THE LOOP",
+          "subtitle": "Polar curve with a half-angle sine",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "1 Half-Angle Makes a Double Loop | Math Art",
+        "youtube_description": "1 Half-Angle Makes a Double Loop. Where do the loops cross?\n\nPolar curve with a half-angle sine. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "1 Half-Angle Makes a Double Loop. Where do the loops cross?\n\nPolar curve with a half-angle sine. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "1 Half-Angle Makes a Double Loop. Where do the loops cross?\n\nPolar curve with a half-angle sine. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-17-2026-11-13",
+      "day": 17,
+      "publish_at": "2026-11-13T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-12T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "harmonograph",
+        "expression": "x = e⁻⁰·⁰³ᵗ·sin 2t + e⁻⁰·⁰²ᵗ·sin(3t + φ) ; y = e⁻⁰·⁰²⁵ᵗ·cos 2t + e⁻⁰·⁰¹⁵ᵗ·sin 3t",
+        "kind": "param",
+        "parameters": {
+          "name": "φ",
+          "range": [
+            0.0,
+            1.5707963267948966
+          ],
+          "pingpong": false
+        },
+        "seed": 20261113,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#03060C",
+          "#5C8DFF",
+          "#FF7AD9"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71016,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "TWO PENDULUMS, ONE DRAWING",
+          "subtitle": "Damped harmonograph with a changing phase φ",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "2 Pendulums Draw This Spiral | Math Art",
+        "youtube_description": "2 Pendulums Draw This Spiral. Does it look like a seashell to you?\n\nDamped harmonograph with a changing phase φ. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "2 Pendulums Draw This Spiral. Does it look like a seashell to you?\n\nDamped harmonograph with a changing phase φ. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "2 Pendulums Draw This Spiral. Does it look like a seashell to you?\n\nDamped harmonograph with a changing phase φ. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-18-2026-11-14",
+      "day": 18,
+      "publish_at": "2026-11-14T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-13T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "beats",
+        "expression": "y = sin(10x) + sin(ω·x)",
+        "kind": "cartesian",
+        "parameters": {
+          "name": "ω",
+          "range": [
+            10.5,
+            11.5
+          ],
+          "pingpong": true
+        },
+        "seed": 20261114,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#060606",
+          "#F2A65A",
+          "#7AE7FF"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71017,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "TWO WAVES, ONE HEARTBEAT",
+          "subtitle": "Interference of two close frequencies",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "2 Sine Waves Create Beats | Math Art",
+        "youtube_description": "2 Sine Waves Create Beats. Can you hear the beats in your head?\n\nInterference of two close frequencies. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "2 Sine Waves Create Beats. Can you hear the beats in your head?\n\nInterference of two close frequencies. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "2 Sine Waves Create Beats. Can you hear the beats in your head?\n\nInterference of two close frequencies. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-19-2026-11-15",
+      "day": 19,
+      "publish_at": "2026-11-15T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-14T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "offset-rose",
+        "expression": "r = a + cos(5θ)",
+        "kind": "polar",
+        "parameters": {
+          "name": "a",
+          "range": [
+            0.0,
+            1.2
+          ],
+          "pingpong": false
+        },
+        "seed": 20261115,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#03040A",
+          "#28B9D8",
+          "#FFC95C"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71018,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "ADD A NUMBER, CHANGE THE FLOWER",
+          "subtitle": "Rose curve with a growing constant offset a",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "10 Petals Become 1 Flower | Math Art",
+        "youtube_description": "10 Petals Become 1 Flower. At which moment does it change most?\n\nRose curve with a growing constant offset a. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "10 Petals Become 1 Flower. At which moment does it change most?\n\nRose curve with a growing constant offset a. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "10 Petals Become 1 Flower. At which moment does it change most?\n\nRose curve with a growing constant offset a. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-20-2026-11-16",
+      "day": 20,
+      "publish_at": "2026-11-16T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-15T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "superellipse",
+        "expression": "|x|ⁿ + |y|ⁿ = 1",
+        "kind": "param",
+        "parameters": {
+          "name": "n",
+          "range": [
+            0.66,
+            4.0
+          ],
+          "pingpong": true
+        },
+        "seed": 20261116,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#05030A",
+          "#B46CFF",
+          "#5CF2FF"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71019,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "STAR, CIRCLE, SQUARE: SAME EQUATION",
+          "subtitle": "Lamé superellipse with a changing exponent n",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "From Star to Square with 1 Exponent | Math Art",
+        "youtube_description": "From Star to Square with 1 Exponent. Which shape do you like most?\n\nLamé superellipse with a changing exponent n. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "From Star to Square with 1 Exponent. Which shape do you like most?\n\nLamé superellipse with a changing exponent n. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "From Star to Square with 1 Exponent. Which shape do you like most?\n\nLamé superellipse with a changing exponent n. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-21-2026-11-17",
+      "day": 21,
+      "publish_at": "2026-11-17T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-16T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "bessel",
+        "expression": "y = J_ν(x) ; Bessel function of order ν",
+        "kind": "cartesian",
+        "parameters": {
+          "name": "ν",
+          "range": [
+            0.0,
+            5.0
+          ],
+          "pingpong": false
+        },
+        "seed": 20261117,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#020806",
+          "#3DE89B",
+          "#F5F17A"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71020,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "THE SHAPE OF A VIBRATING DRUM",
+          "subtitle": "Bessel function of the first kind with a changing order ν",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "The Bessel Function Behind Every Drum | Math Art",
+        "youtube_description": "The Bessel Function Behind Every Drum. Which order looks most like a drum ripple?\n\nBessel function of the first kind with a changing order ν. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "The Bessel Function Behind Every Drum. Which order looks most like a drum ripple?\n\nBessel function of the first kind with a changing order ν. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "The Bessel Function Behind Every Drum. Which order looks most like a drum ripple?\n\nBessel function of the first kind with a changing order ν. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-22-2026-11-18",
+      "day": 22,
+      "publish_at": "2026-11-18T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-17T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "conics",
+        "expression": "r = 1 / (1 + e·cos θ)",
+        "kind": "polar",
+        "parameters": {
+          "name": "e",
+          "range": [
+            0.0,
+            0.8
+          ],
+          "pingpong": true
+        },
+        "seed": 20261118,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#0A0405",
+          "#FF6B6B",
+          "#FFD36B"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71021,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "EVERY ORBIT IS THIS EQUATION",
+          "subtitle": "Conic section in polar form with a changing eccentricity e",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "Every Planet Orbit in 1 Equation | Math Art",
+        "youtube_description": "Every Planet Orbit in 1 Equation. Which orbit would you choose for Earth?\n\nConic section in polar form with a changing eccentricity e. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "Every Planet Orbit in 1 Equation. Which orbit would you choose for Earth?\n\nConic section in polar form with a changing eccentricity e. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "Every Planet Orbit in 1 Equation. Which orbit would you choose for Earth?\n\nConic section in polar form with a changing eccentricity e. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-23-2026-11-19",
+      "day": 23,
+      "publish_at": "2026-11-19T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-18T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "trefoil",
+        "expression": "x = sin t + a·sin 2t ; y = cos t − a·cos 2t",
+        "kind": "param",
+        "parameters": {
+          "name": "a",
+          "range": [
+            2.0,
+            0.5
+          ],
+          "pingpong": true
+        },
+        "seed": 20261119,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#03060C",
+          "#5C8DFF",
+          "#FF7AD9"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71022,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "A KNOT WITH THREE LOOPS",
+          "subtitle": "Trefoil knot projection with a changing loop size a",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "A 3-Loop Knot from 2 Sines | Math Art",
+        "youtube_description": "A 3-Loop Knot from 2 Sines. Where would you cut it to untie it?\n\nTrefoil knot projection with a changing loop size a. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "A 3-Loop Knot from 2 Sines. Where would you cut it to untie it?\n\nTrefoil knot projection with a changing loop size a. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "A 3-Loop Knot from 2 Sines. Where would you cut it to untie it?\n\nTrefoil knot projection with a changing loop size a. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-24-2026-11-20",
+      "day": 24,
+      "publish_at": "2026-11-20T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-19T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "takagi",
+        "expression": "y = Σ s(2ⁿ·x) / 2ⁿ ; s = distance to nearest integer,  n = 0 … N",
+        "kind": "cartesian",
+        "parameters": {
+          "name": "N",
+          "range": [
+            0,
+            10
+          ],
+          "pingpong": false
+        },
+        "seed": 20261120,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#060606",
+          "#F2A65A",
+          "#7AE7FF"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71023,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "TRIANGLES BUILD A MOUNTAIN",
+          "subtitle": "Takagi (blancmange) curve from sums of triangle waves",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "10 Triangles Build a Fractal Mountain | Math Art",
+        "youtube_description": "10 Triangles Build a Fractal Mountain. Does it remind you of a mountain range?\n\nTakagi (blancmange) curve from sums of triangle waves. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "10 Triangles Build a Fractal Mountain. Does it remind you of a mountain range?\n\nTakagi (blancmange) curve from sums of triangle waves. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "10 Triangles Build a Fractal Mountain. Does it remind you of a mountain range?\n\nTakagi (blancmange) curve from sums of triangle waves. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-25-2026-11-21",
+      "day": 25,
+      "publish_at": "2026-11-21T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-20T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "cassini",
+        "expression": "(x² + y²)² − 2(x² − y²) = b⁴ − 1",
+        "kind": "polar",
+        "parameters": {
+          "name": "b",
+          "range": [
+            1.0,
+            1.6
+          ],
+          "pingpong": false
+        },
+        "seed": 20261121,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#03040A",
+          "#28B9D8",
+          "#FFC95C"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71024,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "FROM INFINITY TO AN OVAL",
+          "subtitle": "Cassini ovals starting from the lemniscate",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "Infinity Sign to Oval in 1 Parameter | Math Art",
+        "youtube_description": "Infinity Sign to Oval in 1 Parameter. Did you catch the moment it splits?\n\nCassini ovals starting from the lemniscate. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "Infinity Sign to Oval in 1 Parameter. Did you catch the moment it splits?\n\nCassini ovals starting from the lemniscate. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "Infinity Sign to Oval in 1 Parameter. Did you catch the moment it splits?\n\nCassini ovals starting from the lemniscate. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-26-2026-11-22",
+      "day": 26,
+      "publish_at": "2026-11-22T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-21T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "epicycle-star",
+        "expression": "z = exp(it) + a·exp(−4it)",
+        "kind": "param",
+        "parameters": {
+          "name": "a",
+          "range": [
+            0.3,
+            1.0
+          ],
+          "pingpong": true
+        },
+        "seed": 20261122,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#05030A",
+          "#B46CFF",
+          "#5CF2FF"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71025,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "TWO CIRCLES MAKE A STAR",
+          "subtitle": "Sum of two counter-rotating circles",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "2 Circles Make a 5-Point Star | Math Art",
+        "youtube_description": "2 Circles Make a 5-Point Star. When does the circle become a star?\n\nSum of two counter-rotating circles. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "2 Circles Make a 5-Point Star. When does the circle become a star?\n\nSum of two counter-rotating circles. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "2 Circles Make a 5-Point Star. When does the circle become a star?\n\nSum of two counter-rotating circles. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-27-2026-11-23",
+      "day": 27,
+      "publish_at": "2026-11-23T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-22T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "dirichlet",
+        "expression": "y = sin((N + ½)x) / ((2N+1)·sin(x/2))",
+        "kind": "cartesian",
+        "parameters": {
+          "name": "N",
+          "range": [
+            1,
+            20
+          ],
+          "pingpong": false
+        },
+        "seed": 20261123,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#020806",
+          "#3DE89B",
+          "#F5F17A"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71026,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "WAVES THAT FOCUS INTO A SPIKE",
+          "subtitle": "Normalized Dirichlet kernel with a growing N",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "20 Waves Focus into 1 Spike | Math Art",
+        "youtube_description": "20 Waves Focus into 1 Spike. What happens when N goes to infinity?\n\nNormalized Dirichlet kernel with a growing N. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "20 Waves Focus into 1 Spike. What happens when N goes to infinity?\n\nNormalized Dirichlet kernel with a growing N. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "20 Waves Focus into 1 Spike. What happens when N goes to infinity?\n\nNormalized Dirichlet kernel with a growing N. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-28-2026-11-24",
+      "day": 28,
+      "publish_at": "2026-11-24T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-23T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "wobbly-spiral",
+        "expression": "r = θ + a·sin(8θ)",
+        "kind": "polar",
+        "parameters": {
+          "name": "a",
+          "range": [
+            0.0,
+            3.0
+          ],
+          "pingpong": true
+        },
+        "seed": 20261124,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#0A0405",
+          "#FF6B6B",
+          "#FFD36B"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71027,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "A SPIRAL THAT STARTS TO DANCE",
+          "subtitle": "Archimedean spiral with an added wobble",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "A Spiral That Learns to Dance in 8 Beats | Math Art",
+        "youtube_description": "A Spiral That Learns to Dance in 8 Beats. Calm spiral or dancing spiral?\n\nArchimedean spiral with an added wobble. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "A Spiral That Learns to Dance in 8 Beats. Calm spiral or dancing spiral?\n\nArchimedean spiral with an added wobble. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "A Spiral That Learns to Dance in 8 Beats. Calm spiral or dancing spiral?\n\nArchimedean spiral with an added wobble. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-29-2026-11-25",
+      "day": 29,
+      "publish_at": "2026-11-25T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-24T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "trochoid",
+        "expression": "x = t − a·sin t ; y = 1 − a·cos t",
+        "kind": "param",
+        "parameters": {
+          "name": "a",
+          "range": [
+            0.5,
+            2.0
+          ],
+          "pingpong": true
+        },
+        "seed": 20261125,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#03060C",
+          "#5C8DFF",
+          "#FF7AD9"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71028,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "WHAT A ROLLING WHEEL DRAWS",
+          "subtitle": "Trochoid: a point on a rolling wheel",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "A Rolling Wheel Draws 3 Loops | Math Art",
+        "youtube_description": "A Rolling Wheel Draws 3 Loops. Where on the wheel is the pen?\n\nTrochoid: a point on a rolling wheel. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "A Rolling Wheel Draws 3 Loops. Where on the wheel is the pen?\n\nTrochoid: a point on a rolling wheel. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "A Rolling Wheel Draws 3 Loops. Where on the wheel is the pen?\n\nTrochoid: a point on a rolling wheel. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    },
+    {
+      "id": "mrx-30-2026-11-26",
+      "day": 30,
+      "publish_at": "2026-11-26T18:00:00-03:00",
+      "timezone": "America/Santiago",
+      "render_not_before": "2026-11-25T06:00:00-03:00",
+      "status": "planned_not_scheduled",
+      "family": "expression",
+      "recipe": {
+        "expression_id": "x-sin-inv",
+        "expression": "y = x·sin(a / x)",
+        "kind": "cartesian",
+        "parameters": {
+          "name": "a",
+          "range": [
+            1.0,
+            5.0
+          ],
+          "pingpong": true
+        },
+        "seed": 20261126,
+        "generator_reference": "expression_renderer.py",
+        "duration_seconds": 16,
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "palette": [
+          "#060606",
+          "#F2A65A",
+          "#7AE7FF"
+        ],
+        "audio": {
+          "type": "original_procedural_melodic_ambient",
+          "generation_location": "VPS",
+          "implementation_status": "expression_renderer_synth",
+          "seed": 71029,
+          "sample_rate": 48000,
+          "channels": 2,
+          "target_lufs": -16,
+          "true_peak_db": -1.5,
+          "tempo_bpm": 60,
+          "chord_progression": [
+            "Cm9",
+            "Abmaj7",
+            "Ebmaj9",
+            "Bbadd9"
+          ],
+          "melody": {
+            "motif_notes": 5,
+            "range": "one octave",
+            "style": "mostly stepwise; occasional thirds; sparse sustained notes",
+            "phrasing": "repeat motif once with a small variation; resolve at the end",
+            "register": "middle, soft timbre"
+          },
+          "instruments": [
+            "warm sustained pad",
+            "soft bell or felt-piano-like synthesized lead",
+            "quiet rounded bass"
+          ],
+          "effects": {
+            "reverb": "soft stereo tail, included within video duration",
+            "delay": "subtle tempo-synchronized",
+            "attack": "gentle",
+            "fade_out_seconds": 1.2
+          },
+          "avoid": [
+            "harsh transients",
+            "piercing high frequencies",
+            "heavy percussion",
+            "abrupt chord cuts",
+            "continuous unstructured drones"
+          ],
+          "external_samples": false,
+          "synch_notes": "Align phrase boundaries to visual transitions without presenting tones as measured physical resonances.",
+          "integration_notes": "Uses seeded composition_version 1 from melodic_ambient.py; detailed future instrument preferences are not all exposed as synthesis parameters."
+        },
+        "overlay": {
+          "language": "en",
+          "hook": "INFINITE WIGGLES NEAR ZERO",
+          "subtitle": "x·sin(a/x): infinitely many oscillations squeezed toward zero",
+          "closing": "SUBSCRIBE FOR MORE MATH",
+          "handle": "@MathRelaxing"
+        }
+      },
+      "metadata": {
+        "language": "en",
+        "title": "Infinite Wiggles in 1 Tiny Interval | Math Art",
+        "youtube_description": "Infinite Wiggles in 1 Tiny Interval. How many wiggles fit near zero?\n\nx·sin(a/x): infinitely many oscillations squeezed toward zero. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#Shorts #MathRelaxing #MathArt",
+        "facebook_caption": "Infinite Wiggles in 1 Tiny Interval. How many wiggles fit near zero?\n\nx·sin(a/x): infinitely many oscillations squeezed toward zero. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding",
+        "instagram_caption": "Infinite Wiggles in 1 Tiny Interval. How many wiggles fit near zero?\n\nx·sin(a/x): infinitely many oscillations squeezed toward zero. Original, procedurally generated melodic ambient music.\n\nFollow @MathRelaxing for more mathematical patterns.\n\n#MathRelaxing #MathArt #GenerativeArt #CreativeCoding"
+      },
+      "platforms": {
+        "youtube": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "facebook": {
+          "status": "not_submitted",
+          "remote_id": null
+        },
+        "instagram": {
+          "status": "not_submitted",
+          "remote_id": null
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+[Unit]
+Description=Personalized Etsy mug artwork and controlled Printify queue
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/mathrelaxing-mug-v2 sync
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/mathrelaxing-mug-v2
+TimeoutStartSec=300

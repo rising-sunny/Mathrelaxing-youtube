@@ -1,0 +1,32 @@
+[Unit]
+Description=Private Bonanza seller API gateway for MathRelaxing bridge
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=mathrelaxing-bonanza-api
+Group=mathrelaxing-bridge
+ExecStart=/usr/bin/python3 /opt/mathrelaxing-bridge/bonanza_gateway.py
+WorkingDirectory=/opt/mathrelaxing-bridge
+LoadCredential=bonanza.json:/etc/mathrelaxing-bonanza-api/bonanza.json
+RuntimeDirectory=mathrelaxing-bonanza-api
+RuntimeDirectoryMode=0750
+StateDirectory=mathrelaxing-bonanza-api
+StateDirectoryMode=0700
+Environment=PYTHONDONTWRITEBYTECODE=1
+UMask=0077
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+InaccessiblePaths=-/opt/etsy-lulu -/opt/etsy_lulu_fulfill
+
+[Install]
+WantedBy=multi-user.target

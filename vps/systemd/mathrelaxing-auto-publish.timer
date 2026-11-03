@@ -1,0 +1,8 @@
+[Unit]
+Description=Check MathRelaxing publication window
+[Timer]
+OnCalendar=*-*-* *:00/5:00 UTC
+Persistent=false
+Unit=mathrelaxing-auto-publish.service
+[Install]
+WantedBy=timers.target

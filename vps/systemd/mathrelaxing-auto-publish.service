@@ -1,0 +1,18 @@
+[Unit]
+Description=MathRelaxing daily publish worker
+After=network-online.target mathrelaxing-publisher.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/mathrelaxing-auto
+ExecStart=/opt/mathrelaxing-publisher/venv/bin/python -u /opt/mathrelaxing-auto/worker.py publish
+TimeoutStartSec=7h
+Nice=10
+Environment=OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/mathrelaxing-auto /var/lib/mathrelaxing-publisher /var/lib/private/mathrelaxing-publisher /var/lib/mathrelaxing-publisher-cli /etc/mathrelaxing-publisher

@@ -1,0 +1,11 @@
+[Unit]
+Description=Check paid Etsy personalized mug sales every five minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+Persistent=true
+Unit=mathrelaxing-mug-v2.service
+
+[Install]
+WantedBy=timers.target

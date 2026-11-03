@@ -1,0 +1,9 @@
+[Unit]
+Description=Registro de vistas cada 15 min
+
+[Timer]
+OnCalendar=*:02/15
+AccuracySec=30s
+
+[Install]
+WantedBy=timers.target

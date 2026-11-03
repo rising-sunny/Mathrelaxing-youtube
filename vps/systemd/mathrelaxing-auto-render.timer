@@ -1,0 +1,8 @@
+[Unit]
+Description=Prepare upcoming MathRelaxing videos
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=1h
+Unit=mathrelaxing-auto-render.service
+[Install]
+WantedBy=timers.target

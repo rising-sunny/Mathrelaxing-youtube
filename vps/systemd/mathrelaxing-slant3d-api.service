@@ -1,0 +1,31 @@
+[Unit]
+Description=Reviewed Bonanza to Slant 3D production gateway
+After=network-online.target mathrelaxing-bonanza-api.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mathrelaxing-slant3d-api
+Group=mathrelaxing-bridge
+WorkingDirectory=/opt/mathrelaxing-bridge
+ExecStart=/usr/bin/python3 /opt/mathrelaxing-bridge/slant3d_gateway.py
+LoadCredential=slant3d.json:/etc/mathrelaxing-slant3d-api/slant3d.json
+RuntimeDirectory=mathrelaxing-slant3d-api
+RuntimeDirectoryMode=0750
+StateDirectory=mathrelaxing-slant3d-api
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

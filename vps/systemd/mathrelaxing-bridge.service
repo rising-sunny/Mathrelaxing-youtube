@@ -1,0 +1,24 @@
+[Unit]
+Description=MathRelaxing API bridge v2
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+StateDirectory=mathrelaxing-bridge
+StateDirectoryMode=0700
+MemoryMax=768M
+TasksMax=32
+DynamicUser=yes
+LoadCredential=config.json:/etc/mathrelaxing-bridge/config.json
+ExecStart=/usr/bin/python3 /opt/mathrelaxing-bridge/server.py
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

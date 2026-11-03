@@ -1,0 +1,28 @@
+[Unit]
+Description=Local Etsy API gateway using existing VPS credentials
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=mathrelaxing-bridge
+WorkingDirectory=/opt/etsy-lulu
+ExecStart=/opt/etsy-lulu/.venv/bin/python /opt/mathrelaxing-bridge/etsy_gateway.py
+Restart=on-failure
+RestartSec=3
+UMask=0077
+RuntimeDirectory=mathrelaxing-etsy-api
+RuntimeDirectoryMode=0750
+StateDirectory=mathrelaxing-etsy-api
+StateDirectoryMode=0700
+Environment=PYTHONDONTWRITEBYTECODE=1
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/opt/etsy-lulu
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target

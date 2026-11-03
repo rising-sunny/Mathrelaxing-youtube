@@ -1,0 +1,16 @@
+[Unit]
+Description=MathRelaxing YouTube metrics MCP
+After=network-online.target
+
+[Service]
+User=ytmetrics
+EnvironmentFile=/etc/yt-metrics.env
+WorkingDirectory=/var/lib/yt-metrics
+ExecStart=/opt/yt-metrics/venv/bin/python /opt/yt-metrics-src/vps/yt_metrics_mcp.py
+Restart=on-failure
+NoNewPrivileges=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/yt-metrics
+
+[Install]
+WantedBy=multi-user.target
