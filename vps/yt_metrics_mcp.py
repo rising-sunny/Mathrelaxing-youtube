@@ -88,6 +88,16 @@ def _range(days: int) -> dict:
     return {"startDate": str(end - timedelta(days=days - 1)), "endDate": str(end)}
 
 
+_VIDEO_ID = re.compile(r"[A-Za-z0-9_-]{11}")
+
+
+def _video(video_id: str) -> str:
+    video_id = video_id.strip()
+    if not _VIDEO_ID.fullmatch(video_id):
+        raise ValueError("video_id invalido (11 caracteres: letras, numeros, - y _)")
+    return video_id
+
+
 def _rows(resp: dict) -> list[dict]:
     heads = [h["name"] for h in resp.get("columnHeaders", [])]
     return [dict(zip(heads, r)) for r in resp.get("rows", [])]
@@ -180,7 +190,7 @@ def build_server():
         """Analytics de un video: vistas, minutos vistos, duracion y % promedio visto, suscriptores ganados. `channel`: alias del canal dueno del video."""
         resp = _analytics(channel).reports().query(
             ids="channel==MINE", metrics=VIDEO_METRICS,
-            filters=f"video=={video_id}", **_range(days),
+            filters=f"video=={_video(video_id)}", **_range(days),
         ).execute()
         return {"video_id": video_id, "period_days": days, "metrics": (_rows(resp) or [{}])[0]}
 
@@ -199,6 +209,51 @@ def build_server():
         resp = _analytics(channel).reports().query(
             ids="channel==MINE", dimensions="insightTrafficSourceType",
             metrics="views,estimatedMinutesWatched", sort="-views", **_range(days),
+        ).execute()
+        return _rows(resp)
+
+    @mcp.tool()
+    def yt_video_daily(video_id: str, days: int = 14, channel: str = "") -> list[dict]:
+        """Vistas dia a dia de un video (curva de decaimiento): vistas, minutos vistos, % visto, likes, suscriptores. Muestra cuando se frena. `channel`: alias."""
+        resp = _analytics(channel).reports().query(
+            ids="channel==MINE", dimensions="day", sort="day",
+            metrics="views,estimatedMinutesWatched,averageViewPercentage,likes,subscribersGained",
+            filters=f"video=={_video(video_id)}", **_range(days),
+        ).execute()
+        return _rows(resp)
+
+    @mcp.tool()
+    def yt_video_retention(video_id: str, days: int = 90, channel: str = "") -> dict:
+        """Curva de retencion de un video: fraccion de audiencia que sigue viendo en cada 5% de su duracion (audienceWatchRatio; >1 = se repite en bucle). `days`: ventana de datos; usa un valor que cubra desde la publicacion."""
+        resp = _analytics(channel).reports().query(
+            ids="channel==MINE", dimensions="elapsedVideoTimeRatio", sort="elapsedVideoTimeRatio",
+            metrics="audienceWatchRatio,relativeRetentionPerformance",
+            filters=f"video=={_video(video_id)}", **_range(days),
+        ).execute()
+        rows = [{k: round(v, 3) for k, v in r.items()} for r in _rows(resp)]
+        if not rows:
+            return {"video_id": video_id, "samples": [], "note": "sin datos en la ventana"}
+        return {
+            "video_id": video_id,
+            "start": rows[0],
+            "end": rows[-1],
+            "lowest": min(rows, key=lambda r: r["audienceWatchRatio"]),
+            "samples": rows[4::5],
+        }
+
+    @mcp.tool()
+    def yt_video_audience(by: str = "country", video_id: str = "", days: int = 28, channel: str = "") -> list[dict]:
+        """Quien ve el contenido. by: country, deviceType, subscribedStatus, ageGroup o gender (ageGroup y gender devuelven % de espectadores). video_id vacio = todo el canal."""
+        allowed = ("country", "deviceType", "subscribedStatus", "ageGroup", "gender")
+        if by not in allowed:
+            raise ValueError(f"by debe ser uno de: {', '.join(allowed)}")
+        demo = by in ("ageGroup", "gender")
+        extra = {"filters": f"video=={_video(video_id)}"} if video_id.strip() else {}
+        resp = _analytics(channel).reports().query(
+            ids="channel==MINE", dimensions=by,
+            metrics="viewerPercentage" if demo else "views,estimatedMinutesWatched,averageViewPercentage",
+            sort="-viewerPercentage" if demo else "-views", maxResults=15,
+            **extra, **_range(days),
         ).execute()
         return _rows(resp)
 
