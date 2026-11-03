@@ -124,6 +124,7 @@ def build_server():
             issuer_url=base,
             resource_server_url=f"{base}/mcp",
             required_scopes=[SCOPE],
+            validate_token_resource=False,  # un unico servidor de autorizacion (el propio); sin cambio de comportamiento
             client_registration_options=ClientRegistrationOptions(
                 enabled=True, valid_scopes=[SCOPE], default_scopes=[SCOPE]),
             revocation_options=RevocationOptions(enabled=True),
